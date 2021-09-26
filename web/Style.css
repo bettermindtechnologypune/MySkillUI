@@ -1,0 +1,171 @@
+.mainStyle{
+    background-color: tomato;
+    /* min-height: 50%;  Fallback for browsers do NOT support vh unit */
+    /* min-height: 50vh; These two lines are counted as one :-)       */
+    align-content: center;
+  
+}
+body {
+    /* padding-top: 20px; */
+    /* padding-bottom: 20px; */
+  }
+  .header,
+  .marketing,
+  .footer {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+ /* Custom page header */
+ .header {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .header h3 {
+    padding-bottom: 19px;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+  }
+  
+  /* Custom page footer */
+  .footer {
+    position: "fixed";
+    left: 0;
+    bottom: 0;
+    width:"100%";
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+    background-color: #161B25;
+  }
+
+
+  /* Customize container */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 730px;
+    }
+  }
+  .container-narrow > hr {
+    margin: 30px 0;
+  }
+  
+  /* Main marketing message and sign up button */
+  .jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .jumbotron .btn {
+    padding: 14px 24px;
+    font-size: 21px;
+  }
+  
+  /* Supporting marketing content */
+  .marketing {
+    margin: 40px 0;
+  }
+  .marketing p + h4 {
+    margin-top: 28px;
+  }
+  
+  /* Responsive: Portrait tablets and up */
+  @media screen and (min-width: 768px) {
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+      padding-right: 0;
+      padding-left: 0;
+    }
+    /* Space out the masthead */
+    .header {
+      margin-bottom: 30px;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+      border-bottom: 0;
+    }
+  }
+
+  /* form {
+    border: 3px solid #f1f1f1;
+} */
+/*assign full width inputs*/
+  
+input.form-control[type=text],
+input.form-control[type=password] {
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+input.formInput[type=text],
+input.formInput[type=password] {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0; 
+    border: 1px solid #ccc;
+    box-sizing: border-box; 
+}
+/*set a style for the buttons*/
+  .inputOne{
+       width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+  }
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+}
+/* set a hover effect for the button*/
+  
+button:hover {
+    opacity: 0.8;
+}
+/*set extra style for the cancel button*/
+
+/*centre the display image inside the container*/
+  
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+/*set image properties*/
+  
+img.avatar {
+    width: 10%;
+    border-radius: 50%;
+}
+/*set padding to the container*/
+  
+.container {
+    padding: 16px;
+    align-items: baseline;
+}
+/*set the forgot password text*/
+  
+span.psw {
+    float: right;
+    padding-top: 10px;
+    margin-right: 45%;
+}
+/*set styles for span and cancel button on small screens*/
+  
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+    .cancelbtn {
+        width: 100%;
+    }
+}
+ 
+ 
+ 
+
+  

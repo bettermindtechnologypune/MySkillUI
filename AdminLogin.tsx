@@ -1,0 +1,99 @@
+import propTypes from 'prop-types';
+import React, { Component } from "react"
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import logo from './images/superAdmin.png';
+import SignUpPage from './SignUpPage';
+import { useState } from 'react';
+// import {toast} from 'react-toastify'; 
+// import 'react-toastify/dist/ReactToastify.css';
+// toast.configure()
+export const AdminLogin = (props) => {
+
+  const [UserName, setUserName] = useState("");
+  const [Password, setPassword] = useState("");
+  const submit = (e) => {
+    e.preventDefault();
+    let collection = {}
+    collection.UserName = UserName,
+      collection.Password = Password
+    console.log(collection);
+
+    fetch('https://localhost:44369/api/Auth/Authentication', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(collection),
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.status == 200) {
+          console.log('Success:', response);
+          localStorage.setItem('token', response);
+          props.history.push("/SignUpPage", { state: 'Vijay' });
+        } else {
+          console.log('Unauthorized:', response);
+          alert("Username or Password is Invalid")
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  }
+
+  return (
+
+    <div>
+      <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">My Skill</a>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                {/* <Link to = "./AdminLogin">Home</Link> */}
+                <a className="nav-link active" aria-current="page" href="./">Home</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">About</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <h2 className="text-center">Login Form</h2>
+
+      <form onSubmit={submit}>
+        <div className="imgcontainer">
+          <img src={logo} alt="Avatar" className="avatar" />
+        </div>
+
+        <div className="container inputOne text-center">
+          <label><b>Username</b></label><br />
+          <input type="text" placeholder="Enter Username" name="uname" value={UserName} onChange={(e) => setUserName(e.target.value)} className="formInput" required /><br />
+
+          <label><b>Password</b></label><br />
+          <input type="password" placeholder="Enter Password" name="psw" value={Password} onChange={(e) => setPassword(e.target.value)} className="formInput" required /><br /><br />
+
+          <button className= "btn btn-lg btn-info" type="submit">Login</button><br />
+          <input type="checkbox" /> Remember me
+        </div>
+        <div className="container" styles="background-color:#f1f1f1">
+          {/* <button type="button" className="cancelbtn">Cancel</button> */}
+          <span className="psw"><a href="#">Forgot Password</a></span>
+        </div>
+      </form>
+    </div>
+
+    // </div>
+  )
+}
+AdminLogin.defaultProps = {
+  title: "Skill Base",
+  searchBar: true
+}
+export default AdminLogin;

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import  ReactDOM  from 'react';
-import Header from './Header';
-import NotFoundPage from "./404";
-import Main from './Main';
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import AdminLogin from "./AdminLogin";
-import SignUpPage from './SignUpPage';
+import Header from './pages/Header';
+import NotFoundPage from "./pages/404";
+import UploadXMLFile from "./pages/UploadXMLFile";
+import AdminLogin from "./pages/AdminLogin";
+import SignUpPage from './pages/SignUpPage';
+import BusinessUnitSignUp from "./pages/BusinessUnitSignUp";
 import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-router-dom";
 
 // import {Dropdown  } from "react-native";
@@ -22,6 +21,8 @@ const App = () => {
       <Route exact path ="/404" component = {NotFoundPage}/>
       <Route exact path ="/" component = {AdminLogin}/>
       <Route exact path ="/SignUpPage" component = {SignUpPage}/>
+      <Route exact path ="/BusinessUnitSignUp" component = {BusinessUnitSignUp}/>
+      <Route exact path ="/UploadXMLFile" component = {UploadXMLFile}/>
       <Redirect to="/404"></Redirect>      
       </Switch>
     </Router>

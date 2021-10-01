@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React, { Component } from "react"
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import logo from './images/superAdmin.png';
+import logo from '../superAdmin.png';
 import SignUpPage from './SignUpPage';
 import { useState } from 'react';
 // import {toast} from 'react-toastify'; 
@@ -15,7 +15,7 @@ export const AdminLogin = (props) => {
     e.preventDefault();
     let collection = {}
     collection.UserName = UserName,
-      collection.Password = Password
+    collection.Password = Password
     console.log(collection);
 
     fetch('https://localhost:44369/api/Auth/Authentication', {
@@ -26,14 +26,14 @@ export const AdminLogin = (props) => {
       body: JSON.stringify(collection),
     })
       .then(response => response.json())
-      .then(response => {
-        if (response.status == 200) {
-          console.log('Success:', response);
-          localStorage.setItem('token', response);
-          props.history.push("/SignUpPage", { state: 'Vijay' });
-        } else {
-          console.log('Unauthorized:', response);
+      .then(data => {
+        if (data.status == 401) {
+          console.log('Unauthorized:', data);
           alert("Username or Password is Invalid")
+        } else {
+          console.log('Success:', data);
+          localStorage.setItem('token', (data.token));
+          props.history.push("/pages/", { state: 'Vijay' });
         }
       })
       .catch((error) => {

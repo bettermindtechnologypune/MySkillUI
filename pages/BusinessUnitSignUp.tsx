@@ -1,16 +1,15 @@
 import React, { FC, ChangeEvent } from 'react'
 import { useState } from 'react';
-import AdminLogin from "./AdminLogin";
-import Header from './Header';
+import AdminLogin from "./pages/AdminLogin";
+import Header from './pages/Header';
 
 // import logo from './images/superAdmin.png';
-export const SignUpPage = (props) => {
+export const BusinessUnitSignUp = (props) => {
 	const [organizationName, setOrganizationName] = useState("");
 	const [orgEmail, setOrgEmail] = useState("");
 	const [billingEmail, setBillingEmail] = useState("");
 	const [address, setAddress] = useState("");
 	const [city, setCity] = useState("");
-	const [multipleBU, setMultipleBU] = useState("")
 	const [stateName, setStateName] = useState("");
 	const [zip, setZipCode] = useState("");
 	const [phone, setPhoneNumber] = useState("");
@@ -31,24 +30,24 @@ export const SignUpPage = (props) => {
 				collection.PostalCode = zip,
 				collection.ContactNumber = phone,
 				collection.Website = website,
-				collection.HasMultipleBU = multipleBU;
 				console.log(collection);
-			alert("Successfully Submitted!")
+				var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/Organization/Create', {
 				method: 'POST',
 				headers: {
+					'Authorization': localStorage.getItem('token'),
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(collection),
 			})
 				.then(response => response.json())
-				.then(response => {
-					if (response.status == 200) {
-						console.log('Success:', response);
-						props.history.push("/", { state: 'AdminLogin' });
+				.then(data => {
+					if (data.status == 401) {
+						console.log('Unauthorized:', data);
+						alert("Please enter a valid data")
 					} else {
-						console.log('Unauthorized:', response);
-						alert("Username or Password is Invalid")
+						console.log('Success:', data);
+						props.history.push("/pages/", { state: 'AdminLogin' });
 					}
 				})
 				.catch((error) => {
@@ -77,10 +76,6 @@ export const SignUpPage = (props) => {
 								<a className="nav-link" href="#">{props.state}</a>
 							</li>
 						</ul>
-						{/* {props.searchBar ? <form className="d-flex">
-              {/* <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-              <button className="btn btn-outline-success btn-light" type="submit">Search</button> */}
-						{/* </form> }  */}
 					</div>
 				</div>
 			</nav>
@@ -93,11 +88,11 @@ export const SignUpPage = (props) => {
 							<div className="col-sm-12">
 								<div className="row">
 									<div className="col-sm-4 form-group">
-										<label>Organization Name</label>
-										<input type="text" placeholder="Enter Organization Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
+										<label>Business Unit Name</label>
+										<input type="text" placeholder="Enter Business Unit Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Organization Email Address</label>
+										<label>Business Unit Email Address</label>
 										<input type="text" placeholder="Enter Email Address Here.." value={orgEmail} onChange={(e) => setOrgEmail(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
@@ -106,8 +101,8 @@ export const SignUpPage = (props) => {
 									</div>
 								</div>
 								<div className="form-group">
-									<label>Company Address</label>
-									<input type="text" placeholder="Enter Company Address Here.." value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
+									<label>Business Unit Address</label>
+									<input type="text" placeholder="Enter Business Unit Address Here.." value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
 								</div>
 								<div className="row">
 									<div className="col-sm-4 form-group">
@@ -120,28 +115,17 @@ export const SignUpPage = (props) => {
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>Postal Code</label>
-										<input type="text" placeholder="Enter Zip Code Here.." value={zip} onChange={(e) => setZipCode(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Postal Code Here.." value={zip} onChange={(e) => setZipCode(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="row">
-									
-									
 									<div className="col-sm-4 form-group">
-										<label>Phone Number</label>
-										<input type="text" placeholder="Enter Phone Number Here.." value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
+										<label>Contact Number</label>
+										<input type="text" placeholder="Enter Contact Number Here.." value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>Website</label>
 										<input type="text" placeholder="Enter Website Name Here.." value={website} onChange={(e) => setWebsite(e.target.value)} className="form-control" />
-									</div>
-									<div className="col-sm-4 form-group">
-										<label>Has Multiple Sub Business Unit</label><br />
-										<select name="sbu" className="form-control" value={multipleBU} onChange={(e) => setMultipleBU(e.target.value)} id="sbus">
-											<option value="selectOption">Select Here</option>
-											<option value="yes">Yes</option>
-											<option value="no">No</option>
-										</select>
-										{/* <input type="text" placeholder="Enter Company Name Here.." className="form-control"/> */}
 									</div>
 								</div><br />
 								{/* <div className="text-center">  */}
@@ -155,8 +139,8 @@ export const SignUpPage = (props) => {
 		</div>
 	)
 }
-export default SignUpPage;
-SignUpPage.defaultProps = {
+export default BusinessUnitSignUp;
+BusinessUnitSignUp.defaultProps = {
 	title: "Skill Base",
 	searchBar: true
 }

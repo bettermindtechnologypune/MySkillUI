@@ -1,7 +1,8 @@
 import React, { FC, ChangeEvent } from 'react'
 import { useState } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import AdminLogin from "./AdminLogin";
-import Header from './Header';
+import Footer from './Footer';
 
 // import logo from './images/superAdmin.png';
 export const SignUpPage = (props) => {
@@ -50,7 +51,7 @@ export const SignUpPage = (props) => {
 						alert("Please enter a valid data")
 					} else {
 						console.log('Success:', data);
-						props.history.push("/pages/", { state: 'AdminLogin' });
+						props.history.push("./", { state: 'AdminLogin' });
 					}
 				})
 				.catch((error) => {
@@ -84,7 +85,7 @@ export const SignUpPage = (props) => {
 			</nav>
 
 			<div className="container">
-				<h1 className="well">Registration Form</h1>
+				<h1 className="well">Organization Registration Form</h1>
 				<div className="col-lg-12 well">
 					<div className="row">
 						<form onSubmit={submit}>
@@ -150,6 +151,11 @@ export const SignUpPage = (props) => {
 					</div>
 				</div>
 			</div>
+			<View>
+      <View >
+        <Footer />
+    </View>
+   </View>
 		</div>
 	)
 }

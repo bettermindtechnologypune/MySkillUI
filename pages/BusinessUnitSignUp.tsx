@@ -1,7 +1,8 @@
 import React, { FC, ChangeEvent } from 'react'
 import { useState } from 'react';
-import AdminLogin from "./pages/AdminLogin";
-import Header from './pages/Header';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import AdminLogin from "./AdminLogin";
+import Footer from './Footer';
 
 // import logo from './images/superAdmin.png';
 export const BusinessUnitSignUp = (props) => {
@@ -47,7 +48,7 @@ export const BusinessUnitSignUp = (props) => {
 						alert("Please enter a valid data")
 					} else {
 						console.log('Success:', data);
-						props.history.push("/pages/", { state: 'AdminLogin' });
+						props.history.push("./", { state: 'AdminLogin' });
 					}
 				})
 				.catch((error) => {
@@ -81,7 +82,7 @@ export const BusinessUnitSignUp = (props) => {
 			</nav>
 
 			<div className="container">
-				<h1 className="well">Registration Form</h1>
+				<h1 className="well">Business Unit Registration Form</h1>
 				<div className="col-lg-12 well">
 					<div className="row">
 						<form onSubmit={submit}>
@@ -136,6 +137,11 @@ export const BusinessUnitSignUp = (props) => {
 					</div>
 				</div>
 			</div>
+			<View>
+      <View >
+        <Footer />
+    </View>
+   </View>
 		</div>
 	)
 }

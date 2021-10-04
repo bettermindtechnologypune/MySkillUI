@@ -30,7 +30,7 @@ body {
   
   /* Custom page footer */
   .footer {
-    position: "fixed";
+    position: 'fixed';
     left: 0;
     bottom: 0;
     width:"100%";
@@ -165,7 +165,9 @@ span.psw {
     }
 }
  
- 
+input.uploadFile[type="file"] {
+  margin-left: 85px;
+}
  
 
   

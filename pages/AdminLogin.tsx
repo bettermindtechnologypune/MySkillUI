@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import logo from '../superAdmin.png';
 import SignUpPage from './SignUpPage';
+import Footer from "./Footer";
 import { useState } from 'react';
 // import {toast} from 'react-toastify'; 
 // import 'react-toastify/dist/ReactToastify.css';
@@ -25,16 +26,20 @@ export const AdminLogin = (props) => {
       },
       body: JSON.stringify(collection),
     })
-      .then(response => response.json())
+    .then(response=>{
+      console.log(response)
+      if(response.status == 200)
+          return response.json()
+      else{
+        console.log(response) 
+        alert("Username or Password is not valid")
+        throw new Error("Username or Password is not valid")
+      }
+  })
       .then(data => {
-        if (data.status == 401) {
-          console.log('Unauthorized:', data);
-          alert("Username or Password is Invalid")
-        } else {
           console.log('Success:', data);
           localStorage.setItem('token', (data.token));
-          props.history.push("/pages/", { state: 'Vijay' });
-        }
+          props.history.push("./signUpPage", { state: 'Vijay' });
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -87,6 +92,11 @@ export const AdminLogin = (props) => {
           <span className="psw"><a href="#">Forgot Password</a></span>
         </div>
       </form>
+      <View>
+      <View >
+        <Footer />
+    </View>
+   </View>
     </div>
 
     // </div>

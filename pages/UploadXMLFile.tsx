@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native';
 import Header from "./Header";
-const UploadXMLFile = () =>{
+export const UploadXMLFile = (props: { history: string[]; }) => {
 return(
     <div>
     <View>
@@ -21,5 +21,8 @@ return(
     </div>
 )
 }
- 
+UploadXMLFile.defaultProps = {
+  title: "Skill Base",
+  searchBar: true
+}
 export default UploadXMLFile;

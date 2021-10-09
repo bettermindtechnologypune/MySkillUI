@@ -1,22 +1,20 @@
-import propTypes from 'prop-types';
 import React, { Component } from "react"
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import logo from '../superAdmin.png';
-import SignUpPage from './SignUpPage';
+import logo from "./superAdmin.png";
 import Footer from "./Footer";
 import { useState } from 'react';
 // import {toast} from 'react-toastify'; 
 // import 'react-toastify/dist/ReactToastify.css';
 // toast.configure()
-export const AdminLogin = (props) => {
+export const AdminLogin = (props: { history: string[]; }) => {
 
   const [UserName, setUserName] = useState("");
   const [Password, setPassword] = useState("");
-  const submit = (e) => {
+  const submit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     let collection = {}
     collection.UserName = UserName,
-    collection.Password = Password
+      collection.Password = Password
     console.log(collection);
 
     fetch('https://localhost:44369/api/Auth/Authentication', {
@@ -26,20 +24,31 @@ export const AdminLogin = (props) => {
       },
       body: JSON.stringify(collection),
     })
-    .then(response=>{
-      console.log(response)
-      if(response.status == 200)
+      .then(response => {
+        console.log(response)
+        if (response.status == 200)
           return response.json()
-      else{
-        console.log(response) 
-        alert("Username or Password is not valid")
-        throw new Error("Username or Password is not valid")
-      }
-  })
+        else {
+          console.log(response)
+          alert("Username or Password is not valid")
+          throw new Error("Username or Password is not valid")
+        }
+      })
       .then(data => {
-          console.log('Success:', data);
-          localStorage.setItem('token', (data.token));
-          props.history.push("./signUpPage", { state: 'Vijay' });
+        console.log('Success:', data);
+        localStorage.setItem('token', (data.token));
+        alert("Success !")
+        if(data.userType == 0){
+        props.history.push("./signUpPage");
+        }else if (data.userType == 1){
+        props.history.push("./BusinessUnitCreate");  
+        } else if(data.userType == 2){
+          props.history.push("./DepartmentCreate");  
+        }else if(data.userType == 3){
+          props.history.push("./ManagerCreate");  
+        }else if(data.userType == 4){
+          props.history.push("./EmployeeCreate");  
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -84,19 +93,19 @@ export const AdminLogin = (props) => {
           <label><b>Password</b></label><br />
           <input type="password" placeholder="Enter Password" name="psw" value={Password} onChange={(e) => setPassword(e.target.value)} className="formInput" required /><br /><br />
 
-          <button className= "btn btn-lg btn-info" type="submit">Login</button><br />
+          <button className="btn btn-lg btn-info" type="submit">Login</button><br />
           <input type="checkbox" /> Remember me
         </div>
-        <div className="container" styles="background-color:#f1f1f1">
+        <div className="container">
           {/* <button type="button" className="cancelbtn">Cancel</button> */}
           <span className="psw"><a href="#">Forgot Password</a></span>
         </div>
       </form>
       <View>
-      <View >
-        <Footer />
-    </View>
-   </View>
+        <View >
+          <Footer />
+        </View>
+      </View>
     </div>
 
     // </div>

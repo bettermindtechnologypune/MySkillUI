@@ -6,7 +6,9 @@ import NotFoundPage from "./pages/404";
 import UploadXMLFile from "./pages/UploadXMLFile";
 import AdminLogin from "./pages/AdminLogin";
 import SignUpPage from './pages/SignUpPage';
-import BusinessUnitSignUp from "./pages/BusinessUnitSignUp";
+import BusinessUnitCreate from "./pages/BusinessUnitCreate";
+import DepartmentCreate from "./pages/DepartmentCreate";
+import EmployeeCreate from "./pages/EmployeeCreate";
 import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-router-dom";
 
 // import {Dropdown  } from "react-native";
@@ -21,8 +23,10 @@ const App = () => {
       <Route exact path ="/404" component = {NotFoundPage}/>
       <Route exact path ="/" component = {AdminLogin}/>
       <Route exact path ="/SignUpPage" component = {SignUpPage}/>
-      <Route exact path ="/BusinessUnitSignUp" component = {BusinessUnitSignUp}/>
+      <Route exact path ="/BusinessUnitCreate" component = {BusinessUnitCreate}/>
       <Route exact path ="/UploadXMLFile" component = {UploadXMLFile}/>
+      <Route exact path ="/DepartmentCreate" component = {DepartmentCreate}/>
+      <Route exact path ="/EmployeeCreate" component = {EmployeeCreate}/>
       <Redirect to="/404"></Redirect>      
       </Switch>
     </Router>

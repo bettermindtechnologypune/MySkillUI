@@ -1,11 +1,10 @@
 import React, { FC, ChangeEvent } from 'react'
 import { useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import AdminLogin from "./AdminLogin";
 import Footer from './Footer';
 
 // import logo from './images/superAdmin.png';
-export const SignUpPage = (props) => {
+export const SignUpPage = (props: { history: string[]; title: string; state: string; }) => {
 	const [organizationName, setOrganizationName] = useState("");
 	const [orgEmail, setOrgEmail] = useState("");
 	const [billingEmail, setBillingEmail] = useState("");
@@ -16,15 +15,15 @@ export const SignUpPage = (props) => {
 	const [zip, setZipCode] = useState("");
 	const [phone, setPhoneNumber] = useState("");
 	const [website, setWebsite] = useState("");
-	const submit = (e) => {
+	const submit = (e: { preventDefault: () => void; }) => {
 		console.log("Started");
 		e.preventDefault();
 		if (!organizationName && !orgEmail && !address && !billingEmail) {
 			alert("Title or Description can not be blank..")
 		} else {
 			let collection = {}
-			var isTrueSet = multipleBU ==='yes' ? true : false ;
-				collection.Name = organizationName,
+			var isTrueSet = multipleBU === 'yes' ? true : false;
+			collection.Name = organizationName,
 				collection.Email = orgEmail,
 				collection.BillingEmail = billingEmail,
 				collection.CompanyAddress = address,
@@ -35,7 +34,7 @@ export const SignUpPage = (props) => {
 				collection.Website = website,
 				collection.HasMultipleBU = isTrueSet,
 				console.log(collection);
-				var bearer = localStorage.getItem('token');
+			var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/Organization/Create', {
 				method: 'POST',
 				headers: {
@@ -51,7 +50,8 @@ export const SignUpPage = (props) => {
 						alert("Please enter a valid data")
 					} else {
 						console.log('Success:', data);
-						props.history.push("./", { state: 'AdminLogin' });
+						alert("Successfully Created !");
+						props.history.push("./");
 					}
 				})
 				.catch((error) => {
@@ -123,8 +123,8 @@ export const SignUpPage = (props) => {
 									</div>
 								</div>
 								<div className="row">
-									
-									
+
+
 									<div className="col-sm-4 form-group">
 										<label>Contact Number</label>
 										<input type="text" placeholder="Enter Contact Number Here.." value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
@@ -140,22 +140,19 @@ export const SignUpPage = (props) => {
 											<option value="yes">Yes</option>
 											<option value="no">No</option>
 										</select>
-										{/* <input type="text" placeholder="Enter Company Name Here.." className="form-control"/> */}
 									</div>
 								</div><br />
-								{/* <div className="text-center">  */}
 								<button type="submit" className="btn btn-lg btn-info" >Submit</button>
-								{/* </div> */}
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 			<View>
-      <View >
-        <Footer />
-    </View>
-   </View>
+				<View >
+					<Footer />
+				</View>
+			</View>
 		</div>
 	)
 }

@@ -1,8 +1,9 @@
-import React, { FC, ChangeEvent } from 'react'
+import React, { FC, ChangeEvent, useEffect } from 'react'
 import { useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Footer from './Footer';
-
+import Employee from '../model/Employee';
+import Department from '../model/Department';
 export class EmployeeResource {
 
     public Name: string | undefined;
@@ -18,75 +19,116 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
     const [grade, setGrade] = useState("");
     const [doj, setDOJ] = useState("");
     const [compName, setCompName] = useState("");
-    const [department, setDepartment] = useState("");
+    const [departments, setDepartmentData] = useState<any>();
+    const [department, setDepartment] = useState<any>();
     const [managerEmpID, setManagerEmpID] = useState("");
     const [managerName, setManagerName] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
     const [stateName, setStateName] = useState("");
-    const [age, setAge] = useState("");
+    const [age, setAge] = useState();
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isManager, setIsManager] = useState("");
     const [education, setEducation] = useState("");
+
+    useEffect(() => {
+        (async () => {
+            var departments = await getDepartments();
+            // var dept = [];
+            // let de = new Department()
+            // de.Id = "1221212166"
+            // de.Name = "R&D"
+            // dept.push(de);
+
+        })()
+
+    }, [])
+
+    const getDepartments = () => {
+        const requestHeaders: HeadersInit = new Headers();
+        let token;
+        token = localStorage.getItem('token');
+        requestHeaders.set('Authorization', token || "");
+        requestHeaders.set('Content-Type', 'application/json');
+
+        let httpGetObject = {
+            method: 'GET',
+            headers: requestHeaders
+        }
+        fetch('https://localhost:44369/api/Department/GetList', httpGetObject)
+            .then(response => response.json())
+            .then(data => {
+                if (data != undefined) {
+                    setDepartment(data[0])
+                    setDepartmentData(data)
+                    return data;
+                } else {
+                    return null;
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    const handleChange = (id: string) => {
+        setDepartment(id);
+    }
+
     const submit = (e: { preventDefault: () => void; }) => {
         console.log("Started");
         e.preventDefault();
         if (!employeeFirstName && !employeeID && !empEmail && !managerEmpID) {
             alert("Required Fields can not be blank..")
         } else {
-            let collection = {};
+            // let collection = {};
+            let empl: Employee = new Employee();
             var isTrueSet = isManager === 'yes' ? true : false;
-            collection.EmployeeFirstName = employeeFirstName,
-                collection.EmpLastName = empLastName,
-                collection.EmployeeID = employeeID,
-                collection.EmpEmail = empEmail,
-                collection.DOB = dob,
-                collection.Grade = grade,
-                collection.DOJ = doj,
-                collection.CompName = compName,
-                collection.Department = department,
-                collection.ManagerEmpID = managerEmpID,
-                collection.ManagerName = managerName,
-                collection.Address = address,
-                collection.City = city,
-                collection.StateName = stateName,
-                collection.Age = age,
-                collection.PhoneNumber = phoneNumber,
-                collection.IsManager = isTrueSet,
-                collection.Education = education,
+            empl.FirstName = employeeFirstName,
+                empl.LastName = empLastName,
+                empl.OrgEmpId = employeeID,
+                empl.Email = empEmail,
+                empl.DOB = dob,
+                empl.Grade = grade,
+                empl.DOJ = doj,
+                empl.DepartmentId = department,
+                empl.Address = address,
+                empl.City = city,
+                empl.State = stateName,
+                empl.Age = age,
+                empl.ContactNumber = phoneNumber,
+                empl.IsManager = isTrueSet,
+                empl.Education = education,
 
-                console.log(collection);
-            var bearer = localStorage.getItem('token');
-            fetch('https://localhost:44369/api/Employee/Create', {
-                method: 'POST',
-                headers: {
-                    'Authorization': localStorage.getItem('token'),
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(collection),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status == 401) {
-                        console.log('Unauthorized:', data);
-                        alert("Please enter a valid data")
-                    } else {
-                        console.log('Success:', data);
-                        props.history.push("./");
-                    }
+                // console.log(collection);
+                fetch('https://localhost:44369/api/Employee/Create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(empl),
                 })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+                    .then(response => {
+                        if (response.status == 200)
+                            return response.json()
+                        else {
+                            console.log(response)
+                            throw new Error("Unauthorized")
+                        }
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        alert("Successfully Added Employee !");
+                        props.history.push("./");
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
         }
     }
-    function displayFun() {
-        alert("True");
-        a = document.getElementById("demo");
-        b = document.createElement("input");
-        b.setAttribute("type", "text");
-        a.appendChild(b);
-
+    const submitBack = (e: { preventDefault: () => void; }) => {
+        props.history.push("/HrAdminHomePage");
     }
     return (
         <div>
@@ -162,42 +204,33 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                         <select name="sbu" className="form-control" value={isManager} onChange={(e) => setIsManager(e.target.value)} id="sbus">
                                             <option value="selectOption">Select Here</option>
                                             <option value="yes">Yes</option>
-											<option value="no">No</option>
+                                            <option value="no">No</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-sm-4 form-group">
-                                        <label>Company</label>
-                                        <input type="text" placeholder="Enter Company Here.." value={compName} onChange={(e) => setCompName(e.target.value)} className="form-control" />
-                                    </div>
-                                    <div className="col-sm-4 form-group">
-                                        <label>Department</label><br />
-                                        <select name="sbu" className="form-control" value={department} onChange={(e) => setDepartment(e.target.value)} id="sbus">
-                                            <option value="selectOption">Select Here</option>
-                                        </select>
-                                    </div>
+                                    {departments &&
+                                        <div className="col-sm-4 form-group">
+                                            <label>Department</label>
+                                            <select name="department" className="form-control" value={department.id} onChange={(event) => handleChange(event.target.value)}>
+                                                {departments.map((e: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => {
+                                                    return <option key={key} value={e.id}>{e.name}</option>;
+                                                })}
+                                            </select>
+                                        </div>
+                                    }
+
                                     <div className="col-sm-4 form-group">
                                         <label>Manager Emp ID</label>
                                         <input type="text" placeholder="Enter Manager Emp ID Here.." value={managerEmpID} onChange={(e) => setManagerEmpID(e.target.value)} className="form-control" />
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-sm-4 form-group">
-                                        <label>Manager Name</label>
-                                        <input type="text" placeholder="Enter Manager Name Here.." value={managerName} onChange={(e) => setManagerName(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
                                         <label>Address</label>
                                         <input type="text" placeholder="Enter Address Here.." value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
                                     </div>
-                                    <div className="col-sm-4 form-group">
-                                        <label>City</label>
-                                        <input type="text" placeholder="Enter City Name Here.." value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
-                                    </div>
-
                                 </div>
+
                                 <div className="row">
                                     <div className="col-sm-4 form-group">
                                         <label>State</label>
@@ -211,10 +244,20 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                         <label>Contact Number</label>
                                         <input type="text" placeholder="Enter Contact Number Here.." value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
                                     </div>
-                                </div><br />
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-4 form-group">
+                                        <label>City</label>
+                                        <input type="text" placeholder="Enter City Name Here.." value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
+                                    </div>
+
+                                </div>
+                                <br />
                                 {/* <div className="text-center">  */}
-                                <button type="submit" className="btn btn-lg btn-info" >Submit</button>
+                                <button type="submit" className="btn btn-primary" >Submit</button>&nbsp; &nbsp;
+                                <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
                                 {/* </div> */}
+
                             </div>
                         </form>
                     </div>

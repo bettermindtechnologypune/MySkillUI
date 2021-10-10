@@ -39,11 +39,11 @@ export const AdminLogin = (props: { history: string[]; }) => {
         localStorage.setItem('token', (data.token));
         alert("Success !")
         if(data.userType == 0){
-        props.history.push("./signUpPage");
+        props.history.push("./OrganizationCreate");
         }else if (data.userType == 1){
         props.history.push("./BusinessUnitCreate");  
         } else if(data.userType == 2){
-          props.history.push("./DepartmentCreate");  
+          props.history.push("./HrAdminHomePage");  
         }else if(data.userType == 3){
           props.history.push("./ManagerCreate");  
         }else if(data.userType == 4){
@@ -93,12 +93,13 @@ export const AdminLogin = (props: { history: string[]; }) => {
           <label><b>Password</b></label><br />
           <input type="password" placeholder="Enter Password" name="psw" value={Password} onChange={(e) => setPassword(e.target.value)} className="formInput" required /><br /><br />
 
-          <button className="btn btn-lg btn-info" type="submit">Login</button><br />
-          <input type="checkbox" /> Remember me
+          <button className="btn btn-primary btn-lg" type="submit">Login</button><br />
+        <br />
+          <span className="psw"><a href="./ForgotPassword">Forgot Password</a></span>
         </div>
         <div className="container">
           {/* <button type="button" className="cancelbtn">Cancel</button> */}
-          <span className="psw"><a href="#">Forgot Password</a></span>
+         
         </div>
       </form>
       <View>

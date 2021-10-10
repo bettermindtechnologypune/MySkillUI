@@ -1,41 +1,31 @@
-import React, { FC, ChangeEvent } from 'react'
+import React, { FC, ChangeEvent, useEffect } from 'react'
 import { useState } from 'react';
-import { Dimensions, StyleSheet, Text, View} from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Footer from './Footer';
 
 export class DepartmentResource {
 
 	public Name: string | undefined;
-   
- }
+
+}
 // import logo from './images/superAdmin.png';
 export const DepartmentCreate = (props: { history: string[]; title: string; state: string; }) => {
 	const [organizationName, setOrganizationName] = useState("");
-	const [orgEmail, setOrgEmail] = useState("");
-	const [billingEmail, setBillingEmail] = useState("");
-	const [address, setAddress] = useState("");
-	const [city, setCity] = useState("");
-	const [stateName, setStateName] = useState("");
-	const [zip, setZipCode] = useState("");
-	const [phone, setPhoneNumber] = useState("");
-	const [website, setWebsite] = useState("");
+	const [department, setDepartment] = useState<any>([]);
+	let dep = (<div id="add" className="col-sm-6 form-group">
+		<label>Department Name</label>
+		<input type="text" placeholder="Enter Department Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
+	</div>);
+
+
 	const submit = (e: { preventDefault: () => void; }) => {
 		console.log("Started");
 		e.preventDefault();
-		if (!organizationName && !orgEmail && !address && !billingEmail) {
-			alert("Title or Description can not be blank..")
-		} else {
-			let collection = {};
-			collection.Name = organizationName,
-				collection.Email = orgEmail,
-				collection.BillingEmail = billingEmail,
-				collection.CompanyAddress = address,
-				collection.City = city,
-				collection.State = stateName,
-				collection.PostalCode = zip,
-				collection.ContactNumber = phone,
-				collection.Website = website,
-				console.log(collection);
+		{
+			let collection = [];
+			let col = { "Name": organizationName };
+			collection.push(col);
+			console.log(collection);
 			var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/Department/Create', {
 				method: 'POST',
@@ -45,28 +35,37 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 				},
 				body: JSON.stringify(collection),
 			})
-				.then(response => response.json())
-				.then(data => {
-					if (data.status == 401) {
-						console.log('Unauthorized:', data);
-						alert("Please enter a valid data")
-					} else {
-						console.log('Success:', data);
-						props.history.push("./");
+				.then(response => {
+					if (response.status == 200)
+						return response.json()
+					else {
+						console.log(response)
+						throw new Error("Unauthorized")
 					}
+				})
+				.then(data => {
+					console.log('Success:', data);
+					alert("Successfully Added Departement")
+					props.history.push("./HrAdminHomePage");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
 				});
 		}
 	}
-	function displayFun(){
-		a=document.getElementById("demo");
-		b=document.createElement("input");<br />
-		b.setAttribute("type", "text");
-		a.appendChild(b);
+	function displayFun() {
+		a = document.getElementById("demo");
+		var btn = document.createElement("LABEL");
+		btn.innerHTML = "Department Name : ";
+		a.appendChild(btn); <br />;
+		var inp = document.createElement("INPUT");
+		inp.setAttribute("type", "text");
+		a.appendChild(inp);
 
 	}
+	const submitBack = (e: { preventDefault: () => void; }) => {
+        props.history.push("/HrAdminHomePage");
+    }
 	return (
 		<div>
 			<nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -99,18 +98,20 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 						<form onSubmit={submit}>
 							<div className="col-sm-12">
 								<div className="row">
-									<div className="col-sm-6 form-group">
-										<label>Department Name</label>
-										<input type="text" placeholder="Enter Department Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
+									<div id="div1" className="col-sm-6 form-group">
+										<label>Department Name : </label>
+										<input type="text" placeholder="Enter Department Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
-									<div className="col-sm-6 form-group ">
-									<input type="button" value ="+" onClick = {displayFun} className="btn btn-lg btn-info" ></input>
-									</div>
-									<div id = "demo"> </div>
+									{/* <div className="col-sm-4 form-group ">
+									<input type="button" value="+" onClick={displayFun} className="btn btn-info" ></input>
+								</div> */}
+									<div id="demo" className="col-sm-4 form-group"> <br /></div>
+									<br />
 								</div>
 								<br />
 								{/* <div className="text-center">  */}
-								<button type="submit" className="btn btn-lg btn-info" >Submit</button>
+								<button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
+								<button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
 								{/* </div> */}
 							</div>
 						</form>

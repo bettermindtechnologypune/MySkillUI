@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Footer from './Footer';
 
 // import logo from './images/superAdmin.png';
-export const SignUpPage = (props: { history: string[]; title: string; state: string; }) => {
+export const OrganizationCreate = (props: { history: string[]; title: string; state: string; }) => {
 	const [organizationName, setOrganizationName] = useState("");
 	const [orgEmail, setOrgEmail] = useState("");
 	const [billingEmail, setBillingEmail] = useState("");
@@ -43,16 +43,19 @@ export const SignUpPage = (props: { history: string[]; title: string; state: str
 				},
 				body: JSON.stringify(collection),
 			})
-				.then(response => response.json())
-				.then(data => {
-					if (data.status == 401) {
-						console.log('Unauthorized:', data);
-						alert("Please enter a valid data")
-					} else {
-						console.log('Success:', data);
-						alert("Successfully Created !");
-						props.history.push("./");
+
+				.then(response => {
+					if (response.status == 200)
+						return response.json()
+					else {
+						console.log(response)
+						throw new Error("Unauthorized")
 					}
+				})
+				.then(data => {
+					console.log('Success:', data);
+					alert("Successfully Created !");
+					props.history.push("./");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
@@ -142,7 +145,7 @@ export const SignUpPage = (props: { history: string[]; title: string; state: str
 										</select>
 									</div>
 								</div><br />
-								<button type="submit" className="btn btn-lg btn-info" >Submit</button>
+								<button type="submit" className="btn btn-primary" >Submit</button>
 							</div>
 						</form>
 					</div>
@@ -156,8 +159,8 @@ export const SignUpPage = (props: { history: string[]; title: string; state: str
 		</div>
 	)
 }
-export default SignUpPage;
-SignUpPage.defaultProps = {
+export default OrganizationCreate;
+OrganizationCreate.defaultProps = {
 	title: "Skill Base",
 	searchBar: true
 }

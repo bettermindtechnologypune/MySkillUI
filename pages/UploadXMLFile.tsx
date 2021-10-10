@@ -15,7 +15,7 @@ return(
     <div className="text-center col-6 mx-auto">
   <input type="file" id="myfile" name="myfile" className="uploadFile"/>
   </div><br /><br />
-  <button button-type='submit' className= "btn btn-primary btn-lg">Submit</button>
+  <button button-type='submit' className= "btn btn-primary">Submit</button>
 </form>
     </div>
     </div>

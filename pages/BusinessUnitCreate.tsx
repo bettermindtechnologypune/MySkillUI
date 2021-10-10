@@ -40,16 +40,18 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 				},
 				body: JSON.stringify(collection),
 			})
-				.then(response => response.json())
-				.then(data => {
-					if (data.status == 401) {
-						console.log('Unauthorized:', data);
-						alert("Please enter a valid data")
-					} else {
-						console.log('Success:', data);
-						alert("Successfully Created !");
-						props.history.push("./");
+				.then(response => {
+					if (response.status == 200)
+						return response.json()
+					else {
+						console.log(response)
+						throw new Error("Unauthorized")
 					}
+				})
+				.then(data => {
+					console.log('Success:', data);
+					alert("Successfully Created !");
+					props.history.push("./");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
@@ -130,7 +132,7 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 									</div>
 								</div><br />
 								{/* <div className="text-center">  */}
-								<button type="submit" className="btn btn-lg btn-info" >Submit</button>
+								<button type="submit" className="btn btn-primary" >Submit</button>
 								{/* </div> */}
 							</div>
 						</form>

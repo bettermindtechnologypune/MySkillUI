@@ -17,7 +17,7 @@ const NotFoundPage = (props: { history: string[]; }) => {
             <div className="text-center col-6 mx-auto">
                 <br /><br /><br />
                 <h2>404 Page Not Found</h2><br /><br /><br />
-                <button button-type='submit' className="btn btn-primary btn-lg" onClick={submit}>Back</button>
+                <button button-type='submit' className="btn btn-primary" onClick={submit}>Back</button>
             </div>
         </div>
     )

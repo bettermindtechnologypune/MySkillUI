@@ -47,7 +47,7 @@ export const AdminLogin = (props: { history: string[]; }) => {
         }else if(data.userType == 3){
           props.history.push("./ManagerCreate");  
         }else if(data.userType == 4){
-          props.history.push("./EmployeeCreate");  
+          props.history.push("./EmployeeRecognition");  
         }
       })
       .catch((error) => {

@@ -1,5 +1,6 @@
 import React from 'react'
 import { View } from 'react-native';
+import Footer from './Footer';
 import Header from "./Header";
 export const UploadXMLFile = (props: { history: string[]; }) => {
 return(
@@ -18,6 +19,11 @@ return(
   <button button-type='submit' className= "btn btn-primary">Submit</button>
 </form>
     </div>
+    <View>
+                <View >
+                    <Footer />
+                </View>
+            </View>
     </div>
 )
 }

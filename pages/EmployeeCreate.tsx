@@ -21,7 +21,7 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
     const [compName, setCompName] = useState("");
     const [departments, setDepartmentData] = useState<any>();
     const [department, setDepartment] = useState<any>();
-    const [managerEmpID, setManagerEmpID] = useState("");
+    // const [managerEmpID, setManagerEmpID] = useState("");
     const [managerName, setManagerName] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
@@ -78,7 +78,7 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
     const submit = (e: { preventDefault: () => void; }) => {
         console.log("Started");
         e.preventDefault();
-        if (!employeeFirstName && !employeeID && !empEmail && !managerEmpID) {
+        if (!employeeFirstName && !employeeID && !empEmail ) {
             alert("Required Fields can not be blank..")
         } else {
             // let collection = {};
@@ -220,14 +220,13 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                             </select>
                                         </div>
                                     }
-
-                                    <div className="col-sm-4 form-group">
-                                        <label>Manager Emp ID</label>
-                                        <input type="text" placeholder="Enter Manager Emp ID Here.." value={managerEmpID} onChange={(e) => setManagerEmpID(e.target.value)} className="form-control" />
-                                    </div>
                                     <div className="col-sm-4 form-group">
                                         <label>Address</label>
                                         <input type="text" placeholder="Enter Address Here.." value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
+                                    </div>
+                                    <div className="col-sm-4 form-group">
+                                        <label>City</label>
+                                        <input type="text" placeholder="Enter City Name Here.." value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
 
@@ -244,13 +243,6 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                         <label>Contact Number</label>
                                         <input type="text" placeholder="Enter Contact Number Here.." value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-sm-4 form-group">
-                                        <label>City</label>
-                                        <input type="text" placeholder="Enter City Name Here.." value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
-                                    </div>
-
                                 </div>
                                 <br />
                                 {/* <div className="text-center">  */}

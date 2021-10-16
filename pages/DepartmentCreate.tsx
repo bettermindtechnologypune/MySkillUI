@@ -11,13 +11,6 @@ export class DepartmentResource {
 // import logo from './images/superAdmin.png';
 export const DepartmentCreate = (props: { history: string[]; title: string; state: string; }) => {
 	const [organizationName, setOrganizationName] = useState("");
-	const [department, setDepartment] = useState<any>([]);
-	let dep = (<div id="add" className="col-sm-6 form-group">
-		<label>Department Name</label>
-		<input type="text" placeholder="Enter Department Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
-	</div>);
-
-
 	const submit = (e: { preventDefault: () => void; }) => {
 		console.log("Started");
 		e.preventDefault();
@@ -67,6 +60,7 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
         props.history.push("/HrAdminHomePage");
     }
 	return (
+		<div>
 		<div>
 			<nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
 				<div className="container-fluid">
@@ -118,12 +112,14 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 					</div>
 				</div>
 			</div>
-			<View>
-				<View >
-					<Footer />
-				</View>
-			</View>
+			
 		</div>
+		<View>
+		<View >
+			<Footer />
+		</View>
+	</View>
+	</div>
 	)
 }
 export default DepartmentCreate;

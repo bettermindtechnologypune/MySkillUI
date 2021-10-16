@@ -30,10 +30,10 @@ body {
   
   /* Custom page footer */
   .footer {
-    position: 'fixed';
+    position: fixed;
     left: 0;
     bottom: 0;
-    width:"100%";
+    width:100%;
     padding-top: 19px;
     color: #777;
     border-top: 1px solid #e5e5e5;

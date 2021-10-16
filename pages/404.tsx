@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native';
 import Header from "./Header";
+import Footer from './Footer';
 const NotFoundPage = (props: { history: string[]; }) => {
     const submit = (e: { preventDefault: () => void; }) => {
         props.history.push("/");
@@ -19,6 +20,11 @@ const NotFoundPage = (props: { history: string[]; }) => {
                 <h2>404 Page Not Found</h2><br /><br /><br />
                 <button button-type='submit' className="btn btn-primary" onClick={submit}>Back</button>
             </div>
+            <View>
+                <View >
+                    <Footer />
+                </View>
+            </View>
         </div>
     )
 }

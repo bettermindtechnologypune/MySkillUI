@@ -95,41 +95,39 @@ export const OrganizationCreate = (props: { history: string[]; title: string; st
 							<div className="col-sm-12">
 								<div className="row">
 									<div className="col-sm-4 form-group">
-										<label>Organization Name</label>
-										<input type="text" placeholder="Enter Organization Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
+										<label>Organization Name <mark className = "highlightedText">*</mark></label>
+										<input type="text" placeholder="Enter Organization Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control mandatory" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Organization Email Address</label>
+										<label>Organization Email Address <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Email Address Here.." value={orgEmail} onChange={(e) => setOrgEmail(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Billing Email Address</label>
+										<label>Billing Email Address <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Billing Email Address Here.." value={billingEmail} onChange={(e) => setBillingEmail(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="form-group">
-									<label>Company Address</label>
+									<label>Company Address <mark className = "highlightedText">*</mark></label>
 									<input type="text" placeholder="Enter Company Address Here.." value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
 								</div>
 								<div className="row">
 									<div className="col-sm-4 form-group">
-										<label>City</label>
+										<label>City <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter City Name Here.." value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>State</label>
+										<label>State <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter State Name Here.." value={stateName} onChange={(e) => setStateName(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Postal Code</label>
+										<label>Postal Code <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Postal Code Here.." value={zip} onChange={(e) => setZipCode(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="row">
-
-
 									<div className="col-sm-4 form-group">
-										<label>Contact Number</label>
+										<label>Contact Number <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Contact Number Here.." value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">

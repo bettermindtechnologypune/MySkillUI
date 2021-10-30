@@ -168,6 +168,9 @@ span.psw {
 input.uploadFile[type="file"] {
   margin-left: 85px;
 }
- 
 
-  
+.highlightedText
+{ 
+color:red; 
+font-size: medium;
+}

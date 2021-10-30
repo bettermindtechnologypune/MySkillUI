@@ -59,7 +59,7 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
             .then(response => response.json())
             .then(data => {
                 if (data != undefined) {
-                    setDepartment(data[0])
+                    setDepartment(data[0].id)
                     setDepartmentData(data)
                     return data;
                 } else {
@@ -163,21 +163,21 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                             <div className="col-sm-12">
                                 <div className="row">
                                     <div className="col-sm-4 form-group">
-                                        <label>Employee First Name</label>
+                                        <label>Employee First Name <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter First Name Here.." value={employeeFirstName} onChange={(e) => setEmployeeFirstName(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
-                                        <label>Employee Last Name</label>
+                                        <label>Employee Last Name <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter Last Name Here.." value={empLastName} onChange={(e) => setEmpLastName(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
-                                        <label>Employee ID</label>
+                                        <label>Employee ID <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter Employee ID Here.." value={employeeID} onChange={(e) => setEmployeeID(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-4 form-group">
-                                        <label>Date of Birth</label>
+                                        <label>Date of Birth <mark className = "highlightedText">*</mark></label>
                                         <input type="date" value={dob} onChange={(e) => setDOB(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
@@ -185,18 +185,18 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                         <input type="text" placeholder="Enter Grade Here.." value={grade} onChange={(e) => setGrade(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
-                                        <label>Date of Joining</label>
+                                        <label>Date of Joining <mark className = "highlightedText">*</mark></label>
                                         <input type="date" value={doj} onChange={(e) => setDOJ(e.target.value)} className="form-control" />
                                     </div>
                                 </div>
 
                                 <div className="row">
                                     <div className="col-sm-4 form-group">
-                                        <label>Employee Email Address</label>
+                                        <label>Employee Email Address <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter Email Address Here.." value={empEmail} onChange={(e) => setEmpEmail(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
-                                        <label>Education</label>
+                                        <label>Education <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter Education Here.." value={education} onChange={(e) => setEducation(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
@@ -212,7 +212,7 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                 <div className="row">
                                     {departments &&
                                         <div className="col-sm-4 form-group">
-                                            <label>Department</label>
+                                            <label>Department <mark className = "highlightedText">*</mark></label>
                                             <select name="department" className="form-control" value={department.id} onChange={(event) => handleChange(event.target.value)}>
                                                 {departments.map((e: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => {
                                                     return <option key={key} value={e.id}>{e.name}</option>;
@@ -236,11 +236,11 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                         <input type="text" placeholder="Enter State Name Here.." value={stateName} onChange={(e) => setStateName(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
-                                        <label>Age</label>
+                                        <label>Age <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter Age Here.." value={age} onChange={(e) => setAge(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="col-sm-4 form-group">
-                                        <label>Contact Number</label>
+                                        <label>Contact Number <mark className = "highlightedText">*</mark></label>
                                         <input type="text" placeholder="Enter Contact Number Here.." value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
                                     </div>
                                 </div>

@@ -93,7 +93,7 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 							<div className="col-sm-12">
 								<div className="row">
 									<div id="div1" className="col-sm-6 form-group">
-										<label>Department Name : </label>
+										<label>Department Name : <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Department Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
 									{/* <div className="col-sm-4 form-group ">

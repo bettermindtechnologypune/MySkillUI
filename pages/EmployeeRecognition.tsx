@@ -125,22 +125,41 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 		fetch('https://localhost:44369/api/Task/'+deliverable, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
-				if (data != undefined) {
+				if(data.status == 404){
+					console.log("Data Not Found");
+					var sel = document.getElementById('searchDepartments');
+					var rat = document.getElementById('searchRating');
+					var olddata=document.getElementById("searchDepartments");
+					document.removeChild(olddata);
+					document.removeChild(rat);
+				}
+				else if (data != undefined) {
 					setTask(data[0].id)
 					setTaskData(data)
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
-					var opt = null; var opt1 = null;
+					var opt = null;var opt1 = null; var lineB = null; let brek = null;
 					for(let i = 0; i<data.length; i++){
-						opt = document.createElement('option');
+						lineB = document.createElement("br");
+						brek = document.createElement("br");
+						opt = document.createElement('input');
 						opt1 = document.createElement('input');
-						opt.value = data[i].id;
-						opt.innerHTML = data[i].name;
-    					sel.appendChild(opt);
-						rat.appendChild(opt1);
+						opt1.setAttribute("type", "number");
+						opt1.setAttribute("max" , "5");
+						opt1.setAttribute( "min" , "0");
+						opt1.className = "form-control";
+						opt.className = "form-control";
+						opt.value = data[i].name;
+						opt.innerHTML = data[i].name;					
+    					sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
+						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
+						rat == null ? document.getElementById('searchRating')  : rat.appendChild(opt1);
+						rat == null ? document.getElementById('searchRating')  : rat.appendChild(lineB);
 					}
 					return data;
-				} else {
+				} 
+				
+				else {
 					return null;
 				}
 			})
@@ -214,11 +233,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 									{companies &&
 										<div className="col-sm-4 form-group">
 											<label>Company Name</label>
-											<select name="company" className="form-control" value={company.id} onChange={(event) => handleChange(event.target.value)}>
-												{companies.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null ; }, key: React.Key | null ) => {
-													return <option key={key} value={e.id}>{e.name}</option>;
-												})}
-											</select>
+											<input type="text" readOnly className="form-control" value = {"TCS"}/>
 										</div>
 									}
 									{products &&
@@ -245,17 +260,21 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 							
 									<div className="row">
 									{tasks &&
-								<div className="col-sm-4 form-group">
+								<div id = "searchDepartments" className="col-sm-5 form-group">
                                         <label>Task Name<mark className = "highlightedText">*</mark></label>
-                                        <select id="searchDepartments" className="form-control"></select>
+										<br />
                                     </div>
 									}
+								
 									{ tasks &&
-									<div className="col-sm-4 form-group">
+									<div id="searchRating" className="col-sm-2 form-group">
+										
                                         <label>Rating <mark className = "highlightedText">*</mark></label>
-                                        <input type="number" min="0" max="5" placeholder="Enter 0 to 5 Rating Here.." id="searchRating" className="form-control"/>
-                                    </div>
+                                        {/* <input type="number" min="0" max="5" placeholder="Enter 0 to 5 Rating Here.."  className="form-control"/> */}
+										<br />
+									</div>
 									}
+									<br />
 									</div>
 								<br />
 								{/* <div className="text-center">  */}

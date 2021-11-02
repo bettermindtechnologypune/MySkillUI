@@ -19,7 +19,8 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	const [deliverable, setDeliverable] = useState<any>();
 	const [tasks, setTaskData] = useState<any>();
 	const [task, setTask] = useState<any>();
-	const [rating, setRating] = useState("");
+	const [rating, setRating] = useState<any>();
+	var ratings = 0;
 	const submitBack = (e: { preventDefault: () => void; }) => {
 		props.history.push("/");
 	}
@@ -27,8 +28,12 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 		(async () => {
 			var companies = await getCompanies();
 			var products = await getProducts();
+			if(product != undefined){
 			var deliverables = await getDeliverables();
+			}
+			if(deliverable != undefined){
 			var tasks = await getTasks();
+			}
 		})()
 
 	}, [])
@@ -75,7 +80,9 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				if (data != undefined) {
 					setProduct(data[0].id)
 					setProductData(data)
+					if(product != undefined){
 					getDeliverables();
+					}
 					return data;
 				} else {
 					return null;
@@ -99,7 +106,10 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 		fetch('https://localhost:44369/api/LeveTwo/'+product, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
-				if (data != undefined) {
+				if (data.status == 400){
+					console.log("No data Found")
+				}
+				else if (data != undefined) {
 					setDeliverable(data[0].id)
 					setDeliverableData(data)
 				
@@ -127,22 +137,34 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 			.then(data => {
 				if(data.status == 404){
 					console.log("Data Not Found");
-					var sel = document.getElementById('searchDepartments');
-					var rat = document.getElementById('searchRating');
 					var olddata=document.getElementById("searchDepartments");
-					document.removeChild(olddata);
-					document.removeChild(rat);
+					var rat = document.getElementById('searchRating');
+					while (olddata?.firstChild && rat?.firstChild) {
+						olddata?.removeChild(olddata.firstChild);
+						rat?.removeChild(rat.firstChild);
+					  }
+				}else if (data.status == 400){
+					console.log("No data Found")
 				}
 				else if (data != undefined) {
 					setTask(data[0].id)
 					setTaskData(data)
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
-					var opt = null;var opt1 = null; var lineB = null; let brek = null;
+					while (sel?.firstChild && rat?.firstChild) {
+						sel?.removeChild(sel.firstChild);
+						rat?.removeChild(rat.firstChild);
+					  }
+					var opt = null;var opt1 = null; var lineB = null; let brek = null; var label1; var label2; let count = 0;
 					for(let i = 0; i<data.length; i++){
 						lineB = document.createElement("br");
 						brek = document.createElement("br");
+						label1 = document.createElement("LABEL");
+						label1.innerHTML = "Task Name :  ";
+						label2 = document.createElement("LABEL");
+						label2.innerHTML = "Rating :  ";
 						opt = document.createElement('input');
+						opt.setAttribute("value", "rating")
 						opt1 = document.createElement('input');
 						opt1.setAttribute("type", "number");
 						opt1.setAttribute("max" , "5");
@@ -150,11 +172,15 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 						opt1.className = "form-control";
 						opt.className = "form-control";
 						opt.value = data[i].name;
-						opt.innerHTML = data[i].name;					
+						opt.innerHTML = data[i].name;
+						count == 0 ? (sel == null ? document.getElementById('searchDepartments')	: sel.appendChild(label1)) : count++;				
     					sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
+						count == 0 ? (rat == null ? document.getElementById('searchDepartments')	: rat.appendChild(label2)) : count++;		
 						rat == null ? document.getElementById('searchRating')  : rat.appendChild(opt1);
+						rat == null ? document.getElementById('searchRating') : rat.addEventListener("change", updateValue);
 						rat == null ? document.getElementById('searchRating')  : rat.appendChild(lineB);
+						count ++;
 					}
 					return data;
 				} 
@@ -167,13 +193,22 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				console.error('Error:', error);
 			});
 	}
+	function updateValue(e: { target: { value: any; }; }) {
+		ratings = e.target.value;
+	  }
 	const handleChange = (id: string) => {
 		setCompany(id);
 		setProduct(id);
+		if(product != undefined){
 		getDeliverables();
 		setDeliverable(id);
+		}
+		if(deliverable != undefined){
 		getTasks();
 		setTask(id);
+		}
+		setRating(ratings);
+		
 	}
 	const submit = (e: { preventDefault: () => void; }) => {
 		console.log("Started");
@@ -261,7 +296,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 									<div className="row">
 									{tasks &&
 								<div id = "searchDepartments" className="col-sm-5 form-group">
-                                        <label>Task Name<mark className = "highlightedText">*</mark></label>
+                                        {/* <label>Task Name<mark className = "highlightedText">*</mark></label> */}
 										<br />
                                     </div>
 									}
@@ -269,7 +304,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 									{ tasks &&
 									<div id="searchRating" className="col-sm-2 form-group">
 										
-                                        <label>Rating <mark className = "highlightedText">*</mark></label>
+                                        {/* <label>Rating <mark className = "highlightedText">*</mark></label> */}
                                         {/* <input type="number" min="0" max="5" placeholder="Enter 0 to 5 Rating Here.."  className="form-control"/> */}
 										<br />
 									</div>

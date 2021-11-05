@@ -50,7 +50,7 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 				})
 				.then(data => {
 					console.log('Success:', data);
-					alert("Successfully Created !");
+					alert("Successfully Created Businessunit!");
 					props.history.push("./");
 				})
 				.catch((error) => {
@@ -92,39 +92,39 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 								<div className="row">
 									<div className="col-sm-4 form-group">
 										<label>Business Unit Name <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter Business Unit Name Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Business Unit Name Here.." required value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>Business Unit Email Address <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter Email Address Here.." value={orgEmail} onChange={(e) => setOrgEmail(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Email Address Here.." required value={orgEmail} onChange={(e) => setOrgEmail(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>Billing Email Address <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter Billing Email Address Here.." value={billingEmail} onChange={(e) => setBillingEmail(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Billing Email Address Here.." required value={billingEmail} onChange={(e) => setBillingEmail(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="form-group">
 									<label>Business Unit Address <mark className = "highlightedText">*</mark></label>
-									<input type="text" placeholder="Enter Business Unit Address Here.." value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
+									<input type="text" placeholder="Enter Business Unit Address Here.." required value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
 								</div>
 								<div className="row">
 									<div className="col-sm-4 form-group">
 										<label>City <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter City Name Here.." value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter City Name Here.." required value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>State <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter State Name Here.." value={stateName} onChange={(e) => setStateName(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter State Name Here.." required value={stateName} onChange={(e) => setStateName(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>Postal Code <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter Postal Code Here.." value={zip} onChange={(e) => setZipCode(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Postal Code Here.." required value={zip} onChange={(e) => setZipCode(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="row">
 									<div className="col-sm-4 form-group">
 										<label>Contact Number <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter Contact Number Here.." value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Contact Number Here.." required value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
 										<label>Website</label>

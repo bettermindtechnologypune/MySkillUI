@@ -38,7 +38,7 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 				})
 				.then(data => {
 					console.log('Success:', data);
-					alert("Successfully Added Departement")
+					alert("Successfully Added Departement");
 					props.history.push("./HrAdminHomePage");
 				})
 				.catch((error) => {
@@ -94,7 +94,7 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 								<div className="row">
 									<div id="div1" className="col-sm-6 form-group">
 										<label>Department Name : <mark className = "highlightedText">*</mark></label>
-										<input type="text" placeholder="Enter Department Here.." value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
+										<input type="text" placeholder="Enter Department Here.." required value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
 									{/* <div className="col-sm-4 form-group ">
 									<input type="button" value="+" onClick={displayFun} className="btn btn-info" ></input>

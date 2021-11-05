@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Department from '../model/Department';
 import Footer from './Footer';
 import Header from './Header';
-
+const map1 = new Map();
 export class EmployeeRecognitionResource {
 
     public Name: string | undefined;
@@ -164,15 +164,17 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 						label2 = document.createElement("LABEL");
 						label2.innerHTML = "Rating :  ";
 						opt = document.createElement('input');
-						opt.setAttribute("value", "rating")
 						opt1 = document.createElement('input');
 						opt1.setAttribute("type", "number");
 						opt1.setAttribute("max" , "5");
 						opt1.setAttribute( "min" , "0");
+						opt1.setAttribute("step", ".1")
 						opt1.className = "form-control";
 						opt.className = "form-control";
+						opt.id = data[i].id;
 						opt.value = data[i].name;
 						opt.innerHTML = data[i].name;
+						opt1.id = data[i].id;
 						count == 0 ? (sel == null ? document.getElementById('searchDepartments')	: sel.appendChild(label1)) : count++;				
     					sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
@@ -193,8 +195,10 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				console.error('Error:', error);
 			});
 	}
-	function updateValue(e: { target: { value: any; }; }) {
-		ratings = e.target.value;
+	function updateValue(e: { target: { value: any; id : any}; }) {
+		
+		var rat = document.getElementById('searchRating');
+		map1.set(e.target.id, e.target.value);
 	  }
 	const handleChange = (id: string) => {
 		setCompany(id);
@@ -219,17 +223,33 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 			collection.Company = company,
 			collection.Product = product,
 			collection.Deliverable = deliverable,
-			collection.Task = task,
+			collection.Task = tasks;
 			// collection.push(col);
-			console.log(collection);
+			var sel = document.getElementById('searchDepartments');
+			var rat = document.getElementById('searchRating');
+			var d = null;
+			var count = sel.childElementCount;
+			map1;
+			const arr = [];
+			for (const [key, value] of map1.entries()) {
+				var obj = {
+					taskid : key,
+					empId : "822d801d-1b19-4697-980e-b85dbab9b666",
+					rating : value,
+					isManagerRating : false
+				}
+				arr.push(obj)
+				console.log(key, value);
+			  }
+			console.log(arr);
 			var bearer = localStorage.getItem('token');
-			fetch('https://localhost:44369/api/Department/Create', {
+			fetch('https://localhost:44369/api/Rating/CreateList', {
 				method: 'POST',
 				headers: {
 					'Authorization': localStorage.getItem('token'),
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(collection),
+				body: JSON.stringify(arr),
 			})
 				.then(response => {
 					if (response.status == 200)
@@ -241,8 +261,8 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				})
 				.then(data => {
 					console.log('Success:', data);
-					alert("Successfully Added Departement")
-					props.history.push("./HrAdminHomePage");
+					alert("Rating Submitted Successfully");
+					props.history.push("./EmployeeRecognition");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
@@ -251,11 +271,28 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	}
 	return (
 		<div>
-			<View>
-				<View >
-					<Header />
-				</View>
-			</View>
+			 <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="#">{props.title}</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item">
+                                {/* <Link to = "./AdminLogin">Home</Link> */}
+                                <a className="nav-link active" aria-current="page" href="./">Logout</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">About</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">{props.state}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
 			<div className="container">
 				<h1 className="well text-center">Welcome !</h1>

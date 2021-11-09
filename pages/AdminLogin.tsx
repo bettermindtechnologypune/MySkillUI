@@ -37,6 +37,8 @@ export const AdminLogin = (props: { history: string[]; }) => {
       .then(data => {
         console.log('Success:', data);
         localStorage.setItem('token', (data.token));
+       
+        localStorage.setItem('userType', (data.userType));
         alert("Success !")
         if(data.userType == 0){
         props.history.push("./OrganizationCreate");
@@ -45,8 +47,16 @@ export const AdminLogin = (props: { history: string[]; }) => {
         } else if(data.userType == 2){
           props.history.push("./HrAdminHomePage");  
         }else if(data.userType == 3){
-          props.history.push("./ManagerCreate");  
+          localStorage.setItem('buid', (data.buid));
+          localStorage.setItem('buName', (data.buName));
+          localStorage.setItem('empId', (data.empId));
+          localStorage.setItem('empName', (data.empName));
+          props.history.push("./ManagerHomePage");  
         }else if(data.userType == 4){
+          localStorage.setItem('buid', (data.buid));
+          localStorage.setItem('buName', (data.buName));
+          localStorage.setItem('empId', (data.empId));
+          localStorage.setItem('empName', (data.empName));
           props.history.push("./EmployeeRecognition");  
         }
       })

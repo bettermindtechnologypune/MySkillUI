@@ -11,6 +11,9 @@ import EmployeeCreate from "./pages/EmployeeCreate";
 import HrAdminHomePage from "./pages/HrAdminHomePage";
 import ForgotPassword from "./pages/ForgotPassword";
 import EmployeeRecognition from "./pages/EmployeeRecognition";
+import ManagerHomePage from "./pages/ManagerHomePage";
+import EmployeeRating from "./pages/EmployeeRating";
+import ManagerRating from "./pages/ManagerRating";
 import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-router-dom";
 
 // import {Dropdown  } from "react-native";
@@ -32,7 +35,9 @@ const App = () => {
       <Route exact path ="/HrAdminHomePage" component = {HrAdminHomePage}/>
       <Route exact path ="/ForgotPassword" component = {ForgotPassword}/>
       <Route exact path ="/EmployeeRecognition" component = {EmployeeRecognition}/>
-      
+      <Route exact path = "/ManagerHomePage" component = {ManagerHomePage}/>
+      <Route exact path = "/EmployeeRating" component = {EmployeeRating}/>
+      <Route exact path = "/ManagerRating" component = {ManagerRating}/>
       <Redirect to="/404"></Redirect>      
       </Switch>
     </Router>

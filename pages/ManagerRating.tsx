@@ -6,12 +6,14 @@ import Department from '../model/Department';
 import Footer from './Footer';
 import Header from './Header';
 const map1 = new Map();
+
 export class EmployeeRecognitionResource {
 
     public Name: string | undefined;
 
 }
-export const EmployeeRecognition = (props: { history: string[]; title: string; state: string; }) => {
+export const ManagerRating = (props: { history: string[]; title: string; state: string; }) => {
+    const [employeeData, setEmployeeData] = useState<any>();
 	const [companies, setCompanyData] = useState<any>();
 	const [company, setCompany] = useState<any>();
 	const [products, setProductData] = useState<any>();
@@ -23,11 +25,11 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	const [rating, setRating] = useState<any>();
 	var ratings = 0;
 	const submitBack1 = (e: { preventDefault: () => void; }) => {
-		props.history.push("/ManagerHomePage");
+		props.history.push("/EmployeeRating");
 	}
 	useEffect(() => {
 		(async () => {
-			if(localStorage.getItem('userType') == "3"){
+            if(localStorage.getItem('userType') == "3"){
 				var sel = document.getElementById('submitBack');
 				var btn = document.createElement('BUTTON');
 				btn.innerHTML = "Back";
@@ -36,17 +38,44 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				sel?.appendChild(btn);
 				// flag = false;
 			}
-			var companies = await getCompanies();
-			var products = await getProducts();
-			if(product != undefined){
-			var deliverables = await getDeliverables();
-			}
-			if(deliverable != undefined){
-			var tasks = await getTasks();
-			}
+			var employeeData = await getEmployeeData();
 		})()
 
 	}, [])
+
+    const getEmployeeData = () =>{
+        const requestHeaders: HeadersInit = new Headers();
+		let token;
+		token = localStorage.getItem('token');
+        var empId = localStorage.getItem('empId');
+		requestHeaders.set('Authorization', token || "");
+		requestHeaders.set('Content-Type', 'application/json');
+
+		let httpGetObject = {
+			method: 'GET',
+			headers: requestHeaders
+		}
+		fetch('https://localhost:44369/api/Rating/list-by-empid/'+empId, httpGetObject)
+			.then(response => response.json())
+			.then(data => {
+				if (data.result != undefined && data.result.length > 0) {
+					setCompany(data.result[0].buName);
+                    // getCompanies();
+                    setProduct(data.result[0].levelOneName);
+                    // getProducts();
+                    setDeliverable(data.result[0].levelTwoName);
+                    // getDeliverables();
+					return data;
+				} else {
+                    alert("No data Found");
+                    return null;
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+    }
+
 	const getCompanies = () => {
 		const requestHeaders: HeadersInit = new Headers();
 		let token;
@@ -211,6 +240,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 		map1.set(e.target.id, e.target.value);
 	  }
 	const handleChange = (id: string) => {
+        setEmployeeData(id);
 		setCompany(localStorage.getItem('buName'));
 		setProduct(id);
 		if(product != undefined){
@@ -272,7 +302,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				.then(data => {
 					console.log('Success:', data);
 					alert("Rating Submitted Successfully");
-					props.history.push("./EmployeeRecognition");
+					props.history.push("./ManagerRating");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
@@ -311,7 +341,12 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 						<form onSubmit={submit}>
 							<div className="col-sm-12">
 								<div className="row">
-									
+									{
+                                        employeeData &&
+                                        <div id = "test">
+
+                                        </div>
+                                    }
 									{companies &&
 										<div className="col-sm-4 form-group">
 											<label>Company Name</label>
@@ -321,21 +356,13 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 									{products &&
 										<div className="col-sm-4 form-group">
 											<label>Product Name <mark className = "highlightedText">*</mark></label>
-											<select name="product" className="form-control" value={product.id} onChange={(event) => handleChange(event.target.value)}>
-												{products.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null ; }, key: React.Key | null ) => {
-													return <option key={key} value={e.id}>{e.name}</option>;
-												})}
-											</select>
+											<input type="text" readOnly className="form-control" value = {product}/>
 										</div>
 									}
 									{deliverables &&
 										<div className="col-sm-4 form-group">
 											<label>Deliverable Name <mark className = "highlightedText">*</mark></label>
-											<select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange(event.target.value)}>
-												{deliverables.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null ; }, key: React.Key | null ) => {
-													return <option key={key} value={e.id}>{e.name}</option>;
-												})}
-											</select>
+											<input type="text" readOnly className="form-control" value = {deliverable}/>
 										</div>
 									}
 									</div>
@@ -386,8 +413,8 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 
 }
 
-export default EmployeeRecognition;
-EmployeeRecognition.defaultProps = {
+export default ManagerRating;
+ManagerRating.defaultProps = {
 	title: "Skill Base",
 	searchBar: true
 }

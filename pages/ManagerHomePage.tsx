@@ -1,15 +1,13 @@
 import React from 'react'
-import { View } from 'react-native';
-import Header from "./Header";
-import DepartmentCreate from "./DepartmentCreate";
-import EmployeeCreate from "./EmployeeCreate";
-export const HrAdminHomePage = (props: { history: string[]; }) => {
-    const DeptCreate = (e: { preventDefault: () => void; }) => {
-        props.history.push("./DepartmentCreate");
+
+export const ManagerHomePage = (props: { history: string[]; }) => {
+    const EmpRecognition = (e: { preventDefault: () => void; }) => {
+        props.history.push("./EmployeeRecognition");
     }
-    const EmpCreate = (e: { preventDefault: () => void; }) => {
-        props.history.push("./EmployeeCreate");
+    const EmpRating = (e: { preventDefault: () => void; }) => {
+        props.history.push("./EmployeeRating");
     }
+    
 return(
     <div>
     <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -35,18 +33,18 @@ return(
                 </div>
             </nav>
     <div className="text-center col-6 mx-auto"><br /><br />
-    <h3>Welcome HR Admin</h3><br />
+    <h3>Welcome to Home page</h3><br />
     <form >
    <br /><br />
-  <button button-type='submit' className= "btn btn-primary " onClick={DeptCreate}>Department Create</button> &nbsp;
-  <button button-type='submit' className= "btn btn-primary " onClick={EmpCreate}>Employee Create</button>
+  <button button-type='submit' className= "btn btn-primary " onClick = {EmpRecognition} >Self Rating</button> &nbsp;
+  <button button-type='submit' className= "btn btn-primary " onClick  = {EmpRating}>Employee Rating</button>
 </form>
     </div>
     </div>
 )
 }
-HrAdminHomePage.defaultProps = {
+ManagerHomePage.defaultProps = {
   title: "Skill Base",
   searchBar: true
 }
-export default HrAdminHomePage;
+export default ManagerHomePage;

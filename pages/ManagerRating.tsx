@@ -6,7 +6,7 @@ import Department from '../model/Department';
 import Footer from './Footer';
 import Header from './Header';
 const map1 = new Map();
-
+var ratName : any;
 export class EmployeeRecognitionResource {
 
     public Name: string | undefined;
@@ -23,11 +23,21 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	const [tasks, setTaskData] = useState<any>();
 	const [task, setTask] = useState<any>();
 	const [rating, setRating] = useState<any>();
-	var ratings = 0;
+	const [ratings, setRatingData] = useState<any>();
+	const [ratingNames, setRatingNames] = useState<any>()
+	const [ratingName, setRatingName] = useState<any>()
+	const [employeeId, setEmployeeId] = useState<any>();
+	let empid :any;
+	
 	const submitBack1 = (e: { preventDefault: () => void; }) => {
 		props.history.push("/EmployeeRating");
 	}
 	useEffect(() => {
+		const windowUrl = window.location.search;
+		let params = new URLSearchParams(windowUrl).get("Id");
+		empid = props.match.params.id;
+		setEmployeeId(empid);
+		console.log("empid", empid);
 		(async () => {
             if(localStorage.getItem('userType') == "3"){
 				var sel = document.getElementById('submitBack');
@@ -39,6 +49,8 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 				// flag = false;
 			}
 			var employeeData = await getEmployeeData();
+			var tasks = await getTasks();
+	
 		})()
 
 	}, [])
@@ -47,7 +59,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
         const requestHeaders: HeadersInit = new Headers();
 		let token;
 		token = localStorage.getItem('token');
-        var empId = localStorage.getItem('empId');
+        // var empId = localStorage.getItem('empId');
 		requestHeaders.set('Authorization', token || "");
 		requestHeaders.set('Content-Type', 'application/json');
 
@@ -55,16 +67,21 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			method: 'GET',
 			headers: requestHeaders
 		}
-		fetch('https://localhost:44369/api/Rating/list-by-empid/'+empId, httpGetObject)
+		fetch('https://localhost:44369/api/Rating/rating-names/'+empid, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
-				if (data.result != undefined && data.result.length > 0) {
-					setCompany(data.result[0].buName);
-                    // getCompanies();
-                    setProduct(data.result[0].levelOneName);
-                    // getProducts();
-                    setDeliverable(data.result[0].levelTwoName);
-                    // getDeliverables();
+				if (data[0].name != null) {
+					setRatingName(data[0].name);
+					setRatingNames(data);
+					ratName = data[0].name;
+					getTasks();
+					// setCompany(data.result[0].buName);
+                    // setProduct(data.result[0].levelOneName);
+                    // setDeliverable(data.result[0].levelTwoName);
+					// setDeliverableData(data.result[0].levelTwoId);
+					// // setTask(data.result[0].taskName);
+					// setRating(data.result[0].empRating);
+					// getTasks();
 					return data;
 				} else {
                     alert("No data Found");
@@ -76,94 +93,10 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			});
     }
 
-	const getCompanies = () => {
-		const requestHeaders: HeadersInit = new Headers();
-		let token;
-		token = localStorage.getItem('token');
-		requestHeaders.set('Authorization', token || "");
-		requestHeaders.set('Content-Type', 'application/json');
-
-		let httpGetObject = {
-			method: 'GET',
-			headers: requestHeaders
-		}
-		fetch('https://localhost:44369/api/Department/GetList', httpGetObject)
-			.then(response => response.json())
-			.then(data => {
-				if (data != undefined) {
-					setCompany(localStorage.getItem('buName'));
-					setCompanyData(data)
-					return data;
-				} else {
-					return null;
-				}
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
-	}
-	const getProducts = () => {
-		const requestHeaders: HeadersInit = new Headers();
-		let token;
-		token = localStorage.getItem('token');
-		requestHeaders.set('Authorization', token || "");
-		requestHeaders.set('Content-Type', 'application/json');
-		let buid = localStorage.getItem('buid');
-		let httpGetObject = {
-			method: 'GET',
-			headers: requestHeaders
-		}
-		fetch('https://localhost:44369/api/LevelOne/'+ buid,httpGetObject)
-			.then(response => response.json())
-			.then(data => {
-				if (data != undefined) {
-					setProduct(data[0].id)
-					setProductData(data)
-					if(product != undefined){
-					getDeliverables();
-					}
-					return data;
-				} else {
-					return null;
-				}
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
-	}
-	const getDeliverables = () => {
-		const requestHeaders: HeadersInit = new Headers();
-		let token;
-		token = localStorage.getItem('token');
-		requestHeaders.set('Authorization', token || "");
-		requestHeaders.set('Content-Type', 'application/json');
-		let LevelOneId = '664db8cd-456d-4ea2-bc3d-7706bc5c90da';
-		let httpGetObject = {
-			method: 'GET',
-			headers: requestHeaders
-		}
-		fetch('https://localhost:44369/api/LeveTwo/'+product, httpGetObject)
-			.then(response => response.json())
-			.then(data => {
-				if (data.status == 400){
-					console.log("No data Found")
-				}
-				else if (data != undefined) {
-					setDeliverable(data[0].id)
-					setDeliverableData(data)
-				
-					return data;
-				} else {
-					return null;
-				}
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
-	}
 	const getTasks = () => {
 		const requestHeaders: HeadersInit = new Headers();
 		let token;
+		let parametr = empid + '/' + ratName;
 		token = localStorage.getItem('token');
 		requestHeaders.set('Authorization', token || "");
 		requestHeaders.set('Content-Type', 'application/json');
@@ -171,56 +104,66 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			method: 'GET',
 			headers: requestHeaders
 		}
-		fetch('https://localhost:44369/api/Task/'+deliverable, httpGetObject)
+		fetch('https://localhost:44369/api/Rating/list-by-empId-ratingName/'+empid+'/'+ratName, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
-				if(data.status == 404){
+				if(data.result == null){
 					console.log("Data Not Found");
-					var olddata=document.getElementById("searchDepartments");
-					var rat = document.getElementById('searchRating');
-					while (olddata?.firstChild && rat?.firstChild) {
-						olddata?.removeChild(olddata.firstChild);
-						rat?.removeChild(rat.firstChild);
-					  }
-				}else if (data.status == 400){
-					console.log("No data Found")
-				}
-				else if (data != undefined) {
-					setTask(data[0].id)
-					setTaskData(data)
+					
+				}else if (data != undefined) {
+					setCompany(data.result.buName);
+					setProduct(data.result.levelOneName);
+					setDeliverable(data.result.levelTwoName);
+					setTask(data.result.ratingReponseList[0].taskName)
+					setTaskData(data.result.ratingReponseList)
+					setRating(data.result.ratingReponseList[0].empRating);
+					setRatingData(data.result.ratingReponseList);
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
-					while (sel?.firstChild && rat?.firstChild) {
-						sel?.removeChild(sel.firstChild);
-						rat?.removeChild(rat.firstChild);
-					  }
-					var opt = null;var opt1 = null; var lineB = null; let brek = null; var label1; var label2; let count = 0;
-					for(let i = 0; i<data.length; i++){
+					var man = document.getElementById('managerRating');
+					var opt = null;var opt1 = null; var opt2 = null; let lineB = null; let brek = null; let brek1 = null; var label1; var label2; var label3; let count = 0;
+					for(let i = 0; i<data.result.ratingReponseList.length; i++){
 						lineB = document.createElement("br");
 						brek = document.createElement("br");
+						brek1 = document.createElement("br");
 						label1 = document.createElement("LABEL");
 						label1.innerHTML = "Task Name :  ";
 						label2 = document.createElement("LABEL");
-						label2.innerHTML = "Rating :  ";
+						label2.innerHTML = "Employee Rating :  ";
+						label3 = document.createElement("LABEL");
+						label3.innerHTML = "Manager rating :  ";
 						opt = document.createElement('input');
 						opt1 = document.createElement('input');
+						opt2 = document.createElement('input');
 						opt1.setAttribute("type", "number");
 						opt1.setAttribute("max" , "5");
 						opt1.setAttribute( "min" , "0");
 						opt1.setAttribute("step", ".1")
 						opt1.className = "form-control";
 						opt.className = "form-control";
-						opt.id = data[i].id;
-						opt.value = data[i].name;
-						opt.innerHTML = data[i].name;
-						opt1.id = data[i].id;
+						opt2.setAttribute("type", "number");
+						opt2.setAttribute("max" , "5");
+						opt2.setAttribute( "min" , "0");
+						opt2.setAttribute("step", ".1")
+						opt2.className = "form-control";
+						opt.id = data.result.ratingReponseList[i].taskId;
+						opt.value = data.result.ratingReponseList[i].taskName;
+						opt.innerHTML = data.result.ratingReponseList[i].taskName;
+						opt1.id = data.result.ratingReponseList[i].empRating;
+						opt1.value = data.result.ratingReponseList[i].empRating;
+						opt1.innerHTML = data.result.ratingReponseList[i].empRating;
+						opt2.id = data.result.ratingReponseList[i].taskId;
 						count == 0 ? (sel == null ? document.getElementById('searchDepartments')	: sel.appendChild(label1)) : count++;				
     					sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
-						count == 0 ? (rat == null ? document.getElementById('searchDepartments')	: rat.appendChild(label2)) : count++;		
+						count == 0 ? (rat == null ? document.getElementById('searchRating')	: rat.appendChild(label2)) : count++;		
 						rat == null ? document.getElementById('searchRating')  : rat.appendChild(opt1);
-						rat == null ? document.getElementById('searchRating') : rat.addEventListener("change", updateValue);
 						rat == null ? document.getElementById('searchRating')  : rat.appendChild(lineB);
+						count == 0 ? (man == null ? document.getElementById('managerRating')	: man.appendChild(label3)) : count++;
+						man == null ? document.getElementById('managerRating')  : man.appendChild(opt2);
+						man == null ? document.getElementById('managerRating') : man.addEventListener("change", updateValue);
+						man == null ? document.getElementById('managerRating')  : man.appendChild(brek1);
+						setEmployeeId(empid);
 						count ++;
 					}
 					return data;
@@ -236,22 +179,15 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	}
 	function updateValue(e: { target: { value: any; id : any}; }) {
 		
-		var rat = document.getElementById('searchRating');
+		var rat = document.getElementById('managerRating');
 		map1.set(e.target.id, e.target.value);
 	  }
 	const handleChange = (id: string) => {
+		setRatingName(id);
         setEmployeeData(id);
-		setCompany(localStorage.getItem('buName'));
-		setProduct(id);
-		if(product != undefined){
-		getDeliverables();
-		setDeliverable(id);
-		}
-		if(deliverable != undefined){
 		getTasks();
-		setTask(id);
-		}
-		setRating(ratings);
+		// }
+		// setRating(ratings);
 		
 	}
 	const submit = (e: { preventDefault: () => void; }) => {
@@ -264,6 +200,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			collection.Product = product,
 			collection.Deliverable = deliverable,
 			collection.Task = tasks;
+			collection.Rating = ratings;
 			// collection.push(col);
 			var sel = document.getElementById('searchDepartments');
 			var rat = document.getElementById('searchRating');
@@ -274,9 +211,9 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			for (const [key, value] of map1.entries()) {
 				var obj = {
 					taskid : key,
-					empId : "822d801d-1b19-4697-980e-b85dbab9b666",
-					rating : value,
-					isManagerRating : false
+					empId : employeeId,
+					ManagerRating: value,
+					isManagerRating : true
 				}
 				arr.push(obj)
 				console.log(key, value);
@@ -302,7 +239,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 				.then(data => {
 					console.log('Success:', data);
 					alert("Rating Submitted Successfully");
-					props.history.push("./ManagerRating");
+					props.history.push("./EmployeeRating");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
@@ -321,7 +258,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 {/* <Link to = "./AdminLogin">Home</Link> */}
-                                <a className="nav-link active" aria-current="page" href="./">Logout</a>
+                                <a className="nav-link active" aria-current="page" href="http://localhost:19006/">Logout</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="#">About</a>
@@ -347,36 +284,57 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 
                                         </div>
                                     }
-									{companies &&
+									{
+										ratingNames && 
+										<div className="col-sm-4 form-group">
+										<label>Rating Name </label>
+										<select name="ratingName" className="form-control" value={ratingName.name} onChange={(event) => handleChange(event.target.id)}>
+											{ratingNames.map((e: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => {
+												return <option key={key} value={e.id}>{e.name}</option>;
+											})}
+										</select>
+									</div>
+									}
+									</div>
+									<div className="row">
+									{	
 										<div className="col-sm-4 form-group">
 											<label>Company Name</label>
-											<input type="text" readOnly className="form-control" value = {company}/>
+											<input type="text" className="form-control" value = {company} onChange={(e) => setCompany(e.target.value)}/>
 										</div>
 									}
-									{products &&
+									{ 
 										<div className="col-sm-4 form-group">
-											<label>Product Name <mark className = "highlightedText">*</mark></label>
-											<input type="text" readOnly className="form-control" value = {product}/>
+											<label>Product Name </label>
+											<input type="text" className="form-control" value = {product} onChange={(e) => setProduct(e.target.value)}/>
 										</div>
 									}
-									{deliverables &&
+									{ 
 										<div className="col-sm-4 form-group">
-											<label>Deliverable Name <mark className = "highlightedText">*</mark></label>
-											<input type="text" readOnly className="form-control" value = {deliverable}/>
+											<label>Deliverable Name </label>
+											<input type="text"  className="form-control" value = {deliverable} onChange={(e) => setDeliverable(e.target.value)}/>
 										</div>
 									}
 									</div>
 							
 									<div className="row">
-									{tasks &&
+									{
 								<div id = "searchDepartments" className="col-sm-5 form-group">
                                         {/* <label>Task Name<mark className = "highlightedText">*</mark></label> */}
 										<br />
                                     </div>
 									}
 								
-									{ tasks &&
+									{ 
 									<div id="searchRating" className="col-sm-2 form-group">
+										
+                                        {/* <label>Rating <mark className = "highlightedText">*</mark></label> */}
+                                        {/* <input type="number" min="0" max="5" placeholder="Enter 0 to 5 Rating Here.."  className="form-control"/> */}
+										<br />
+									</div>
+									}
+									{ 
+									<div id="managerRating" className="col-sm-2 form-group">
 										
                                         {/* <label>Rating <mark className = "highlightedText">*</mark></label> */}
                                         {/* <input type="number" min="0" max="5" placeholder="Enter 0 to 5 Rating Here.."  className="form-control"/> */}

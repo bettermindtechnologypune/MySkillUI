@@ -4,7 +4,7 @@ import Header from "./Header";
 import DepartmentCreate from "./DepartmentCreate";
 import EmployeeCreate from "./EmployeeCreate";
 // import styles from ".../styles";
-export const EmployeeRating = (props: { history: string[]; }) => {
+export const EmployeeRating = (props: { history: any[]; }) => {
          const [EmpList, setEmpList] = useState<any>();let counter = 0;
          useEffect(() => {
           (async () => {
@@ -38,9 +38,7 @@ export const EmployeeRating = (props: { history: string[]; }) => {
             });
         }
         const getListViewItem = (item: { key: any; }) => {  
-          alert(item.firstName);  
-          localStorage.setItem('empId', (item.id));
-          props.history.push("./ManagerRating", item); 
+          props.history.push(`./ManagerRating/${item}`);
       }  
 return(
     <div>
@@ -69,19 +67,31 @@ return(
     <div className="text-center col-6 mx-auto"><br /><br />
     <h3>Welcome !!</h3><br />
     <form >
-    <View style = {styles.container}>
-      <FlatList 
-      data = {EmpList}
-      renderItem={({item}) => (
-        <View style={{height: 30}}>
-         <Text style={item} onPress={getListViewItem.bind(this, item)}>{"First Name : " +item.firstName + " |" + " Last Name : " + item.lastName + " |" + " Employee ID : " + item.orgEmpId}</Text> 
-         <View style={{height: 1,backgroundColor:'gray'}}></View>
-         </View>
-      )}
-      />
-
-     
-    </View>
+    {EmpList &&
+            <div className="row">
+              <div className="col-md-12">
+                <table className="col-md-12 table table-bordered table-hover table-sm">
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">Employee Code</th>                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                 
+                  {EmpList.map((emp: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => (
+                    <tr onClick={getListViewItem.bind(this, emp.id)} style={{ borderBottom: '1px solid black' }} className="text-left">
+                      <td>{emp.firstName}</td>
+                      <td>{emp.lastName}</td>
+                      <td>{emp.orgEmpId}</td>
+                    </tr>
+                  ))}
+                   </tbody>
+                </table>
+              </div>
+            </div>
+          }
 </form>
     </div>
     </div>

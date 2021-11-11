@@ -37,7 +37,7 @@ const App = () => {
       <Route exact path ="/EmployeeRecognition" component = {EmployeeRecognition}/>
       <Route exact path = "/ManagerHomePage" component = {ManagerHomePage}/>
       <Route exact path = "/EmployeeRating" component = {EmployeeRating}/>
-      <Route exact path = "/ManagerRating" component = {ManagerRating}/>
+      <Route exact path = "/ManagerRating/:id" component = {ManagerRating}/>
       <Redirect to="/404"></Redirect>      
       </Switch>
     </Router>

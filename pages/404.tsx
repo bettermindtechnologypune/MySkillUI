@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native';
+import { View} from 'react-native';
 import Header from "./Header";
 import Footer from './Footer';
 const NotFoundPage = (props: { history: string[]; }) => {

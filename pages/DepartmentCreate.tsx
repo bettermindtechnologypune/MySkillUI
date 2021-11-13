@@ -8,7 +8,6 @@ export class DepartmentResource {
 	public Name: string | undefined;
 
 }
-// import logo from './images/superAdmin.png';
 export const DepartmentCreate = (props: { history: string[]; title: string; state: string; }) => {
 	const [organizationName, setOrganizationName] = useState("");
 	const submit = (e: { preventDefault: () => void; }) => {
@@ -46,16 +45,7 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 				});
 		}
 	}
-	function displayFun() {
-		a = document.getElementById("demo");
-		var btn = document.createElement("LABEL");
-		btn.innerHTML = "Department Name : ";
-		a.appendChild(btn); <br />;
-		var inp = document.createElement("INPUT");
-		inp.setAttribute("type", "text");
-		a.appendChild(inp);
-
-	}
+	
 	const submitBack = (e: { preventDefault: () => void; }) => {
         props.history.push("/HrAdminHomePage");
     }
@@ -71,7 +61,6 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 							<li className="nav-item">
-								{/* <Link to = "./AdminLogin">Home</Link> */}
 								<a className="nav-link active" aria-current="page" href="./">Logout</a>
 							</li>
 							<li className="nav-item">
@@ -96,17 +85,13 @@ export const DepartmentCreate = (props: { history: string[]; title: string; stat
 										<label>Department Name : <mark className = "highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Department Here.." required value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
-									{/* <div className="col-sm-4 form-group ">
-									<input type="button" value="+" onClick={displayFun} className="btn btn-info" ></input>
-								</div> */}
+							
 									<div id="demo" className="col-sm-4 form-group"> <br /></div>
 									<br />
 								</div>
 								<br />
-								{/* <div className="text-center">  */}
 								<button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
 								<button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
-								{/* </div> */}
 							</div>
 						</form>
 					</div>

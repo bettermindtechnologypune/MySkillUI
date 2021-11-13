@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Footer from './Footer';
 
-// import logo from './images/superAdmin.png';
 export const BusinessUnitCreate = (props: { history: string[]; title: string; state: string; }) => {
 	const [organizationName, setOrganizationName] = useState("");
 	const [orgEmail, setOrgEmail] = useState("");
@@ -15,7 +14,6 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 	const [phone, setPhoneNumber] = useState("");
 	const [website, setWebsite] = useState("");
 	const submit = (e: { preventDefault: () => void; }) => {
-		console.log("Started");
 		e.preventDefault();
 		if (!organizationName && !orgEmail && !address && !billingEmail) {
 			alert("Title or Description can not be blank..")
@@ -69,7 +67,6 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 							<li className="nav-item">
-								{/* <Link to = "./AdminLogin">Home</Link> */}
 								<a className="nav-link active" aria-current="page" href="./">Logout</a>
 							</li>
 							<li className="nav-item">
@@ -131,9 +128,7 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 										<input type="text" placeholder="Enter Website Name Here.." value={website} onChange={(e) => setWebsite(e.target.value)} className="form-control" />
 									</div>
 								</div><br />
-								{/* <div className="text-center">  */}
 								<button type="submit" className="btn btn-primary" >Submit</button>
-								{/* </div> */}
 							</div>
 						</form>
 					</div>

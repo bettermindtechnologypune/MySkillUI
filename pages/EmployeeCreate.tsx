@@ -3,13 +3,11 @@ import { useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Footer from './Footer';
 import Employee from '../model/Employee';
-import Department from '../model/Department';
 export class EmployeeResource {
 
     public Name: string | undefined;
 
 }
-// import logo from './images/superAdmin.png';
 export const EmployeeCreate = (props: { history: string[]; title: string; state: string; }) => {
     const [employeeFirstName, setEmployeeFirstName] = useState("");
     const [empLastName, setEmpLastName] = useState("")
@@ -18,10 +16,8 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
     const [dob, setDOB] = useState("");
     const [grade, setGrade] = useState("");
     const [doj, setDOJ] = useState("");
-    const [compName, setCompName] = useState("");
     const [departments, setDepartmentData] = useState<any>();
     const [department, setDepartment] = useState<any>();
-    // const [managerEmpID, setManagerEmpID] = useState("");
     const [managerName, setManagerName] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
@@ -34,12 +30,6 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
     useEffect(() => {
         (async () => {
             var departments = await getDepartments();
-            // var dept = [];
-            // let de = new Department()
-            // de.Id = "1221212166"
-            // de.Name = "R&D"
-            // dept.push(de);
-
         })()
 
     }, [])
@@ -81,7 +71,6 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
         if (!employeeFirstName && !employeeID && !empEmail ) {
             alert("Required Fields can not be blank..")
         } else {
-            // let collection = {};
             let empl: Employee = new Employee();
             var isTrueSet = isManager === 'yes' ? true : false;
             empl.FirstName = employeeFirstName,
@@ -100,7 +89,6 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                 empl.IsManager = isTrueSet,
                 empl.Education = education,
 
-                // console.log(collection);
                 fetch('https://localhost:44369/api/Employee/Create', {
                     method: 'POST',
                     headers: {
@@ -141,7 +129,6 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                {/* <Link to = "./AdminLogin">Home</Link> */}
                                 <a className="nav-link active" aria-current="page" href="./">Logout</a>
                             </li>
                             <li className="nav-item">
@@ -245,11 +232,8 @@ export const EmployeeCreate = (props: { history: string[]; title: string; state:
                                     </div>
                                 </div>
                                 <br />
-                                {/* <div className="text-center">  */}
                                 <button type="submit" className="btn btn-primary" >Submit</button>&nbsp; &nbsp;
                                 <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
-                                {/* </div> */}
-
                             </div>
                         </form>
                     </div>

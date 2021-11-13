@@ -3,9 +3,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import logo from "./superAdmin.png";
 import Footer from "./Footer";
 import { useState } from 'react';
-// import {toast} from 'react-toastify'; 
-// import 'react-toastify/dist/ReactToastify.css';
-// toast.configure()
+
 export const AdminLogin = (props: { history: string[]; }) => {
 
   const [UserName, setUserName] = useState("");
@@ -37,27 +35,27 @@ export const AdminLogin = (props: { history: string[]; }) => {
       .then(data => {
         console.log('Success:', data);
         localStorage.setItem('token', (data.token));
-       
+
         localStorage.setItem('userType', (data.userType));
         alert("Success !")
-        if(data.userType == 0){
-        props.history.push("./OrganizationCreate");
-        }else if (data.userType == 1){
-        props.history.push("./BusinessUnitCreate");  
-        } else if(data.userType == 2){
-          props.history.push("./HrAdminHomePage");  
-        }else if(data.userType == 3){
+        if (data.userType == 0) {
+          props.history.push("./OrganizationCreate");
+        } else if (data.userType == 1) {
+          props.history.push("./BusinessUnitCreate");
+        } else if (data.userType == 2) {
+          props.history.push("./HrAdminHomePage");
+        } else if (data.userType == 3) {
           localStorage.setItem('buid', (data.buid));
           localStorage.setItem('buName', (data.buName));
           localStorage.setItem('empId', (data.empId));
           localStorage.setItem('empName', (data.empName));
-          props.history.push("./ManagerHomePage");  
-        }else if(data.userType == 4){
+          props.history.push("./ManagerHomePage");
+        } else if (data.userType == 4) {
           localStorage.setItem('buid', (data.buid));
           localStorage.setItem('buName', (data.buName));
           localStorage.setItem('empId', (data.empId));
           localStorage.setItem('empName', (data.empName));
-          props.history.push("./EmployeeRecognition");  
+          props.history.push("./EmployeeRecognition");
         }
       })
       .catch((error) => {
@@ -78,7 +76,6 @@ export const AdminLogin = (props: { history: string[]; }) => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                {/* <Link to = "./AdminLogin">Home</Link> */}
                 <a className="nav-link active" aria-current="page" href="./">Home</a>
               </li>
               <li className="nav-item">
@@ -104,12 +101,10 @@ export const AdminLogin = (props: { history: string[]; }) => {
           <input type="password" placeholder="Enter Password" name="psw" value={Password} onChange={(e) => setPassword(e.target.value)} className="formInput" required /><br /><br />
 
           <button className="btn btn-primary btn-lg" type="submit">Login</button><br />
-        <br />
+          <br />
           <span className="psw"><a href="./ForgotPassword">Forgot Password</a></span>
         </div>
         <div className="container">
-          {/* <button type="button" className="cancelbtn">Cancel</button> */}
-         
         </div>
       </form>
       <View>
@@ -118,8 +113,6 @@ export const AdminLogin = (props: { history: string[]; }) => {
         </View>
       </View>
     </div>
-
-    // </div>
   )
 }
 AdminLogin.defaultProps = {

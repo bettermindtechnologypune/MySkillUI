@@ -27,6 +27,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	const [ratingNames, setRatingNames] = useState<any>()
 	const [ratingName, setRatingName] = useState<any>()
 	const [employeeId, setEmployeeId] = useState<any>();
+	const [managerRating, setManagerRating] = useState<any>();
 	let empid :any;
 	
 	const submitBack1 = (e: { preventDefault: () => void; }) => {
@@ -75,13 +76,6 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					setRatingNames(data);
 					ratName = data[0].name;
 					getTasks();
-					// setCompany(data.result[0].buName);
-                    // setProduct(data.result[0].levelOneName);
-                    // setDeliverable(data.result[0].levelTwoName);
-					// setDeliverableData(data.result[0].levelTwoId);
-					// // setTask(data.result[0].taskName);
-					// setRating(data.result[0].empRating);
-					// getTasks();
 					return data;
 				} else {
                     alert("No data Found");
@@ -96,7 +90,6 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	const getTasks = () => {
 		const requestHeaders: HeadersInit = new Headers();
 		let token;
-		let parametr = empid + '/' + ratName;
 		token = localStorage.getItem('token');
 		requestHeaders.set('Authorization', token || "");
 		requestHeaders.set('Content-Type', 'application/json');
@@ -109,6 +102,17 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			.then(data => {
 				if(data.result == null){
 					console.log("Data Not Found");
+					var olddata=document.getElementById("searchDepartments");
+					var rat = document.getElementById('searchRating');
+					var manRating = document.getElementById('managerRating');
+					while (olddata?.firstChild && rat?.firstChild && manRating?.firstChild) {
+						olddata?.removeChild(olddata.firstChild);
+						rat?.removeChild(rat.firstChild);
+						manRating?.removeChild(manRating.firstChild);
+					  }
+					  setCompany(null);
+					  setProduct(null);
+					  setDeliverable(null);
 					
 				}else if (data != undefined) {
 					setCompany(data.result.buName);
@@ -118,6 +122,8 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					setTaskData(data.result.ratingReponseList)
 					setRating(data.result.ratingReponseList[0].empRating);
 					setRatingData(data.result.ratingReponseList);
+					setManagerRating(data.result.ratingReponseList[0].managerRating)
+					// setRatingName(ratingName);
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
 					var man = document.getElementById('managerRating');
@@ -184,10 +190,12 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	  }
 	const handleChange = (id: string) => {
 		setRatingName(id);
-        setEmployeeData(id);
+		setEmployeeId(employeeId);
+		empid = employeeId;
+		ratName = id;
 		getTasks();
-		// }
-		// setRating(ratings);
+		setProduct(product);
+		setDeliverable(deliverable);
 		
 	}
 	const submit = (e: { preventDefault: () => void; }) => {
@@ -201,6 +209,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			collection.Deliverable = deliverable,
 			collection.Task = tasks;
 			collection.Rating = ratings;
+			collection.ManagerRating = managerRating;
 			// collection.push(col);
 			var sel = document.getElementById('searchDepartments');
 			var rat = document.getElementById('searchRating');
@@ -288,7 +297,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 										ratingNames && 
 										<div className="col-sm-4 form-group">
 										<label>Rating Name </label>
-										<select name="ratingName" className="form-control" value={ratingName.name} onChange={(event) => handleChange(event.target.id)}>
+										<select name="ratingName" className="form-control" value={ratingName.name} onChange={(event) => handleChange(event.target.value)}>
 											{ratingNames.map((e: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => {
 												return <option key={key} value={e.id}>{e.name}</option>;
 											})}
@@ -297,19 +306,19 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 									}
 									</div>
 									<div className="row">
-									{	
+									{	company &&
 										<div className="col-sm-4 form-group">
 											<label>Company Name</label>
 											<input type="text" className="form-control" value = {company} onChange={(e) => setCompany(e.target.value)}/>
 										</div>
 									}
-									{ 
+									{ product &&
 										<div className="col-sm-4 form-group">
 											<label>Product Name </label>
 											<input type="text" className="form-control" value = {product} onChange={(e) => setProduct(e.target.value)}/>
 										</div>
 									}
-									{ 
+									{ deliverable &&
 										<div className="col-sm-4 form-group">
 											<label>Deliverable Name </label>
 											<input type="text"  className="form-control" value = {deliverable} onChange={(e) => setDeliverable(e.target.value)}/>

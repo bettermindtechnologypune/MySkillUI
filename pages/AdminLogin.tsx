@@ -43,6 +43,7 @@ export const AdminLogin = (props: { history: string[]; }) => {
         } else if (data.userType == 1) {
           props.history.push("./BusinessUnitCreate");
         } else if (data.userType == 2) {
+          localStorage.setItem('buid',(data.buid));
           props.history.push("./HrAdminHomePage");
         } else if (data.userType == 3) {
           localStorage.setItem('buid', (data.buid));

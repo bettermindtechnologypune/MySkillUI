@@ -5,24 +5,28 @@ import DepartmentCreate from "./DepartmentCreate";
 import EmployeeCreate from "./EmployeeCreate";
 import { FC, ChangeEvent, useEffect } from 'react'
 import { useState } from 'react';
-const map1 = new Map();
+import TaskModel from '../model/TaskModel';
+const map1 = new Map();var li: TaskModel[] = [];
+var tak: null = null; var takName: null = null; 
 export const HrAdminHomePage = (props: { history: string[]; }) => {
     const [products, setProductData] = useState<any>();
     const [product, setProduct] = useState<any>();
     const [deliverables, setDeliverableData] = useState<any>();
     const [deliverable, setDeliverable] = useState<any>();
-    const [tasks, setTaskData] = useState<any>();
+    const [tasks1, setTaskData] = useState<TaskModel[]>();
     const [task, setTask] = useState<any>();
-    const [rating, setRating] = useState<any>();
+    const [wattage, setWattage] = useState<any>();
     const [cou, setCount] = useState<any>(0);
     const DeptCreate = (e: { preventDefault: () => void; }) => {
         props.history.push("./DepartmentCreate");
     }
+ 
     const EmpCreate = (e: { preventDefault: () => void; }) => {
         props.history.push("./EmployeeCreate");
     }
     useEffect(() => {
         (async () => {
+            
             var products = await getProducts();
             if (product != undefined) {
                 var deliverables = await getDeliverables();
@@ -30,6 +34,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
             if (deliverable != undefined) {
                 var tasks1 = await getTasks();
             }
+          
         })()
 
     }, [])
@@ -122,6 +127,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                 else if (data != undefined) {
                     setTask(data[0].id)
                     setTaskData(data)
+                    li = data;
                     var sel = document.getElementById('searchDepartments');
                     var rat = document.getElementById('searchRating');
                     while (sel?.firstChild && rat?.firstChild) {
@@ -133,9 +139,9 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                         lineB = document.createElement("br");
                         brek = document.createElement("br");
                         label1 = document.createElement("LABEL");
-                        label1.innerHTML = "Task Name :  ";
+                        label1.innerHTML = "Task Name ";
                         label2 = document.createElement("LABEL");
-                        label2.innerHTML = "Wattage :  ";
+                        label2.innerHTML = "Wattage ";
                         opt = document.createElement('input');
                         opt1 = document.createElement('input');
                         opt1.setAttribute("type", "number");
@@ -146,15 +152,17 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                         opt.id = data[i].id;
                         opt.value = data[i].name;
                         opt.innerHTML = data[i].name;
-                        opt1.id = data[i].id;
+                        opt1.id = data[i].name;
                         opt1.innerHTML = data[i].wattage;
                         opt1.value = data[i].wattage;
+                        map1.set(data[i].id, data[i].name+"/"+data[i].wattage);
                         count == 0 ? (sel == null ? document.getElementById('searchDepartments') : sel.appendChild(label1)) : count++;
                         sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
                         sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
+                        sel == null ? document.getElementById('searchDepartments') : sel.addEventListener("change", updateTaskName);
                         count == 0 ? (rat == null ? document.getElementById('searchDepartments') : rat.appendChild(label2)) : count++;
                         rat == null ? document.getElementById('searchRating') : rat.appendChild(opt1);
-                        rat == null ? document.getElementById('searchRating') : rat.addEventListener("change", updateValue);
+                        rat == null ? document.getElementById('searchRating') : rat.addEventListener("change", updateWattage);
                         rat == null ? document.getElementById('searchRating') : rat.appendChild(lineB);
                         count++;
                     }
@@ -169,20 +177,36 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                 console.error('Error:', error);
             });
     }
-    function updateValue(e: { target: { value: any; id: any }; }) {
+    function updateWattage(e: { target: { value: any; id: any }; }) {
+        setWattage(e.target.value);
+        let tg : TaskModel = new TaskModel();
+        tg.id = tak;
+        tg.levelId = deliverable;
+        tg.Name = takName;
+        tg.wattage = e.target.value;
+        // setTaskData(...tasks, tg);
+        tasks1?.push(tg);
+        li.push(tg);
+        // map1.set(tak, takName+"/"+e.target.value);
+    }
 
-        var rat = document.getElementById('searchRating');
-        map1.set(e.target.id, e.target.value);
+    async function updateTaskName(e: { target: { value: any; id: any }; }) {
+        setTask(e.target.value);
+        tak = e.target.id;
+        takName = e.target.value;
+        tasks1
+       
     }
     const handleChange = (id: string) => {
         setProduct(id);
         if (product != undefined) {
             getDeliverables();
-            setDeliverable(id);
         }
+    }
+    const handleChange1 = (id: string) => {
+        setDeliverable(id);
         if (deliverable != undefined) {
             getTasks();
-            setTask(id);
         }
         // setRating(ratings);
 
@@ -219,6 +243,62 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
         }
     }
 }
+const submit = (e: { preventDefault: () => void; }) => {
+    console.log("Started");
+    e.preventDefault();
+    {
+        var total = 0;
+        for (let i = 0; i < li.length; i++) {
+            total += parseInt(li[i].wattage);
+        }
+       
+        if(total!=100){
+            alert("Total Wattage should be 100%");
+            return;
+        }
+        // const arr = [];
+        // li
+        // for (const [key, value] of map1.entries()) {
+        //     var obj = {
+        //         id: "",
+        //         levelId: deliverable,
+        //         taskName:  key,
+        //         wattage: value,
+        //     }
+        //     arr.push(obj)
+        //     console.log(key, value);
+        // }
+        console.log(li);
+        fetch('https://localhost:44369/api/Task/Update', {
+            method: 'POST',
+            headers: {
+                'Authorization': localStorage.getItem('token'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(li),
+        })
+            .then(response => {
+                if (response.status == 200)
+                    return response.json()
+                else {
+                    console.log(response)
+                    throw new Error("Unauthorized")
+                }
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert("Rating Submitted Successfully");
+                if (btn == null) {
+                    props.history.push("./");
+                } else {
+                    props.history.push("./ManagerHomePage");
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+}
 return (
     <div>
         <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -245,7 +325,7 @@ return (
         </nav>
         <div className="text-center col-6 mx-auto"><br /><br />
             <h3>Welcome HR Admin</h3><br />
-            <form >
+            <form onSubmit={submit}>
                 <br />
                 <button button-type='submit' className="btn btn-primary " onClick={DeptCreate}>Department Create</button> &nbsp;
                 <button button-type='submit' className="btn btn-primary " onClick={EmpCreate}>Employee Create</button> <br /> <br />
@@ -265,7 +345,7 @@ return (
                         {deliverables &&
                             <div className="col-sm-6 form-group">
                                 <label>Deliverable Name <mark className="highlightedText">*</mark></label>
-                                <select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange(event.target.value)}>
+                                <select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange1(event.target.value)}>
                                     {deliverables.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
                                         return <option key={key} value={e.id}>{e.name}</option>;
                                     })}
@@ -275,13 +355,13 @@ return (
                     </div>
 
                     <div className="row">
-                        {tasks &&
+                        {tasks1 &&
                             <div id="searchDepartments" className="col-sm-6 form-group">
                                 <br />
                             </div>
                         }
 
-                        {tasks &&
+                        {tasks1 &&
                             <div id="searchRating" className="col-sm-2 form-group">
 
                                 <br />
@@ -293,12 +373,12 @@ return (
 
                     <br />
                     <div className="row">
-                        {tasks &&
+                        {tasks1 &&
                             <div className="col-sm-2 form-group">
                                 <button type="submit" className="btn btn-primary" onClick={addFields}>Add</button> &nbsp; &nbsp;
                             </div>
                         }
-                        {tasks &&
+                        {tasks1 &&
                             <div className="col-sm-2 form-group">
                                 <button type="submit" className="btn btn-primary" onClick={clearFields}>Clear</button> &nbsp; &nbsp;
                             </div>
@@ -311,6 +391,11 @@ return (
                 </div>
             </form>
         </div>
+        {/* <View>
+				<View >
+					<Footer />
+				</View>
+			</View> */}
     </div>
 )
 }

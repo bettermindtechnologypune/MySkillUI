@@ -29,7 +29,6 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 				collection.ContactNumber = phone,
 				collection.Website = website,
 				console.log(collection);
-			var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/BusinessUnit/Create', {
 				method: 'POST',
 				headers: {
@@ -88,39 +87,39 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 							<div className="col-sm-12">
 								<div className="row">
 									<div className="col-sm-4 form-group">
-										<label>Business Unit Name <mark className = "highlightedText">*</mark></label>
+										<label>Business Unit Name <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Business Unit Name Here.." required value={organizationName} onChange={(e) => setOrganizationName(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Business Unit Email Address <mark className = "highlightedText">*</mark></label>
+										<label>Business Unit Email Address <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Email Address Here.." required value={orgEmail} onChange={(e) => setOrgEmail(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Billing Email Address <mark className = "highlightedText">*</mark></label>
+										<label>Billing Email Address <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Billing Email Address Here.." required value={billingEmail} onChange={(e) => setBillingEmail(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="form-group">
-									<label>Business Unit Address <mark className = "highlightedText">*</mark></label>
+									<label>Business Unit Address <mark className="highlightedText">*</mark></label>
 									<input type="text" placeholder="Enter Business Unit Address Here.." required value={address} onChange={(e) => setAddress(e.target.value)} className="form-control" />
 								</div>
 								<div className="row">
 									<div className="col-sm-4 form-group">
-										<label>City <mark className = "highlightedText">*</mark></label>
+										<label>City <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter City Name Here.." required value={city} onChange={(e) => setCity(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>State <mark className = "highlightedText">*</mark></label>
+										<label>State <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter State Name Here.." required value={stateName} onChange={(e) => setStateName(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">
-										<label>Postal Code <mark className = "highlightedText">*</mark></label>
+										<label>Postal Code <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Postal Code Here.." required value={zip} onChange={(e) => setZipCode(e.target.value)} className="form-control" />
 									</div>
 								</div>
 								<div className="row">
 									<div className="col-sm-4 form-group">
-										<label>Contact Number <mark className = "highlightedText">*</mark></label>
+										<label>Contact Number <mark className="highlightedText">*</mark></label>
 										<input type="text" placeholder="Enter Contact Number Here.." required value={phone} onChange={(e) => setPhoneNumber(e.target.value)} className="form-control" />
 									</div>
 									<div className="col-sm-4 form-group">

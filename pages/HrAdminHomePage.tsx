@@ -6,8 +6,8 @@ import EmployeeCreate from "./EmployeeCreate";
 import { FC, ChangeEvent, useEffect } from 'react'
 import { useState } from 'react';
 import TaskModel from '../model/TaskModel';
-const map1 = new Map();var li: TaskModel[] = [];
-var tak: null = null; var takName: null = null; 
+const map1 = new Map();let li: TaskModel[] | { id: null; levelId: any; name: null; wattage: any; }[] | { wattage: string; }[] | undefined = []; 
+var tak: string ; var takName: null = null; 
 export const HrAdminHomePage = (props: { history: string[]; }) => {
     const [products, setProductData] = useState<any>();
     const [product, setProduct] = useState<any>();
@@ -24,6 +24,14 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
     const EmpCreate = (e: { preventDefault: () => void; }) => {
         props.history.push("./EmployeeCreate");
     }
+
+    const updateLevelOne =  (e: { preventDefault: () => void; }) => {
+        props.history.push("./UpdateLevelOne");
+    }
+    const updateLevelTwo =  (e: { preventDefault: () => void; }) => {
+        props.history.push("./UpdateLevelTwo");
+    }
+
     useEffect(() => {
         (async () => {
             
@@ -179,14 +187,16 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
     }
     function updateWattage(e: { target: { value: any; id: any }; }) {
         setWattage(e.target.value);
-        let tg : TaskModel = new TaskModel();
-        tg.id = tak;
-        tg.levelId = deliverable;
-        tg.Name = takName;
-        tg.wattage = e.target.value;
-        // setTaskData(...tasks, tg);
-        tasks1?.push(tg);
-        li.push(tg);
+        // let tg : TaskModel = new TaskModel();
+
+     
+        let obj = {
+            id: tak!=""?tak : undefined,
+            levelId: deliverable,
+            name: takName,
+            wattage: parseInt(e.target.value)
+    }
+    li.push(obj);
         // map1.set(tak, takName+"/"+e.target.value);
     }
 
@@ -194,7 +204,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
         setTask(e.target.value);
         tak = e.target.id;
         takName = e.target.value;
-        tasks1
+      
        
     }
     const handleChange = (id: string) => {
@@ -213,6 +223,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
     }
     const addFields = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+        
         var sel = document.getElementById('searchDepartments');
         var rat = document.getElementById('searchRating');
         var opt = null; var opt1 = null; var lineB = null; let brek = null; var label1; var label2; let count = 0;
@@ -252,30 +263,30 @@ const submit = (e: { preventDefault: () => void; }) => {
             total += parseInt(li[i].wattage);
         }
        
-        if(total!=100){
-            alert("Total Wattage should be 100%");
-            return;
-        }
-        // const arr = [];
-        // li
-        // for (const [key, value] of map1.entries()) {
-        //     var obj = {
-        //         id: "",
-        //         levelId: deliverable,
-        //         taskName:  key,
-        //         wattage: value,
-        //     }
-        //     arr.push(obj)
-        //     console.log(key, value);
+        // if(total!=100){
+        //     alert("Total Wattage should be 100%");
+        //     return;
         // }
-        console.log(li);
+        const arr = [];
+        if(li!=undefined){
+			for (let i=0;i<li.length;i++) {
+				var obj = {
+					Id: li[i].id,
+                    LevelId: li[i].levelId,
+                    Name: li[i].name,
+                    Wattage: li[i].wattage
+				}
+				arr.push(obj)
+			}
+        }
+        console.log(arr);
         fetch('https://localhost:44369/api/Task/Update', {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Authorization': localStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(li),
+            body: JSON.stringify(arr),
         })
             .then(response => {
                 if (response.status == 200)
@@ -310,7 +321,6 @@ return (
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            {/* <Link to = "./AdminLogin">Home</Link> */}
                             <a className="nav-link active" aria-current="page" href="./">Logout</a>
                         </li>
                         <li className="nav-item">
@@ -324,11 +334,13 @@ return (
             </div>
         </nav>
         <div className="text-center col-6 mx-auto"><br /><br />
-            <h3>Welcome HR Admin</h3><br />
+            <h3>Welcome !!</h3><br />
             <form onSubmit={submit}>
                 <br />
                 <button button-type='submit' className="btn btn-primary " onClick={DeptCreate}>Department Create</button> &nbsp;
-                <button button-type='submit' className="btn btn-primary " onClick={EmpCreate}>Employee Create</button> <br /> <br />
+                <button button-type='submit' className="btn btn-primary " onClick={EmpCreate}>Employee Create</button> &nbsp;
+                <button button-type='submit' className="btn btn-primary " onClick={updateLevelOne}>Edit Products </button> &nbsp;
+                <button button-type='submit' className="btn btn-primary " onClick={updateLevelTwo}>Edit Deliverables </button> <br /> <br />
                 <h3>Edit Company Details</h3><br />
                 <div className="col-sm-12">
                     <div className="row">

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-
+const map1 = new Map();
 export const UpdateLevelOne = (props: { history: string[]; title: string; state: string; }) => {
     const [product, setProduct] = useState<any>();
     const [products, setProductData] = useState<any>();
-     let checkBool = true;    let arr: { Id: string | number | string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }[] = [];
     useEffect(() => {
         (async () => {
             var products1 = await getProducts();
@@ -25,10 +24,37 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
         fetch('https://localhost:44369/api/LevelOne/' + buid, httpGetObject)
             .then(response => response.json())
             .then(data => {
-                if (data != undefined) {
-                    setProduct(data)
-                    arr = data;
+                if (data.status == 404) {
+                    console.log("Data Not Found");
+                    var olddata = document.getElementById("searchProducts");
+                    while (olddata?.firstChild) {
+                        olddata?.removeChild(olddata.firstChild);
+                    }
+                } else if (data.status == 400) {
+                    console.log("No data Found")
+                }
+                else if (data != undefined) {
                     setProductData(data)
+                    var sel = document.getElementById('searchProducts');
+                    while (sel?.firstChild) {
+                        sel?.removeChild(sel.firstChild);
+                    }
+                    var opt = null; let brek = null; var label1; let count = 0;
+                    for (let i = 0; i < data.length; i++) {
+                        brek = document.createElement("br");
+                        label1 = document.createElement("LABEL");
+                        label1.innerHTML = "Product Name :  ";
+                        opt = document.createElement('input');
+                        opt.className = "form-control";
+                        opt.id = data[i].id;
+                        opt.value = data[i].name;
+                        opt.innerHTML = data[i].name;
+                        count == 0 ? (sel == null ? document.getElementById('searchProducts') : sel.appendChild(label1)) : count++;
+                        sel == null ? document.getElementById('searchProducts') : sel.appendChild(opt);
+                        sel == null ? document.getElementById('searchProducts') : sel.addEventListener("change", updateValue);
+                        sel == null ? document.getElementById('searchProducts') : sel.appendChild(brek);
+                        count++;
+                    }
                     return data;
                 } else {
                     return null;
@@ -38,35 +64,52 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
                 console.error('Error:', error);
             });
     }
-    function handleChange(e) {
-    
-        arr = products;
-        // for (let userObject of arr) {
-            // if (userObject.id ==  e.target.name) {
-            //     let index = arr.indexOf(userObject);
-            //     arr.splice(index, 1);
-            //     userObject.name = e.target.value;
-            //     arr.push(userObject);
-            //     // products =  arr;
-            //     // products.splice(0, 0, arr);
-            //     setProductData(products, arr);
-            //     // checkBool = false;
-            // }
-            var emails = products; // Make a copy of the emails first.
-            // let index = arr.indexOf(userObject);
-            emails[parseInt(e.target.name)].name = e.target.value; // Update it with the modified email.
-            console.log("This is email",emails);
-            arr = emails;
-            setProductData(arr); // Update the state.
-        // }     
+    function updateValue(e: { target: { value: any; id: any }; }) {
+        map1.set(e.target.id, e.target.value);
     }
+
     const submitBack = (e: { preventDefault: () => void; }) => {
         props.history.push("/HrAdminHomePage");
     }
     const submit = (e: { preventDefault: () => void; }) => {
         console.log("Started");
-        let arra = []
-        // arr.push(products)
+        e.preventDefault();
+        {
+
+            for (const [key, value] of map1.entries()) {
+                let levelId = key;
+                var obj = {
+                    buid: localStorage.getItem('buid'),
+                    name: value,
+                    isManagerRating: false
+                }
+                console.log(key, value);
+                fetch('https://localhost:44369/api/LevelOne/' + levelId, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(obj),
+                })
+                    .then(response => {
+                        if (response.status == 200)
+                            return response.json()
+                        else {
+                            console.log(response)
+                            throw new Error("Unauthorized")
+                        }
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+            alert("Products Updated Successfully");
+            props.history.push("./HrAdminHomePage");
+        }
     }
 
     return (
@@ -97,13 +140,9 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
                 <form onSubmit={submit}>
                     <div className="col-sm-12">
                         <div className="row">
-                            {products && 
-                                <div className="form-group">
-                                    <label>Product Name <mark className="highlightedText">*</mark></label>
-                                    {products.map((e: { Id: string | number | string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
-                                        return <input type="text" key={key} value={e.name} name={key} onChange={handleChange.bind(this)} className="form-control" />
-                                    })}
-
+                            {products &&
+                                <div id="searchProducts" className=" text-center col-6 mx-auto form-group">
+                                    <br />
                                 </div>
                             }
                         </div>

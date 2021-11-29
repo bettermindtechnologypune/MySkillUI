@@ -40,7 +40,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                 var deliverables = await getDeliverables();
             }
             if (deliverable != undefined) {
-                var tasks1 = await getTasks();
+                var tasks = await getTasks();
             }
           
         })()
@@ -160,7 +160,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                         opt.id = data[i].id;
                         opt.value = data[i].name;
                         opt.innerHTML = data[i].name;
-                        opt1.id = data[i].name;
+                        opt1.id = data[i].id;
                         opt1.innerHTML = data[i].wattage;
                         opt1.value = data[i].wattage;
                         map1.set(data[i].id, data[i].name+"/"+data[i].wattage);
@@ -187,9 +187,18 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
     }
     function updateWattage(e: { target: { value: any; id: any }; }) {
         setWattage(e.target.value);
-        // let tg : TaskModel = new TaskModel();
-
-     
+        var arrray1 = li; let checkBol = true
+        for (let userObject of arrray1) {
+            console.log(userObject);
+            if(userObject.id == e.target.id){
+                let index = arrray1.indexOf(userObject);
+                li?.splice(index, 1);
+                userObject.wattage = parseInt(e.target.value);
+                li?.push(userObject);
+                checkBol = false;
+            }
+        }
+        if(checkBol){
         let obj = {
             id: tak!=""?tak : undefined,
             levelId: deliverable,
@@ -197,14 +206,23 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
             wattage: parseInt(e.target.value)
     }
     li.push(obj);
-        // map1.set(tak, takName+"/"+e.target.value);
+        }
     }
 
-    async function updateTaskName(e: { target: { value: any; id: any }; }) {
+    function updateTaskName(e: { target: { value: any; id: any }; }) {
         setTask(e.target.value);
         tak = e.target.id;
         takName = e.target.value;
-      
+        var arrray1 = li;
+        for (let userObject of arrray1) {
+            console.log(userObject);
+            if(userObject.id == tak){
+                let index = arrray1.indexOf(userObject);
+                li?.splice(index, 1);
+                userObject.name = e.target.value;
+                li?.push(userObject);
+            }
+        }
        
     }
     const handleChange = (id: string) => {
@@ -262,11 +280,10 @@ const submit = (e: { preventDefault: () => void; }) => {
         for (let i = 0; i < li.length; i++) {
             total += parseInt(li[i].wattage);
         }
-       
-        // if(total!=100){
-        //     alert("Total Wattage should be 100%");
-        //     return;
-        // }
+       if(total!=100){
+           alert("Total Wattage should be 100%");
+           return;
+       }
         const arr = [];
         if(li!=undefined){
 			for (let i=0;i<li.length;i++) {
@@ -299,11 +316,13 @@ const submit = (e: { preventDefault: () => void; }) => {
             .then(data => {
                 console.log('Success:', data);
                 alert("Rating Submitted Successfully");
-                if (btn == null) {
-                    props.history.push("./");
-                } else {
-                    props.history.push("./ManagerHomePage");
-                }
+                    // props.history.push("./");
+                    var sel = document.getElementById('searchDepartments');
+                    var rat = document.getElementById('searchRating');
+                    while (sel?.firstChild && rat?.firstChild) {
+                        sel?.removeChild(sel.firstChild);
+                        rat?.removeChild(rat.firstChild);
+                    }
             })
             .catch((error) => {
                 console.error('Error:', error);

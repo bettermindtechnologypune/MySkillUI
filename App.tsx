@@ -17,6 +17,7 @@ import ManagerRating from "./pages/ManagerRating";
 import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-router-dom";
 import UpdateLevelOne from './pages/UpdateLevelOne';
 import UpdateLevelTwo from './pages/UpdateLevelTwo';
+import Charts from './pages/Charts';
 
 // import {Dropdown  } from "react-native";
 // import { Dropdown } from "react-native-material-dropdown";
@@ -42,7 +43,7 @@ const App = () => {
       <Route exact path = "/ManagerRating/:id" component = {ManagerRating}/>
       <Route exact path = "/UpdateLevelOne" component = {UpdateLevelOne}/>
       <Route exact path = "/UpdateLevelTwo" component = {UpdateLevelTwo}/>
-      
+      <Route exact path = "/Charts" component = {Charts}/>
       <Redirect to="/404"></Redirect>      
       </Switch>
     </Router>

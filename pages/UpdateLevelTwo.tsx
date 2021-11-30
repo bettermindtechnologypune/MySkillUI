@@ -21,7 +21,7 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
             method: 'GET',
             headers: requestHeaders
         }
-        fetch('https://localhost:44369/api/LevelTwo/' + buid, httpGetObject)
+        fetch('https://localhost:44369/api/LeveTwo/get-list-by-buid/' + buid, httpGetObject)
             .then(response => response.json())
             .then(data => {
                 if (data.status == 404) {
@@ -79,12 +79,12 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
             for (const [key, value] of map1.entries()) {
                 let levelId = key;
                 var obj = {
-                    buid: localStorage.getItem('buid'),
+                    levelOneId: undefined,
                     name: value,
                     isManagerRating: false
                 }
                 console.log(key, value);
-                fetch('https://localhost:44369/api/LevelTwo/' + levelId, {
+                fetch('https://localhost:44369/api/LeveTwo/' + levelId, {
                     method: 'PATCH',
                     headers: {
                         'Authorization': localStorage.getItem('token'),
@@ -107,7 +107,7 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
                         console.error('Error:', error);
                     });
             }
-            alert("deliverables Updated Successfully");
+            alert("Deliverables Updated Successfully");
             props.history.push("./HrAdminHomePage");
         }
     }

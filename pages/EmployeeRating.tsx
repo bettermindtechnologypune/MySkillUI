@@ -28,8 +28,8 @@ export const EmployeeRating = (props: { history: any[]; }) => {
         else {
           console.log(response)
           var noData = document.getElementById("noData");
-          var para = document.createElement("P");               
-          para.innerText = "No data Found";               
+          var para = document.createElement("P");
+          para.innerText = "No data Found";
           noData == null ? document.getElementById("noData") : noData.appendChild(para);
           throw new Error("Unauthorized")
         }
@@ -41,8 +41,8 @@ export const EmployeeRating = (props: { history: any[]; }) => {
         } else {
           console.log("No data Found")
           var noData = document.getElementById("noData");
-          var para = document.createElement("h1");               
-          para.innerText = "No data Found";               
+          var para = document.createElement("h1");
+          para.innerText = "No data Found";
           noData == null ? document.getElementById("noData") : noData.appendChild(para);
           return null;
         }
@@ -96,13 +96,13 @@ export const EmployeeRating = (props: { history: any[]; }) => {
         <h3>Welcome !!</h3><br />
 
         <form >
-        <div className="row">
-              {
-              <div id ="noData" className="col-sm-12 form-group text-center">
-              <br />
+          <div className="row">
+            {
+              <div id="noData" className="col-sm-12 form-group text-center">
+                <br />
               </div>
-              }
-              </div>
+            }
+          </div>
           {EmpList &&
             <div className="row">
               <div className="col-md-12">
@@ -115,18 +115,18 @@ export const EmployeeRating = (props: { history: any[]; }) => {
                     </tr>
                   </thead>
                   <tbody>
-
-                    {EmpList.map((emp: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => (
-                      <tr onClick={getListViewItem.bind(this, emp.id)} style={{ borderBottom: '1px solid black' }} className="text-left">
-                        <td>{emp.firstName}</td>
-                        <td>{emp.lastName}</td>
-                        <td>{emp.orgEmpId}</td>
-                      </tr>
-                    ))}
+                    {EmpList &&
+                      EmpList.map((emp: { Id: string | number | readonly string[] | undefined; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => (
+                        <tr onClick={getListViewItem.bind(this, emp.id)} style={{ borderBottom: '1px solid black' }} className="text-left">
+                          <td>{emp.firstName}</td>
+                          <td>{emp.lastName}</td>
+                          <td>{emp.orgEmpId}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
-             
+
             </div>
           }
           <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>

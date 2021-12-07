@@ -3,6 +3,7 @@ const map1 = new Map();
 export const UpdateLevelOne = (props: { history: string[]; title: string; state: string; }) => {
     const [product, setProduct] = useState<any>();
     const [products, setProductData] = useState<any>();
+    const [cou, setCount] = useState<any>(0);
     useEffect(() => {
         (async () => {
             var products1 = await getProducts();
@@ -111,7 +112,28 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
             props.history.push("./HrAdminHomePage");
         }
     }
-
+    const addFields = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        
+        var sel = document.getElementById('searchProducts');
+        var opt = null; var opt1 = null; var lineB = null; let brek = null; var label1; var label2; let count = 0;
+        lineB = document.createElement("br");
+        opt = document.createElement('input');
+        opt.className = "form-control";
+        sel == null ? document.getElementById('searchProducts') : sel.appendChild(opt);
+        sel == null ? document.getElementById('searchProducts') : sel.appendChild(lineB);
+        setCount(cou + 1);
+    }
+    const clearFields = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        var sel = document.getElementById('searchProducts');
+        if (cou > 0) { 
+        for (let i = 0; i < 2; i++) {
+            sel?.removeChild(sel.lastElementChild);
+            setCount(cou - 1);
+        }
+    }
+}
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -147,6 +169,8 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
                             }
                         </div>
                         <br />
+                        <button type="submit" className="btn btn-primary" onClick={addFields} >Add</button>&nbsp; &nbsp;
+                        <button type="submit" className="btn btn-primary" onClick={clearFields}>Clear</button>&nbsp; &nbsp;
                         <button type="submit" className="btn btn-primary" >Submit</button>&nbsp; &nbsp;
                         <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
                     </div>

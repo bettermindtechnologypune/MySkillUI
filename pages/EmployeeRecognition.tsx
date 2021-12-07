@@ -1,15 +1,12 @@
 import { tsBigIntKeyword } from '@babel/types';
 import React, { FC, ChangeEvent, useEffect } from 'react'
 import { useState } from 'react';
+import { Text, VStack, Center, NativeBaseProvider } from "native-base";
 import { View } from 'react-native';
 import Footer from './Footer';
 const map1 = new Map();
 var btn: HTMLElement | null = null;
-export class EmployeeRecognitionResource {
 
-	public Name: string | undefined;
-
-}
 export const EmployeeRecognition = (props: { history: string[]; title: string; state: string; }) => {
 	const [companies, setCompanyData] = useState<any>();
 	const [company, setCompany] = useState<any>();
@@ -181,6 +178,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 						opt.value = data[i].name;
 						opt.innerHTML = data[i].name;
 						opt1.id = data[i].id;
+
 						count == 0 ? (sel == null ? document.getElementById('searchDepartments') : sel.appendChild(label1)) : count++;
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
@@ -291,7 +289,14 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 			</nav>
 
 			<div className="container">
-				<h1 className="well text-center">Welcome !</h1>
+				<div className="container">
+					<h1 className="well text-center">Welcome !</h1>
+					<NativeBaseProvider >
+						<VStack space={1}>
+							<Text style={[{ color: "red" }]} fontSize="xs"><b>Rating 1 </b>: Poor |  <b>2 </b>: Below Expectations |  <b>3 </b>: Meets Expectations | <b>4 </b>: Exceed Expecations |  <b>5 </b>: Outstanding </Text>
+						</VStack>
+					</NativeBaseProvider>
+				</div>
 				<div className="col-lg-12 well">
 					<div className="row">
 						<form onSubmit={submit}>

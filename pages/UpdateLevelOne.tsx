@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-const map1 = new Map();
+let li: [];
 export const UpdateLevelOne = (props: { history: string[]; title: string; state: string; }) => {
     const [product, setProduct] = useState<any>();
     const [products, setProductData] = useState<any>();
@@ -36,6 +36,7 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
                 }
                 else if (data != undefined) {
                     setProductData(data)
+                    li = data;
                     var sel = document.getElementById('searchProducts');
                     while (sel?.firstChild) {
                         sel?.removeChild(sel.firstChild);
@@ -66,7 +67,24 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
             });
     }
     function updateValue(e: { target: { value: any; id: any }; }) {
-        map1.set(e.target.id, e.target.value);
+        var arrray1 = li; let checkBol = true
+        for (let userObject of arrray1) {
+            console.log(userObject);
+            if (userObject.id == e.target.id) {
+                let index = arrray1.indexOf(userObject);
+                li?.splice(index, 1);
+                userObject.name = parseInt(e.target.value);
+                li?.push(userObject);
+                checkBol = false;
+            }
+        }
+        if (checkBol) {
+            let obj = {
+                id: e.target.id != "" ? e.target.id : undefined,
+                name: e.target.value,
+            }
+            li.push(obj);
+        }
     }
 
     const submitBack = (e: { preventDefault: () => void; }) => {
@@ -76,45 +94,47 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
         console.log("Started");
         e.preventDefault();
         {
-
-            for (const [key, value] of map1.entries()) {
-                let levelId = key;
-                var obj = {
-                    buid: localStorage.getItem('buid'),
-                    name: value,
-                    isManagerRating: false
+            const arr = [];
+            if (li != undefined) {
+                for (let i = 0; i < li.length; i++) {
+                    var obj = {
+                        id: li[i].id,
+                        buid: li[i].buid,
+                        name: li[i].name,
+                        isLastLevel: false
+                    }
+                    arr.push(obj)
                 }
-                console.log(key, value);
-                fetch('https://localhost:44369/api/LevelOne/' + levelId, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': localStorage.getItem('token'),
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(obj),
-                })
-                    .then(response => {
-                        if (response.status == 200)
-                            return response.json()
-                        else {
-                            console.log(response)
-                            throw new Error("Unauthorized")
-                        }
-                    })
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
             }
+            fetch('https://localhost:44369/api/LevelOne/Update', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': localStorage.getItem('token'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(arr),
+            })
+                .then(response => {
+                    if (response.status == 200)
+                        return response.json()
+                    else {
+                        console.log(response)
+                        throw new Error("Unauthorized")
+                    }
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
             alert("Products Updated Successfully");
             props.history.push("./HrAdminHomePage");
         }
     }
     const addFields = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        
+
         var sel = document.getElementById('searchProducts');
         var opt = null; var opt1 = null; var lineB = null; let brek = null; var label1; var label2; let count = 0;
         lineB = document.createElement("br");
@@ -127,13 +147,13 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
     const clearFields = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         var sel = document.getElementById('searchProducts');
-        if (cou > 0) { 
-        for (let i = 0; i < 2; i++) {
-            sel?.removeChild(sel.lastElementChild);
-            setCount(cou - 1);
+        if (cou > 0) {
+            for (let i = 0; i < 2; i++) {
+                sel?.removeChild(sel.lastElementChild);
+                setCount(cou - 1);
+            }
         }
     }
-}
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">

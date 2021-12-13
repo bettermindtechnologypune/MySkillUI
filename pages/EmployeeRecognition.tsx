@@ -209,15 +209,18 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 		setProduct(id);
 		if (product != undefined) {
 			getDeliverables();
-			setDeliverable(id);
 		}
-		if (deliverable != undefined) {
-			getTasks();
-			setTask(id);
-		}
-		setRating(ratings);
-
+		
 	}
+	const handleChange1 = (id: string) => {
+		setDeliverable(id);
+	
+	if (deliverable != undefined) {
+		getTasks();
+		setTask(id);
+	}
+	setRating(ratings);
+}
 	const submit = (e: { preventDefault: () => void; }) => {
 		console.log("Started");
 		e.preventDefault();
@@ -322,7 +325,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 									{deliverables &&
 										<div className="col-sm-4 form-group">
 											<label>Deliverable Name <mark className="highlightedText">*</mark></label>
-											<select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange(event.target.value)}>
+											<select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange1(event.target.value)}>
 												{deliverables.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
 													return <option key={key} value={e.id}>{e.name}</option>;
 												})}

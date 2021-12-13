@@ -82,6 +82,7 @@ export const UpdateLevelOne = (props: { history: string[]; title: string; state:
             let obj = {
                 id: e.target.id != "" ? e.target.id : undefined,
                 name: e.target.value,
+                buid: localStorage.getItem('buid')
             }
             li.push(obj);
         }

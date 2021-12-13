@@ -78,7 +78,7 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
         var arrray1 = li; let checkBol = true;  tak = e.target.id;
         for (let userObject of arrray1) {
             console.log(userObject);
-            if (userObject.id == e.target.id || (e.target.id == "" && userObject.levelOneId == tak1)) {
+            if (userObject.id == e.target.id) {
                 let index = arrray1.indexOf(userObject);
                 li?.splice(index, 1);
                 userObject.name =e.target.value;

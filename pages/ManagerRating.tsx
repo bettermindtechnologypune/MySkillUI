@@ -101,7 +101,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 		fetch('https://localhost:44369/api/Rating/list-by-empId-ratingName/' + empid + '/' + ratName, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
-				if (data.result == null) {
+				if (data.status == 404) {
 					console.log("Data Not Found");
 					var olddata = document.getElementById("searchDepartments");
 					var rat = document.getElementById('searchRating');
@@ -116,20 +116,20 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					setDeliverable(null);
 
 				} else if (data != undefined) {
-					setCompany(data.result.buName);
-					setProduct(data.result.levelOneName);
-					setDeliverable(data.result.levelTwoName);
-					setTask(data.result.ratingReponseList[0].taskName)
-					setTaskData(data.result.ratingReponseList)
-					setRating(data.result.ratingReponseList[0].empRating);
-					setRatingData(data.result.ratingReponseList);
-					setManagerRating(data.result.ratingReponseList[0].managerRating)
+					setCompany(data.buName);
+					setProduct(data.levelOneName);
+					setDeliverable(data.levelTwoName);
+					setTask(data.ratingReponseList[0].taskName)
+					setTaskData(data.ratingReponseList)
+					setRating(data.ratingReponseList[0].empRating);
+					setRatingData(data.ratingReponseList);
+					setManagerRating(data.ratingReponseList[0].managerRating)
 					// setRatingName(ratingName);
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
 					var man = document.getElementById('managerRating');
 					var opt = null; var opt1 = null; var opt2 = null; let lineB = null; let brek = null; let brek1 = null; var label1; var label2; var label3; let count = 0;
-					for (let i = 0; i < data.result.ratingReponseList.length; i++) {
+					for (let i = 0; i < data.ratingReponseList.length; i++) {
 						lineB = document.createElement("br");
 						brek = document.createElement("br");
 						brek1 = document.createElement("br");
@@ -145,21 +145,21 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 						opt1.setAttribute("type", "number");
 						opt1.setAttribute("max", "5");
 						opt1.setAttribute("min", "0");
-						opt1.setAttribute("step", ".1")
 						opt1.className = "form-control";
 						opt.className = "form-control";
 						opt2.setAttribute("type", "number");
 						opt2.setAttribute("max", "5");
 						opt2.setAttribute("min", "0");
-						opt2.setAttribute("step", ".1")
 						opt2.className = "form-control";
-						opt.id = data.result.ratingReponseList[i].taskId;
-						opt.value = data.result.ratingReponseList[i].taskName;
-						opt.innerHTML = data.result.ratingReponseList[i].taskName;
-						opt1.id = data.result.ratingReponseList[i].empRating;
-						opt1.value = data.result.ratingReponseList[i].empRating;
-						opt1.innerHTML = data.result.ratingReponseList[i].empRating;
-						opt2.id = data.result.ratingReponseList[i].taskId;
+						opt.id = data.ratingReponseList[i].taskId;
+						opt.value = data.ratingReponseList[i].taskName;
+						opt.innerHTML = data.ratingReponseList[i].taskName;
+						opt1.id = data.ratingReponseList[i].empRating;
+						opt1.value = data.ratingReponseList[i].empRating;
+						opt1.innerHTML = data.ratingReponseList[i].empRating;
+						opt2.id = data.ratingReponseList[i].ratingId;
+						opt2.value = data.ratingReponseList[i].mangerRating;
+						opt2.innerHTML = data.ratingReponseList[i].mangerRating;
 						count == 0 ? (sel == null ? document.getElementById('searchDepartments') : sel.appendChild(label1)) : count++;
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
@@ -220,17 +220,16 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			const arr = [];
 			for (const [key, value] of map1.entries()) {
 				var obj = {
-					taskid: key,
+					id: key,
 					empId: employeeId,
-					ManagerRating: value,
-					isManagerRating: true
+					ManagerRating: parseInt(value),
 				}
 				arr.push(obj)
 				console.log(key, value);
 			}
 			console.log(arr);
 			var bearer = localStorage.getItem('token');
-			fetch('https://localhost:44369/api/Rating/CreateList', {
+			fetch('https://localhost:44369/api/Rating/Update', {
 				method: 'POST',
 				headers: {
 					'Authorization': localStorage.getItem('token'),
@@ -249,6 +248,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 				.then(data => {
 					console.log('Success:', data);
 					alert("Rating Submitted Successfully");
+					map1.clear();
 					props.history.push("./EmployeeRating");
 				})
 				.catch((error) => {

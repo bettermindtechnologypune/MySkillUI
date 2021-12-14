@@ -267,6 +267,9 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				});
 		}
 	}
+	const submitBack = (e: { preventDefault: () => void; }) => {
+		props.history.push("/EmployeeHomePage");
+	  }
 	return (
 		<div>
 			<nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -296,7 +299,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 					<h1 className="well text-center">Welcome !</h1>
 					<NativeBaseProvider >
 						<VStack space={1}>
-							<Text style={[{ color: "red" }]} fontSize="xs"><b>Rating 1 </b>: Poor |  <b>2 </b>: Below Expectations |  <b>3 </b>: Meets Expectations | <b>4 </b>: Exceed Expecations |  <b>5 </b>: Outstanding </Text>
+						<Text style={[{ color: "green" }]} fontSize="xs"><b>Rating 1 : Poor </b>|  <b>2 : Below Expectations </b>|  <b>3 : Meets Expectations </b>| <b>4 : Exceed Expecations </b>|  <b>5 : Outstanding </b></Text>
 						</VStack>
 					</NativeBaseProvider>
 				</div>
@@ -353,6 +356,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 								<div className="row">
 									<div className="col-sm-2 form-group">
 										<button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
+										<button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
 									</div>
 									<div id="submitBack" className="col-sm-2 form-group">
 

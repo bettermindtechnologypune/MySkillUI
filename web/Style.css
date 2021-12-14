@@ -140,6 +140,13 @@ img.avatar {
     width: 10%;
     border-radius: 50%;
 }
+
+img.avatar1 {
+  width: 20%;
+  border-radius: 50%;
+  border-color: red;
+  border-left-color: #4CAF50;
+}
 /*set padding to the container*/
   
 .container {

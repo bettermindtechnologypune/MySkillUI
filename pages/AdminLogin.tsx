@@ -56,7 +56,7 @@ export const AdminLogin = (props: { history: string[]; }) => {
           localStorage.setItem('buName', (data.buName));
           localStorage.setItem('empId', (data.empId));
           localStorage.setItem('empName', (data.empName));
-          props.history.push("./EmployeeRecognition");
+          props.history.push("./EmployeeHomePage");
         }
       })
       .catch((error) => {

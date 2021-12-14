@@ -52,7 +52,7 @@ export const EmployeeRating = (props: { history: any[]; }) => {
       });
   }
   const getListViewItem = (item: { key: any; }) => {
-    props.history.push(`./ManagerRating/${item}`);
+    props.history.push(`./ManagerRating/${item}/true`);
   }
 
   const submitBack = (e: { preventDefault: () => void; }) => {

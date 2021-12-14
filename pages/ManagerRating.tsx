@@ -8,11 +8,6 @@ import Footer from './Footer';
 import Header from './Header';
 const map1 = new Map();
 var ratName: any;
-export class EmployeeRecognitionResource {
-
-	public Name: string | undefined;
-
-}
 export const ManagerRating = (props: { history: string[]; title: string; state: string; }) => {
 	const [employeeData, setEmployeeData] = useState<any>();
 	const [companies, setCompanyData] = useState<any>();
@@ -30,18 +25,20 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	const [employeeId, setEmployeeId] = useState<any>();
 	const [managerRating, setManagerRating] = useState<any>();
 	let empid: any;
-
+	var isTrueSet: boolean;
 	const submitBack1 = (e: { preventDefault: () => void; }) => {
-		props.history.push("/EmployeeRating");
+		if (localStorage.getItem('userType') == "4") {
+			props.history.push("/EmployeeHomePage");
+		} else
+			props.history.push("/EmployeeRating");
 	}
 	useEffect(() => {
-		const windowUrl = window.location.search;
-		let params = new URLSearchParams(windowUrl).get("Id");
+		isTrueSet = (props.match.params.isManager === 'true');
 		empid = props.match.params.id;
 		setEmployeeId(empid);
 		console.log("empid", empid);
 		(async () => {
-			if (localStorage.getItem('userType') == "3") {
+			if (localStorage.getItem('userType') == "3"|| localStorage.getItem('userType') == "4") {
 				var sel = document.getElementById('submitBack');
 				var btn = document.createElement('BUTTON');
 				btn.innerHTML = "Back";
@@ -51,7 +48,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 				// flag = false;
 			}
 			var employeeData = await getEmployeeData();
-			var tasks = await getTasks();
+			// var tasks = await getTasks();
 
 		})()
 
@@ -166,8 +163,8 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 						count == 0 ? (rat == null ? document.getElementById('searchRating') : rat.appendChild(label2)) : count++;
 						rat == null ? document.getElementById('searchRating') : rat.appendChild(opt1);
 						rat == null ? document.getElementById('searchRating') : rat.appendChild(lineB);
-						count == 0 ? (man == null ? document.getElementById('managerRating') : man.appendChild(label3)) : count++;
-						man == null ? document.getElementById('managerRating') : man.appendChild(opt2);
+						count == 0 ? (man == null ? document.getElementById('managerRating') : isTrueSet ? man.appendChild(label3) : null) : count++;
+						man == null ? document.getElementById('managerRating') : isTrueSet ? man.appendChild(opt2) : null;
 						man == null ? document.getElementById('managerRating') : man.addEventListener("change", updateValue);
 						man == null ? document.getElementById('managerRating') : man.appendChild(brek1);
 						setEmployeeId(empid);
@@ -194,7 +191,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 		setEmployeeId(employeeId);
 		empid = employeeId;
 		ratName = id;
-		getTasks();
+		// getTasks();
 		setProduct(product);
 		setDeliverable(deliverable);
 
@@ -230,7 +227,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			console.log(arr);
 			var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/Rating/Update', {
-				method: 'POST',
+				method: 'PATCH',
 				headers: {
 					'Authorization': localStorage.getItem('token'),
 					'Content-Type': 'application/json',
@@ -249,7 +246,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					console.log('Success:', data);
 					alert("Rating Submitted Successfully");
 					map1.clear();
-					props.history.push("./EmployeeRating");
+					props.history.push("/EmployeeRating");
 				})
 				.catch((error) => {
 					console.error('Error:', error);
@@ -286,7 +283,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					<h1 className="well text-center">Welcome !</h1>
 					<NativeBaseProvider >
 						<VStack space={1}>
-							<Text style={[{ color: "red" }]} fontSize="xs"><b>Rating 1 </b>: Poor |  <b>2 </b>: Below Expectations |  <b>3 </b>: Meets Expectations | <b>4 </b>: Exceed Expecations |  <b>5 </b>: Outstanding </Text>
+							<Text style={[{ color: "green" }]} fontSize="xs"><b>Rating 1 : Poor </b>|  <b>2 : Below Expectations </b>|  <b>3 : Meets Expectations </b>| <b>4 : Exceed Expecations </b>|  <b>5 : Outstanding </b></Text>
 						</VStack>
 					</NativeBaseProvider>
 				</div>

@@ -19,7 +19,11 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	const [rating, setRating] = useState<any>();
 	var ratings = 0;
 	const submitBack1 = (e: { preventDefault: () => void; }) => {
-		props.history.push("/ManagerHomePage");
+		if (localStorage.getItem('userType') == "3") {
+			props.history.push("/ManagerHomePage");
+		} else if (localStorage.getItem('userType') == "4") {
+			props.history.push("/EmployeeHomePage");
+		}
 	}
 	useEffect(() => {
 		(async () => {
@@ -210,17 +214,17 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 		if (product != undefined) {
 			getDeliverables();
 		}
-		
+
 	}
 	const handleChange1 = (id: string) => {
 		setDeliverable(id);
-	
-	if (deliverable != undefined) {
-		getTasks();
-		setTask(id);
+
+		if (deliverable != undefined) {
+			getTasks();
+			setTask(id);
+		}
+		setRating(ratings);
 	}
-	setRating(ratings);
-}
 	const submit = (e: { preventDefault: () => void; }) => {
 		console.log("Started");
 		e.preventDefault();
@@ -269,7 +273,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	}
 	const submitBack = (e: { preventDefault: () => void; }) => {
 		props.history.push("/EmployeeHomePage");
-	  }
+	}
 	return (
 		<div>
 			<nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -299,7 +303,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 					<h1 className="well text-center">Welcome !</h1>
 					<NativeBaseProvider >
 						<VStack space={1}>
-						<Text style={[{ color: "green" }]} fontSize="xs"><b>Rating 1 : Poor </b>|  <b>2 : Below Expectations </b>|  <b>3 : Meets Expectations </b>| <b>4 : Exceed Expecations </b>|  <b>5 : Outstanding </b></Text>
+							<Text style={[{ color: "green" }]} fontSize="xs"><b>Rating 1 : Poor </b>|  <b>2 : Below Expectations </b>|  <b>3 : Meets Expectations </b>| <b>4 : Exceed Expecations </b>|  <b>5 : Outstanding </b></Text>
 						</VStack>
 					</NativeBaseProvider>
 				</div>
@@ -356,7 +360,6 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 								<div className="row">
 									<div className="col-sm-2 form-group">
 										<button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
-										<button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
 									</div>
 									<div id="submitBack" className="col-sm-2 form-group">
 

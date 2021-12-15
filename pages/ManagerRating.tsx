@@ -6,7 +6,7 @@ import Department from '../model/Department';
 import { Text, VStack, Center, NativeBaseProvider } from "native-base";
 import Footer from './Footer';
 import Header from './Header';
-const map1 = new Map();
+ let li: [];
 var ratName: any;
 export const ManagerRating = (props: { history: string[]; title: string; state: string; }) => {
 	const [employeeData, setEmployeeData] = useState<any>();
@@ -125,6 +125,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
 					var man = document.getElementById('managerRating');
+					li = data.ratingReponseList;
 					var opt = null; var opt1 = null; var opt2 = null; let lineB = null; let brek = null; let brek1 = null; var label1; var label2; var label3; let count = 0;
 					for (let i = 0; i < data.ratingReponseList.length; i++) {
 						lineB = document.createElement("br");
@@ -151,18 +152,21 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 						opt.id = data.ratingReponseList[i].taskId;
 						opt.value = data.ratingReponseList[i].taskName;
 						opt.innerHTML = data.ratingReponseList[i].taskName;
-						opt1.id = data.ratingReponseList[i].empRating;
+						opt1.id = data.ratingReponseList[i].ratingId;
 						opt1.value = data.ratingReponseList[i].empRating;
 						opt1.innerHTML = data.ratingReponseList[i].empRating;
 						opt2.id = data.ratingReponseList[i].ratingId;
 						opt2.value = data.ratingReponseList[i].mangerRating;
 						opt2.innerHTML = data.ratingReponseList[i].mangerRating;
+						opt.setAttribute('readonly','true')
+						isTrueSet ? opt1.setAttribute('readonly','true') : null
 						count == 0 ? (sel == null ? document.getElementById('searchDepartments') : sel.appendChild(label1)) : count++;
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
 						count == 0 ? (rat == null ? document.getElementById('searchRating') : rat.appendChild(label2)) : count++;
 						rat == null ? document.getElementById('searchRating') : rat.appendChild(opt1);
 						rat == null ? document.getElementById('searchRating') : rat.appendChild(lineB);
+						rat == null ? document.getElementById('managerRating') : rat.addEventListener("change", updateValue1);
 						count == 0 ? (man == null ? document.getElementById('managerRating') : isTrueSet ? man.appendChild(label3) : null) : count++;
 						man == null ? document.getElementById('managerRating') : isTrueSet ? man.appendChild(opt2) : null;
 						man == null ? document.getElementById('managerRating') : man.addEventListener("change", updateValue);
@@ -182,9 +186,29 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			});
 	}
 	function updateValue(e: { target: { value: any; id: any }; }) {
-
-		var rat = document.getElementById('managerRating');
-		map1.set(e.target.id, e.target.value);
+		var arrray1 = li;
+        for (let userObject of arrray1) {
+            console.log(userObject);
+            if (userObject.ratingId == e.target.id) {
+                let index = arrray1.indexOf(userObject);
+                li?.splice(index, 1);
+                userObject.mangerRating = parseInt(e.target.value);
+                li?.push(userObject);
+            }
+        }
+	}
+	function updateValue1(e: { target: { value: any; id: any }; }) {
+		var arrray1 = li; let checkBol = true
+        for (let userObject of arrray1) {
+            console.log(userObject);
+            if (userObject.ratingId == e.target.id) {
+                let index = arrray1.indexOf(userObject);
+                li?.splice(index, 1);
+                userObject.empRating = parseInt(e.target.value);
+                li?.push(userObject);
+                checkBol = false;
+            }
+        }
 	}
 	const handleChange = (id: string) => {
 		setRatingName(id);
@@ -202,28 +226,20 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 		{
 			let collection: never[] = [];
 			console.log("Started");
-			collection.Company = company,
-				collection.Product = product,
-				collection.Deliverable = deliverable,
-				collection.Task = tasks;
-			collection.Rating = ratings;
-			collection.ManagerRating = managerRating;
-			// collection.push(col);
-			var sel = document.getElementById('searchDepartments');
-			var rat = document.getElementById('searchRating');
-			var d = null;
-			var count = sel.childElementCount;
-			map1;
 			const arr = [];
-			for (const [key, value] of map1.entries()) {
-				var obj = {
-					id: key,
-					empId: employeeId,
-					ManagerRating: parseInt(value),
-				}
-				arr.push(obj)
-				console.log(key, value);
-			}
+			if (li != undefined) {
+                for (let i = 0; i < li.length; i++) {
+                    var obj = {
+                        id: li[i].ratingId,
+						taskId:li[i].taskId,
+						empId: employeeId,
+                        rating: li[i].empRating,
+                        name: li[i].taskName,
+                        managerRating: li[i].mangerRating,
+                    }
+                    arr.push(obj)
+                }
+            }
 			console.log(arr);
 			var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/Rating/Update', {
@@ -245,8 +261,11 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 				.then(data => {
 					console.log('Success:', data);
 					alert("Rating Submitted Successfully");
-					map1.clear();
-					props.history.push("/EmployeeRating");
+					li = [];
+					if (localStorage.getItem('userType') == "4") {
+						props.history.push("/EmployeeHomePage");
+					} else
+						props.history.push("/EmployeeRating");
 				})
 				.catch((error) => {
 					console.error('Error:', error);

@@ -178,7 +178,7 @@ export const Charts = (props: { history: string[]; title: string; state: string;
                         <StackedBarChart
                         data={dataStru}
                         width={Dimensions.get('window').width - 250}
-                        height={230}
+                        height={370}
                         chartConfig={{
                             backgroundColor: '#EB2828',
                             fillShadowGradient: '#FCBD00',

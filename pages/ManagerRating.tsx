@@ -6,7 +6,7 @@ import Department from '../model/Department';
 import { Text, VStack, Center, NativeBaseProvider } from "native-base";
 import Footer from './Footer';
 import Header from './Header';
- let li: [];
+let li: [];
 var ratName: any;
 export const ManagerRating = (props: { history: string[]; title: string; state: string; }) => {
 	const [employeeData, setEmployeeData] = useState<any>();
@@ -38,7 +38,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 		setEmployeeId(empid);
 		console.log("empid", empid);
 		(async () => {
-			if (localStorage.getItem('userType') == "3"|| localStorage.getItem('userType') == "4") {
+			if (localStorage.getItem('userType') == "3" || localStorage.getItem('userType') == "4") {
 				var sel = document.getElementById('submitBack');
 				var btn = document.createElement('BUTTON');
 				btn.innerHTML = "Back";
@@ -158,8 +158,8 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 						opt2.id = data.ratingReponseList[i].ratingId;
 						opt2.value = data.ratingReponseList[i].mangerRating;
 						opt2.innerHTML = data.ratingReponseList[i].mangerRating;
-						opt.setAttribute('readonly','true')
-						isTrueSet ? opt1.setAttribute('readonly','true') : null
+						opt.setAttribute('readonly', 'true')
+						isTrueSet ? opt1.setAttribute('readonly', 'true') : null
 						count == 0 ? (sel == null ? document.getElementById('searchDepartments') : sel.appendChild(label1)) : count++;
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
 						sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
@@ -187,28 +187,28 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	}
 	function updateValue(e: { target: { value: any; id: any }; }) {
 		var arrray1 = li;
-        for (let userObject of arrray1) {
-            console.log(userObject);
-            if (userObject.ratingId == e.target.id) {
-                let index = arrray1.indexOf(userObject);
-                li?.splice(index, 1);
-                userObject.mangerRating = parseInt(e.target.value);
-                li?.push(userObject);
-            }
-        }
+		for (let userObject of arrray1) {
+			console.log(userObject);
+			if (userObject.ratingId == e.target.id) {
+				let index = arrray1.indexOf(userObject);
+				li?.splice(index, 1);
+				userObject.mangerRating = parseInt(e.target.value);
+				li?.push(userObject);
+			}
+		}
 	}
 	function updateValue1(e: { target: { value: any; id: any }; }) {
 		var arrray1 = li; let checkBol = true
-        for (let userObject of arrray1) {
-            console.log(userObject);
-            if (userObject.ratingId == e.target.id) {
-                let index = arrray1.indexOf(userObject);
-                li?.splice(index, 1);
-                userObject.empRating = parseInt(e.target.value);
-                li?.push(userObject);
-                checkBol = false;
-            }
-        }
+		for (let userObject of arrray1) {
+			console.log(userObject);
+			if (userObject.ratingId == e.target.id) {
+				let index = arrray1.indexOf(userObject);
+				li?.splice(index, 1);
+				userObject.empRating = parseInt(e.target.value);
+				li?.push(userObject);
+				checkBol = false;
+			}
+		}
 	}
 	const handleChange = (id: string) => {
 		setRatingName(id);
@@ -228,18 +228,18 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 			console.log("Started");
 			const arr = [];
 			if (li != undefined) {
-                for (let i = 0; i < li.length; i++) {
-                    var obj = {
-                        id: li[i].ratingId,
-						taskId:li[i].taskId,
+				for (let i = 0; i < li.length; i++) {
+					var obj = {
+						id: li[i].ratingId,
+						taskId: li[i].taskId,
 						empId: employeeId,
-                        rating: li[i].empRating,
-                        name: li[i].taskName,
-                        managerRating: li[i].mangerRating,
-                    }
-                    arr.push(obj)
-                }
-            }
+						rating: li[i].empRating,
+						name: li[i].taskName,
+						managerRating: li[i].mangerRating,
+					}
+					arr.push(obj)
+				}
+			}
 			console.log(arr);
 			var bearer = localStorage.getItem('token');
 			fetch('https://localhost:44369/api/Rating/Update', {
@@ -369,10 +369,13 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 									<br />
 								</div>
 								<br />
+
 								<div className="row">
-									<div className="col-sm-2 form-group">
-										<button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
-									</div>
+									{company &&
+										<div className="col-sm-2 form-group">
+											<button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
+										</div>
+									}
 									<div id="submitBack" className="col-sm-2 form-group">
 
 									</div>

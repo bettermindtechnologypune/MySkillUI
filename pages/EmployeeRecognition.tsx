@@ -27,7 +27,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	}
 	useEffect(() => {
 		(async () => {
-			if (localStorage.getItem('userType') == "3") {
+			if (localStorage.getItem('userType') == "3" || localStorage.getItem('userType') == "4") {
 				var sel = document.getElementById('submitBack');
 				btn = document.createElement('BUTTON');
 				btn.innerHTML = "Back";
@@ -263,7 +263,11 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 					if (btn == null) {
 						props.history.push("./");
 					} else {
-						props.history.push("./ManagerHomePage");
+						if (localStorage.getItem('userType') == "3") {
+							props.history.push("/ManagerHomePage");
+						} else if (localStorage.getItem('userType') == "4") {
+							props.history.push("/EmployeeHomePage");
+						}
 					}
 				})
 				.catch((error) => {

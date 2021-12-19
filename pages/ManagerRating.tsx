@@ -172,10 +172,12 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 						rat == null ? document.getElementById('searchRating') : rat.appendChild(opt1);
 						rat == null ? document.getElementById('searchRating') : rat.appendChild(lineB);
 						rat == null ? document.getElementById('managerRating') : rat.addEventListener("change", updateValue1);
+						if(isTrueSet){
 						count == 0 ? (man == null ? document.getElementById('managerRating') : isTrueSet ? man.appendChild(label3) : null) : count++;
 						man == null ? document.getElementById('managerRating') : isTrueSet ? man.appendChild(opt2) : null;
 						man == null ? document.getElementById('managerRating') : man.addEventListener("change", updateValue);
 						man == null ? document.getElementById('managerRating') : man.appendChild(brek1);
+						}
 						setEmployeeId(empid);
 						count++;
 					}
@@ -223,10 +225,12 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 		var sel = document.getElementById('searchDepartments');
 		var rat = document.getElementById('searchRating');
 		var man = document.getElementById('managerRating');
-		while (sel?.lastChild && rat?.lastChild && man?.lastChild) {
+		while (sel?.lastChild && rat?.lastChild) {
 			sel?.removeChild(sel.lastChild);
 			rat?.removeChild(rat.lastChild);
+			if(isTrueSet){
 			man?.removeChild(man.lastChild);
+			}
 		}
 		getTasks();
 		setProduct(product);

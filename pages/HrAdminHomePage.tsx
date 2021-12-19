@@ -371,7 +371,7 @@ return (
                 <button button-type='submit' className="btn btn-primary " onClick={updateLevelTwo}>Edit Deliverables </button> &nbsp;
                 <button button-type='submit' className="btn btn-primary " onClick={chartView}>Skill Level Chart</button>&nbsp; <br /><br />
                 <button button-type='submit' className="btn btn-primary " onClick={multiSkillLevelChart}>Multi Skill Level Chart</button>&nbsp;
-                <button button-type='submit' className="btn btn-primary " onClick={skillIndexChart}>Skill Index Chart</button><br /> <br />
+                <button button-type='submit' className="btn btn-primary "  disabled={true} onClick={skillIndexChart}>Skill Index Chart</button><br /> <br />
                 <h3>Edit Company Details</h3><br />
                 <div className="col-sm-12">
                     <div className="row">

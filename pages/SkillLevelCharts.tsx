@@ -4,7 +4,7 @@ import { BarChart, StackedBarChart } from 'react-native-chart-kit';
 import { StackedBarChartData } from 'react-native-chart-kit/dist/StackedBarChart';
 import Header from './Header';
 let li: []; const map1 = new Map();
-export const Charts = (props: { history: string[]; title: string; state: string; }) => {
+export const SkillLevelCharts = (props: { history: string[]; title: string; state: string; }) => {
     const [products, setProductData] = useState<any>();
     const [product, setProduct] = useState<any>();
     const [charts, setChartData] = useState<any>();
@@ -131,7 +131,7 @@ export const Charts = (props: { history: string[]; title: string; state: string;
             <View>
                 
                 <div className="text-center col-6 mx-auto">
-                <h2> Skill Base Chart View </h2>
+                <h2> Skill Level Chart View </h2>
                 <br /><br />
                 <form>
                 <div className="col-sm-12">
@@ -213,8 +213,8 @@ const styleSheet = StyleSheet.create({
     }
 
 });
-export default Charts;
-Charts.defaultProps = {
+export default SkillLevelCharts;
+SkillLevelCharts.defaultProps = {
     title: "Skill Base",
     searchBar: true
 }

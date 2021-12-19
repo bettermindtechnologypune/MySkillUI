@@ -17,9 +17,10 @@ import ManagerRating from "./pages/ManagerRating";
 import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-router-dom";
 import UpdateLevelOne from './pages/UpdateLevelOne';
 import UpdateLevelTwo from './pages/UpdateLevelTwo';
-import Charts from './pages/Charts';
+import SkillLevelCharts from './pages/SkillLevelCharts';
 import EmployeeHomePage from './pages/EmployeeHomePage';
-
+import MultiSkillLevelChart from './pages/MultiSkillLevelChart';
+import SkillIndexChart from './pages/SkillIndexChart';
 // import {Dropdown  } from "react-native";
 // import { Dropdown } from "react-native-material-dropdown";
 const { height } = Dimensions.get('screen');
@@ -45,7 +46,10 @@ const App = () => {
       <Route exact path = "/UpdateLevelOne" component = {UpdateLevelOne}/>
       <Route exact path = "/UpdateLevelTwo" component = {UpdateLevelTwo}/>
       <Route exact path = "/EmployeeHomePage" component = {EmployeeHomePage}/>
-      <Route exact path = "/Charts" component = {Charts}/>
+      <Route exact path = "/SkillLevelCharts" component = {SkillLevelCharts}/>
+      <Route exact path = "/MultiSkillLevelChart" component = {MultiSkillLevelChart}/>
+      <Route exact path = "/SkillIndexChart" component = {SkillIndexChart}/>
+      
       <Redirect to="/404"></Redirect>      
       </Switch>
     </Router>

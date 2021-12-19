@@ -7,7 +7,7 @@ import { Text, VStack, Center, NativeBaseProvider } from "native-base";
 import Footer from './Footer';
 import Header from './Header';
 let li: [];
-var ratName: any;
+var ratName: any;	var isTrueSet: boolean;
 export const ManagerRating = (props: { history: string[]; title: string; state: string; }) => {
 	const [employeeData, setEmployeeData] = useState<any>();
 	const [companies, setCompanyData] = useState<any>();
@@ -25,7 +25,7 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 	const [employeeId, setEmployeeId] = useState<any>();
 	const [managerRating, setManagerRating] = useState<any>();
 	let empid: any;
-	var isTrueSet: boolean;
+
 	const submitBack1 = (e: { preventDefault: () => void; }) => {
 		if (localStorage.getItem('userType') == "4") {
 			props.history.push("/EmployeeHomePage");
@@ -125,6 +125,11 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 					var sel = document.getElementById('searchDepartments');
 					var rat = document.getElementById('searchRating');
 					var man = document.getElementById('managerRating');
+					// while (sel?.firstChild || rat?.firstChild || man?.firstChild) {
+					//     sel?.removeChild(sel.firstChild);
+					// 	rat?.removeChild(rat.firstChild);
+					// 	man?.removeChild(man.firstChild);
+					// }
 					li = data.ratingReponseList;
 					var opt = null; var opt1 = null; var opt2 = null; let lineB = null; let brek = null; let brek1 = null; var label1; var label2; var label3; let count = 0;
 					for (let i = 0; i < data.ratingReponseList.length; i++) {
@@ -215,7 +220,15 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 		setEmployeeId(employeeId);
 		empid = employeeId;
 		ratName = id;
-		// getTasks();
+		var sel = document.getElementById('searchDepartments');
+		var rat = document.getElementById('searchRating');
+		var man = document.getElementById('managerRating');
+		while (sel?.lastChild && rat?.lastChild && man?.lastChild) {
+			sel?.removeChild(sel.lastChild);
+			rat?.removeChild(rat.lastChild);
+			man?.removeChild(man.lastChild);
+		}
+		getTasks();
 		setProduct(product);
 		setDeliverable(deliverable);
 

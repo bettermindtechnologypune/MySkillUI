@@ -5,7 +5,7 @@ import { Text, VStack, Center, NativeBaseProvider } from "native-base";
 import { View } from 'react-native';
 import Footer from './Footer';
 const map1 = new Map();
-var btn: HTMLElement | null = null;
+var btn: HTMLElement | null = null; let prod: string | null = null; let deliv: string | null = null;
 
 export const EmployeeRecognition = (props: { history: string[]; title: string; state: string; }) => {
 	const [companies, setCompanyData] = useState<any>();
@@ -89,6 +89,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 				if (data != undefined) {
 					setProduct(data[0].id)
 					setProductData(data)
+					prod = data[0].id;
 					if (product != undefined) {
 						getDeliverables();
 					}
@@ -111,16 +112,24 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 			method: 'GET',
 			headers: requestHeaders
 		}
-		fetch('https://localhost:44369/api/LeveTwo/' + product, httpGetObject)
+		fetch('https://localhost:44369/api/LeveTwo/' + prod, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
-				if (data.status == 400) {
+				if (data.status == 400 || data.status == 404) {
 					console.log("No data Found")
+					var sel = document.getElementById('searchDepartments');
+					var rat = document.getElementById('searchRating');
+					while (sel?.firstChild && rat?.firstChild) {
+						sel?.removeChild(sel.firstChild);
+						rat?.removeChild(rat.firstChild);
+					}
+					setDeliverableData(null);
 				}
 				else if (data != undefined) {
 					setDeliverable(data[0].id)
 					setDeliverableData(data)
-
+					deliv = data[0].id;
+					getTasks();
 					return data;
 				} else {
 					return null;
@@ -140,7 +149,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 			method: 'GET',
 			headers: requestHeaders
 		}
-		fetch('https://localhost:44369/api/Task/' + deliverable, httpGetObject)
+		fetch('https://localhost:44369/api/Task/' + deliv, httpGetObject)
 			.then(response => response.json())
 			.then(data => {
 				if (data.status == 404) {
@@ -211,6 +220,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	const handleChange = (id: string) => {
 		setCompany(localStorage.getItem('buName'));
 		setProduct(id);
+		prod = id;
 		if (product != undefined) {
 			getDeliverables();
 		}
@@ -218,7 +228,7 @@ export const EmployeeRecognition = (props: { history: string[]; title: string; s
 	}
 	const handleChange1 = (id: string) => {
 		setDeliverable(id);
-
+		deliv = id;
 		if (deliverable != undefined) {
 			getTasks();
 			setTask(id);

@@ -6,8 +6,8 @@ import EmployeeCreate from "./EmployeeCreate";
 import { FC, ChangeEvent, useEffect } from 'react'
 import { useState } from 'react';
 import TaskModel from '../model/TaskModel';
-const map1 = new Map();let li: TaskModel[] | { id: null; levelId: any; name: null; wattage: any; }[] | { wattage: string; }[] | undefined = []; 
-var tak: string ; var takName: null = null; 
+const map1 = new Map(); let li: TaskModel[] | { id: null; levelId: any; name: null; wattage: any; }[] | { wattage: string; }[] | undefined = [];
+var tak: string; var takName: null = null; let prod: string | null = null; let deliv: string | null = null;
 export const HrAdminHomePage = (props: { history: string[]; }) => {
     const [products, setProductData] = useState<any>();
     const [product, setProduct] = useState<any>();
@@ -20,30 +20,30 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
     const DeptCreate = (e: { preventDefault: () => void; }) => {
         props.history.push("./DepartmentCreate");
     }
- 
+
     const EmpCreate = (e: { preventDefault: () => void; }) => {
         props.history.push("./EmployeeCreate");
     }
 
-    const updateLevelOne =  (e: { preventDefault: () => void; }) => {
+    const updateLevelOne = (e: { preventDefault: () => void; }) => {
         props.history.push("./UpdateLevelOne");
     }
-    const updateLevelTwo =  (e: { preventDefault: () => void; }) => {
+    const updateLevelTwo = (e: { preventDefault: () => void; }) => {
         props.history.push("./UpdateLevelTwo");
     }
-    const chartView =  (e: { preventDefault: () => void; }) => {
+    const chartView = (e: { preventDefault: () => void; }) => {
         props.history.push("./SkillLevelCharts");
     }
-    const multiSkillLevelChart =  (e: { preventDefault: () => void; }) => {
+    const multiSkillLevelChart = (e: { preventDefault: () => void; }) => {
         props.history.
-        push("./MultiSkillLevelChart");
+            push("./MultiSkillLevelChart");
     }
-    const skillIndexChart =  (e: { preventDefault: () => void; }) => {
+    const skillIndexChart = (e: { preventDefault: () => void; }) => {
         props.history.push("./SkillIndexChart");
     }
     useEffect(() => {
         (async () => {
-            
+
             var products = await getProducts();
             if (product != undefined) {
                 var deliverables = await getDeliverables();
@@ -51,7 +51,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
             if (deliverable != undefined) {
                 var tasks = await getTasks();
             }
-          
+
         })()
 
     }, [])
@@ -73,6 +73,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                 if (data != undefined) {
                     setProduct(data[0].id)
                     setProductData(data)
+                    prod = data[0].id;
                     if (product != undefined) {
                         getDeliverables();
                     }
@@ -95,19 +96,24 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
             method: 'GET',
             headers: requestHeaders
         }
-        fetch('https://localhost:44369/api/LeveTwo/' + product, httpGetObject)
+        fetch('https://localhost:44369/api/LeveTwo/' + prod, httpGetObject)
             .then(response => response.json())
             .then(data => {
-                if (data.status == 400) {
+                if (data.status == 400 || data.status == 404) {
                     console.log("No data Found")
-                }
-                else if (data.status == 404) {
-                    console.log("No data Found")
+                    var sel = document.getElementById('searchDepartments');
+                    var rat = document.getElementById('searchRating');
+                    while (sel?.firstChild && rat?.firstChild) {
+                        sel?.removeChild(sel.firstChild);
+                        rat?.removeChild(rat.firstChild);
+                    }
+                    setDeliverableData(null);
                 }
                 else if (data != undefined) {
                     setDeliverable(data[0].id)
                     setDeliverableData(data)
-
+                    deliv = data[0].id;
+                    getTasks();
                     return data;
                 } else {
                     return null;
@@ -127,7 +133,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
             method: 'GET',
             headers: requestHeaders
         }
-        fetch('https://localhost:44369/api/Task/' + deliverable, httpGetObject)
+        fetch('https://localhost:44369/api/Task/' + deliv, httpGetObject)
             .then(response => response.json())
             .then(data => {
                 if (data.status == 404) {
@@ -172,7 +178,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                         opt1.id = data[i].id;
                         opt1.innerHTML = data[i].wattage;
                         opt1.value = data[i].wattage;
-                        map1.set(data[i].id, data[i].name+"/"+data[i].wattage);
+                        map1.set(data[i].id, data[i].name + "/" + data[i].wattage);
                         count == 0 ? (sel == null ? document.getElementById('searchDepartments') : sel.appendChild(label1)) : count++;
                         sel == null ? document.getElementById('searchDepartments') : sel.appendChild(opt);
                         sel == null ? document.getElementById('searchDepartments') : sel.appendChild(brek);
@@ -199,7 +205,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
         var arrray1 = li; let checkBol = true
         for (let userObject of arrray1) {
             console.log(userObject);
-            if(userObject.id == e.target.id){
+            if (userObject.id == e.target.id) {
                 let index = arrray1.indexOf(userObject);
                 li?.splice(index, 1);
                 userObject.wattage = parseInt(e.target.value);
@@ -207,14 +213,14 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                 checkBol = false;
             }
         }
-        if(checkBol){
-        let obj = {
-            id: tak!=""?tak : undefined,
-            levelId: deliverable,
-            name: takName,
-            wattage: parseInt(e.target.value)
-    }
-    li.push(obj);
+        if (checkBol) {
+            let obj = {
+                id: tak != "" ? tak : undefined,
+                levelId: deliverable,
+                name: takName,
+                wattage: parseInt(e.target.value)
+            }
+            li.push(obj);
         }
     }
 
@@ -225,32 +231,32 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
         var arrray1 = li;
         for (let userObject of arrray1) {
             console.log(userObject);
-            if(userObject.id == tak){
+            if (userObject.id == tak) {
                 let index = arrray1.indexOf(userObject);
                 li?.splice(index, 1);
                 userObject.name = e.target.value;
                 li?.push(userObject);
             }
         }
-       
+
     }
     const handleChange = (id: string) => {
         setProduct(id);
+        prod = id;
         if (product != undefined) {
             getDeliverables();
         }
     }
     const handleChange1 = (id: string) => {
         setDeliverable(id);
+        deliv = id;
         if (deliverable != undefined) {
             getTasks();
         }
-        // setRating(ratings);
-
     }
     const addFields = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        
+
         var sel = document.getElementById('searchDepartments');
         var rat = document.getElementById('searchRating');
         var opt = null; var opt1 = null; var lineB = null; let brek = null; var label1; var label2; let count = 0;
@@ -273,58 +279,58 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
         e.preventDefault();
         var sel = document.getElementById('searchDepartments');
         var rat = document.getElementById('searchRating');
-        if (cou > 0) { 
-        for (let i = 0; i < 2; i++) {
-            sel?.removeChild(sel.lastElementChild);
-            rat?.removeChild(rat.lastElementChild);
-            setCount(cou - 1);
+        if (cou > 0) {
+            for (let i = 0; i < 2; i++) {
+                sel?.removeChild(sel.lastElementChild);
+                rat?.removeChild(rat.lastElementChild);
+                setCount(cou - 1);
+            }
         }
     }
-}
-const submit = (e: { preventDefault: () => void; }) => {
-    console.log("Started");
-    e.preventDefault();
-    {
-        var total = 0;
-        for (let i = 0; i < li.length; i++) {
-            total += parseInt(li[i].wattage);
-        }
-       if(total!=100){
-           alert("Total Wattage should be 100%");
-           return;
-       }
-        const arr = [];
-        if(li!=undefined){
-			for (let i=0;i<li.length;i++) {
-				var obj = {
-					Id: li[i].id,
-                    LevelId: li[i].levelId,
-                    Name: li[i].name,
-                    Wattage: li[i].wattage
-				}
-				arr.push(obj)
-			}
-        }
-        console.log(arr);
-        fetch('https://localhost:44369/api/Task/Update', {
-            method: 'PATCH',
-            headers: {
-                'Authorization': localStorage.getItem('token'),
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(arr),
-        })
-            .then(response => {
-                if (response.status == 200)
-                    return response.json()
-                else {
-                    console.log(response)
-                    throw new Error("Unauthorized")
+    const submit = (e: { preventDefault: () => void; }) => {
+        console.log("Started");
+        e.preventDefault();
+        {
+            var total = 0;
+            for (let i = 0; i < li.length; i++) {
+                total += parseInt(li[i].wattage);
+            }
+            if (total != 100) {
+                alert("Total Wattage should be 100%");
+                return;
+            }
+            const arr = [];
+            if (li != undefined) {
+                for (let i = 0; i < li.length; i++) {
+                    var obj = {
+                        Id: li[i].id,
+                        LevelId: li[i].levelId,
+                        Name: li[i].name,
+                        Wattage: li[i].wattage
+                    }
+                    arr.push(obj)
                 }
+            }
+            console.log(arr);
+            fetch('https://localhost:44369/api/Task/Update', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': localStorage.getItem('token'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(arr),
             })
-            .then(data => {
-                console.log('Success:', data);
-                alert("Rating Submitted Successfully");
+                .then(response => {
+                    if (response.status == 200)
+                        return response.json()
+                    else {
+                        console.log(response)
+                        throw new Error("Unauthorized")
+                    }
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert("Rating Submitted Successfully");
                     // props.history.push("./");
                     var sel = document.getElementById('searchDepartments');
                     var rat = document.getElementById('searchRating');
@@ -332,115 +338,115 @@ const submit = (e: { preventDefault: () => void; }) => {
                         sel?.removeChild(sel.firstChild);
                         rat?.removeChild(rat.firstChild);
                     }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
     }
-}
-return (
-    <div>
-        <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
-            <div className="container-fluid">
-                <a className="navbar-brand" href="#">{props.title}</a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="./">Logout</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">About</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">{props.state}</a>
-                        </li>
-                    </ul>
+    return (
+        <div>
+            <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="#">{props.title}</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item">
+                                <a className="nav-link active" aria-current="page" href="./">Logout</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">About</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">{props.state}</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-        <div className="text-center col-6 mx-auto"><br /><br />
-            <h3>Welcome !!</h3><br />
-            <form onSubmit={submit}>
-                <br />
-                <button button-type='submit' className="btn btn-primary " onClick={DeptCreate}>Department Create</button> &nbsp;
-                <button button-type='submit' className="btn btn-primary " onClick={EmpCreate}>Employee Create</button> &nbsp;
-                <button button-type='submit' className="btn btn-primary " onClick={updateLevelOne}>Edit Products </button> &nbsp;
-                <button button-type='submit' className="btn btn-primary " onClick={updateLevelTwo}>Edit Deliverables </button> &nbsp;
-                <button button-type='submit' className="btn btn-primary " onClick={chartView}>Skill Level Chart</button>&nbsp; <br /><br />
-                <button button-type='submit' className="btn btn-primary " onClick={multiSkillLevelChart}>Multi Skill Level Chart</button>&nbsp;
-                <button button-type='submit' className="btn btn-primary "  disabled={true} onClick={skillIndexChart}>Skill Index Chart</button><br /> <br />
-                <h3>Edit Company Details</h3><br />
-                <div className="col-sm-12">
-                    <div className="row">
-                        {products &&
-                            <div className="col-sm-6 form-group">
-                                <label>Product Name <mark className="highlightedText">*</mark></label>
-                                <select name="product" className="form-control" value={product.id} onChange={(event) => handleChange(event.target.value)}>
-                                    {products.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
-                                        return <option key={key} value={e.id}>{e.name}</option>;
-                                    })}
-                                </select>
-                            </div>
-                        }
-                        {deliverables &&
-                            <div className="col-sm-6 form-group">
-                                <label>Deliverable Name <mark className="highlightedText">*</mark></label>
-                                <select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange1(event.target.value)}>
-                                    {deliverables.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
-                                        return <option key={key} value={e.id}>{e.name}</option>;
-                                    })}
-                                </select>
-                            </div>
-                        }
-                    </div>
-
-                    <div className="row">
-                        {tasks1 &&
-                            <div id="searchDepartments" className="col-sm-6 form-group">
-                                <br />
-                            </div>
-                        }
-
-                        {tasks1 &&
-                            <div id="searchRating" className="col-sm-2 form-group">
-
-                                <br />
-                            </div>
-                        }
-                        <br />
-
-                    </div>
-
+            </nav>
+            <div className="text-center col-6 mx-auto"><br /><br />
+                <h3>Welcome !!</h3><br />
+                <form onSubmit={submit}>
                     <br />
-                    <div className="row">
-                        {tasks1 &&
-                            <div className="col-sm-2 form-group">
-                                <button type="submit" className="btn btn-primary" onClick={addFields}>Add</button> &nbsp; &nbsp;
-                            </div>
-                        }
-                        {tasks1 &&
-                            <div className="col-sm-2 form-group">
-                                <button type="submit" className="btn btn-primary" onClick={clearFields}>Clear</button> &nbsp; &nbsp;
-                            </div>
-                        }
-                        <div className="col-sm-2 form-group">
-                            <button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
+                    <button button-type='submit' className="btn btn-primary " onClick={DeptCreate}>Department Create</button> &nbsp;
+                    <button button-type='submit' className="btn btn-primary " onClick={EmpCreate}>Employee Create</button> &nbsp;
+                    <button button-type='submit' className="btn btn-primary " onClick={updateLevelOne}>Edit Products </button> &nbsp;
+                    <button button-type='submit' className="btn btn-primary " onClick={updateLevelTwo}>Edit Deliverables </button> &nbsp;
+                    <button button-type='submit' className="btn btn-primary " onClick={chartView}>Skill Level Chart</button>&nbsp; <br /><br />
+                    <button button-type='submit' className="btn btn-primary " onClick={multiSkillLevelChart}>Multi Skill Level Chart</button>&nbsp;
+                    <button button-type='submit' className="btn btn-primary " disabled={true} onClick={skillIndexChart}>Skill Index Chart</button><br /> <br />
+                    <h3>Edit Company Details</h3><br />
+                    <div className="col-sm-12">
+                        <div className="row">
+                            {products &&
+                                <div className="col-sm-6 form-group">
+                                    <label>Product Name <mark className="highlightedText">*</mark></label>
+                                    <select name="product" className="form-control" value={product.id} onChange={(event) => handleChange(event.target.value)}>
+                                        {products.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
+                                            return <option key={key} value={e.id}>{e.name}</option>;
+                                        })}
+                                    </select>
+                                </div>
+                            }
+                            {deliverables &&
+                                <div className="col-sm-6 form-group">
+                                    <label>Deliverable Name <mark className="highlightedText">*</mark></label>
+                                    <select name="deliverable" className="form-control" value={deliverable.id} onChange={(event) => handleChange1(event.target.value)}>
+                                        {deliverables.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
+                                            return <option key={key} value={e.id}>{e.name}</option>;
+                                        })}
+                                    </select>
+                                </div>
+                            }
                         </div>
-                    </div>
 
-                </div>
-            </form>
-        </div>
-        {/* <View>
+                        <div className="row">
+                            {tasks1 &&
+                                <div id="searchDepartments" className="col-sm-6 form-group">
+                                    <br />
+                                </div>
+                            }
+
+                            {tasks1 &&
+                                <div id="searchRating" className="col-sm-2 form-group">
+
+                                    <br />
+                                </div>
+                            }
+                            <br />
+
+                        </div>
+
+                        <br />
+                        <div className="row">
+                            {tasks1 &&
+                                <div className="col-sm-2 form-group">
+                                    <button type="submit" className="btn btn-primary" onClick={addFields}>Add</button> &nbsp; &nbsp;
+                                </div>
+                            }
+                            {tasks1 &&
+                                <div className="col-sm-2 form-group">
+                                    <button type="submit" className="btn btn-primary" onClick={clearFields}>Clear</button> &nbsp; &nbsp;
+                                </div>
+                            }
+                            <div className="col-sm-2 form-group">
+                                <button type="submit" className="btn btn-primary" >Submit</button> &nbsp; &nbsp;
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            {/* <View>
 				<View >
 					<Footer />
 				</View>
 			</View> */}
-    </div>
-)
+        </div>
+    )
 }
 HrAdminHomePage.defaultProps = {
     title: "Skill Base",

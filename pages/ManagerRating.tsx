@@ -349,19 +349,19 @@ export const ManagerRating = (props: { history: string[]; title: string; state: 
 									{company &&
 										<div className="col-sm-4 form-group">
 											<label>Company Name</label>
-											<input type="text" className="form-control" value={company} onChange={(e) => setCompany(e.target.value)} />
+											<input type="text" readOnly className="form-control" value={company} onChange={(e) => setCompany(e.target.value)} />
 										</div>
 									}
 									{product &&
 										<div className="col-sm-4 form-group">
 											<label>Product Name </label>
-											<input type="text" className="form-control" value={product} onChange={(e) => setProduct(e.target.value)} />
+											<input type="text" readOnly className="form-control" value={product} onChange={(e) => setProduct(e.target.value)} />
 										</div>
 									}
 									{deliverable &&
 										<div className="col-sm-4 form-group">
 											<label>Deliverable Name </label>
-											<input type="text" className="form-control" value={deliverable} onChange={(e) => setDeliverable(e.target.value)} />
+											<input type="text" readOnly className="form-control" value={deliverable} onChange={(e) => setDeliverable(e.target.value)} />
 										</div>
 									}
 								</div>

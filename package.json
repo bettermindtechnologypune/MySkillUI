@@ -31,7 +31,8 @@
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-md5-hash": "^0.0.6",
     "webpack-merge": "^5.8.0",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-shell-plugin": "^0.5.0",
+    "xlsx": "^0.17.4"
   },
   "devDependencies": {
     "@babel/core": "7.15.0",

@@ -41,7 +41,7 @@ export const AdminLogin = (props: { history: string[]; }) => {
         if (data.userType == 0) {
           props.history.push("./OrganizationCreate");
         } else if (data.userType == 1) {
-          props.history.push("./BusinessUnitCreate");
+          props.history.push("./OrganizationHomePage");
         } else if (data.userType == 2) {
           localStorage.setItem('buid',(data.buid));
           props.history.push("./HrAdminHomePage");

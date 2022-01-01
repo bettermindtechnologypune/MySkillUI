@@ -55,6 +55,9 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 				});
 		}
 	}
+	const submitBack = (e: { preventDefault: () => void; }) => {
+		props.history.push("/OrganizationHomePage");
+	  }
 	return (
 		<div>
 			<nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
@@ -127,7 +130,8 @@ export const BusinessUnitCreate = (props: { history: string[]; title: string; st
 										<input type="text" placeholder="Enter Website Name Here.." value={website} onChange={(e) => setWebsite(e.target.value)} className="form-control" />
 									</div>
 								</div><br />
-								<button type="submit" className="btn btn-primary" >Submit</button>
+								<button type="submit" className="btn btn-primary" >Submit</button> &nbsp;&nbsp;
+								<button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
 							</div>
 						</form>
 					</div>

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { BarChart, StackedBarChart } from 'react-native-chart-kit';
-import { StackedBarChartData } from 'react-native-chart-kit/dist/StackedBarChart';
-import Header from './Header';
+import { BarChart } from 'react-native-chart-kit';
 let li: []; const map1 = new Map();
 export const SkillIndexChart = (props: { history: string[]; title: string; state: string; }) => {
     const [charts, setChartData] = useState<any>();
@@ -32,10 +30,10 @@ export const SkillIndexChart = (props: { history: string[]; title: string; state
                 if (data != undefined) {
                     setChartData(data)
                     setDataStructure(null);
-                    let arr = [];
+                    let arr;
                     for (let i = 0; i < data.length; i++) {
-                        arr = [data[i].skillLevelZeroCount, data[i].skillLevelOneCount, data[i].skillLevelTwoCount, data[i].skillLevelThreeCount, data[i].skillLevelFourCount, data[i].skillLevelFiveCount]
-                        map1.set(data[i].levelTwoName, arr);
+                        arr = data[i].buSkillLevel
+                        map1.set(data[i].businessUnitName, arr);
                     }
                     let labelsData = []; let entryData = []; let i = 0;
                     for (const [key, value] of map1.entries()) {
@@ -45,10 +43,12 @@ export const SkillIndexChart = (props: { history: string[]; title: string; state
                     }
                     const dataStruct = {
                         labels: labelsData,
-                        data: entryData,
-                        barColors: ["#3399FF", "#F17A17", "#8D8C8B", "#F4BF0C", "#1837C6", "#27760B",],
-                        legend: ["Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5"],
-                    };
+                        datasets: [
+                          {
+                            data: entryData
+                          }
+                        ]
+                      };
                     setDataStructure(dataStruct);
                     return data;
                 } else {
@@ -101,7 +101,7 @@ export const SkillIndexChart = (props: { history: string[]; title: string; state
                         <BarChart
                             data={dataStru}
                             width={Dimensions.get('window').width - 250}
-                            height={370}
+                            height={350}
                             chartConfig={{
                                 backgroundColor: '#EB2828',
                                 fillShadowGradient: '#FCBD00',

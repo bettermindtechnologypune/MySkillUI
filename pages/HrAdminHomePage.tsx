@@ -38,8 +38,8 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
         props.history.
             push("./MultiSkillLevelChart");
     }
-    const skillIndexChart = (e: { preventDefault: () => void; }) => {
-        props.history.push("./SkillIndexChart");
+    const SkillMeasurementReport = (e: { preventDefault: () => void; }) => {
+        props.history.push("./SkillMeasurementReport");
     }
     const uploadXMLFile = (e: { preventDefault: () => void; }) => {
         props.history.push("./UploadXMLFile");
@@ -380,7 +380,7 @@ export const HrAdminHomePage = (props: { history: string[]; }) => {
                     <button button-type='submit' className="btn btn-primary " onClick={updateLevelTwo}>Edit Deliverables </button> &nbsp;
                     <button button-type='submit' className="btn btn-primary " onClick={chartView}>Skill Level Chart</button>&nbsp; <br /><br />
                     <button button-type='submit' className="btn btn-primary " onClick={multiSkillLevelChart}>Multi Skill Level Chart</button>&nbsp;
-                    <button button-type='submit' className="btn btn-primary " disabled={true} onClick={skillIndexChart}>Skill Index Chart</button>&nbsp;
+                    <button button-type='submit' className="btn btn-primary " onClick={SkillMeasurementReport}>Skill Measurement Report</button>&nbsp;
                     <button button-type='submit' className="btn btn-primary " onClick={uploadXMLFile}>Upload XML File</button><br /> <br />
                     <h3>Edit Company Details</h3><br />
                     <div className="col-sm-12">

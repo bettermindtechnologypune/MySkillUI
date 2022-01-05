@@ -22,8 +22,8 @@ import EmployeeHomePage from './pages/EmployeeHomePage';
 import MultiSkillLevelChart from './pages/MultiSkillLevelChart';
 import SkillIndexChart from './pages/SkillIndexChart';
 import OrganizationHomePage from './pages/OrganizationHomePage';
-// import {Dropdown  } from "react-native";
-// import { Dropdown } from "react-native-material-dropdown";
+import SkillMeasurementReport from './pages/SkillMeasurementReport';
+
 const { height } = Dimensions.get('screen');
 
 const App = () => {
@@ -51,6 +51,7 @@ const App = () => {
       <Route exact path = "/MultiSkillLevelChart" component = {MultiSkillLevelChart}/>
       <Route exact path = "/SkillIndexChart" component = {SkillIndexChart}/>
       <Route exact path = "/OrganizationHomePage" component = {OrganizationHomePage}/>
+      <Route exact path = "/SkillMeasurementReport" component = {SkillMeasurementReport}/>
       
       <Redirect to="/404"></Redirect>      
       </Switch>

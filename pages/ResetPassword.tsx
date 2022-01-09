@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native';
-import Header from "./Header";
-import DepartmentCreate from "./DepartmentCreate";
-import EmployeeCreate from "./EmployeeCreate";
-let email: string;
-export const ForgotPassword = (props: { history: string[]; }) => {
-    const [UserName, setUserName] = useState("");
+let email: string; let code: string; let password: string;
+export const ResetPassword = (props: { history: string[]; }) => {
+    const [codeId, setCode] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+
+    useEffect(() => {
+        email = props.match.params.id;
+    }, [])
 
     const submitAction = (e: { preventDefault: () => void; }) => {
         console.log("Started");
         e.preventDefault();
-        email = UserName;
+        code = codeId;
+        password = newPassword;
         getDeliverables();
     }
     const getDeliverables = () => {
-        fetch('https://localhost:44369/api/Password/forget-password', {
+        let collection = {}
+        collection.resetCode = code,
+            collection.email = email,
+            collection.newPassword = newPassword,
+            collection.userId = null;
+        console.log(collection);
+
+        fetch('https://localhost:44369/api/Password/reset-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(email),
+            body: JSON.stringify(collection),
         })
             .then(response => {
                 if (response.status == 200)
@@ -31,8 +40,8 @@ export const ForgotPassword = (props: { history: string[]; }) => {
             })
             .then(data => {
                 console.log('Success:', data);
-                alert("Reset Link Send to the Mail Id !");
-                props.history.push(`./ResetPassword/${email}`);
+                alert("Password Reset Successfully !");
+                props.history.push("/");
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -52,8 +61,7 @@ export const ForgotPassword = (props: { history: string[]; }) => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                {/* <Link to = "./AdminLogin">Home</Link> */}
-                                <a className="nav-link active" aria-current="page" href="./">Logout</a>
+                                <a className="nav-link active" aria-current="page" href="/">Home</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="#">About</a>
@@ -65,22 +73,25 @@ export const ForgotPassword = (props: { history: string[]; }) => {
                     </div>
                 </div>
             </nav>
-            <div>
             <form onSubmit={submitAction}>
+                <div className="container inputOne text-center">
+                    <h3>Reset Password</h3><br />
                     <div className="container inputOne text-center">
-                        <h3>Forgot Password</h3><br />
-                        <label><b>Email Address :</b></label>&nbsp;
-                        <input type="text" placeholder="Enter Registered Email Address" name="uname" value={UserName} onChange={(e) => setUserName(e.target.value)} className="formInput" required /><br /><br />
-                        <button className="btn btn-primary" type="submit" >Submit</button> &nbsp;
-                        <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
+                        <label ><b>One Time Password:</b></label><br />
+                        <input type="text" placeholder="Enter OTP Here" name="uname" value={codeId} onChange={(e) => setCode(e.target.value)} className="formInput" required /> <br /><br />
+                        <label><b>New Password  :</b></label><br />
+                        <input type="password" placeholder="Enter New Password Here" name="pwd" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="formInput" required /><br /><br />
                     </div>
-                </form>
-            </div>
+                    <button className="btn btn-primary" type="submit" >Submit</button> &nbsp;
+                    <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
+                </div>
+            </form>
         </div>
     )
 }
-ForgotPassword.defaultProps = {
+ResetPassword.defaultProps = {
     title: "Skill Base",
     searchBar: true
 }
-export default ForgotPassword;
+export default ResetPassword;
+

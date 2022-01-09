@@ -23,6 +23,7 @@ import MultiSkillLevelChart from './pages/MultiSkillLevelChart';
 import SkillIndexChart from './pages/SkillIndexChart';
 import OrganizationHomePage from './pages/OrganizationHomePage';
 import SkillMeasurementReport from './pages/SkillMeasurementReport';
+import { ResetPassword } from './pages/ResetPassword';
 
 const { height } = Dimensions.get('screen');
 
@@ -52,6 +53,7 @@ const App = () => {
       <Route exact path = "/SkillIndexChart" component = {SkillIndexChart}/>
       <Route exact path = "/OrganizationHomePage" component = {OrganizationHomePage}/>
       <Route exact path = "/SkillMeasurementReport" component = {SkillMeasurementReport}/>
+      <Route exact path = "/ResetPassword/:id" component = {ResetPassword}/>
       
       <Redirect to="/404"></Redirect>      
       </Switch>

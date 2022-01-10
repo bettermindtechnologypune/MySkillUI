@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react'
-let email: string; let code: string; let password: string;
-export const ResetPassword = (props: { history: string[]; }) => {
-    const [codeId, setCode] = useState("");
+let email: string; let userCode: string; let password: string;
+export const ChangePassword = (props: { history: string[]; }) => {
     const [newPassword, setNewPassword] = useState("");
+    const [newConfirmPassword, setNewConfirmPassword] = useState("");
 
-    useEffect(() => {
-        email = props.match.params.id;
-    }, [])
 
     const submitAction = (e: { preventDefault: () => void; }) => {
+        if (newPassword != newConfirmPassword) {
+            alert("New Password Doesn't Match")
+            return;
+        }
         console.log("Started");
         e.preventDefault();
-        code = codeId;
         password = newPassword;
-        getPassword();
+        getPassword(e);
     }
-    const getPassword = () => {
+    const getPassword = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
         let collection = {}
-        collection.resetCode = code,
-            collection.email = email,
+        collection.resetCode = localStorage.getItem('userCode'),
+            collection.email = null,
             collection.newPassword = newPassword,
             collection.userId = null;
         console.log(collection);
 
-        fetch('https://localhost:44369/api/Password/reset-password', {
+        fetch('https://localhost:44369/api/Password/change-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +41,7 @@ export const ResetPassword = (props: { history: string[]; }) => {
             })
             .then(data => {
                 console.log('Success:', data);
-                alert("Password Reset Successfully !");
+                alert("Password Changed Successfully !");
                 props.history.push("/");
             })
             .catch((error) => {
@@ -62,12 +63,9 @@ export const ResetPassword = (props: { history: string[]; }) => {
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <a className="nav-link active" aria-current="page" href="/">Home</a>
-                            </li>
+                            </li> &nbsp; &nbsp;
                             <li className="nav-item">
-                                <a className="nav-link" href="#">About</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">{props.state}</a>
+                                <a className="nav-link active" aria-current="page" href="#"> About </a>
                             </li>
                         </ul>
                     </div>
@@ -75,12 +73,13 @@ export const ResetPassword = (props: { history: string[]; }) => {
             </nav>
             <form onSubmit={submitAction}>
                 <div className="container inputOne text-center">
-                    <h3>Reset Password</h3><br />
+                    <h3>Change Password</h3><br />
                     <div className="container inputOne text-center">
-                        <label ><b>One Time Password:</b></label><br />
-                        <input type="text" placeholder="Enter OTP Here" name="uname" value={codeId} onChange={(e) => setCode(e.target.value)} className="formInput" required /> <br /><br />
                         <label><b>New Password  :</b></label><br />
                         <input type="password" placeholder="Enter New Password Here" name="pwd" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="formInput" required /><br /><br />
+                        <label><b>Confirm New Password  :</b></label><br />
+                        <input type="password" placeholder="Enter New Password Here" name="pwd" value={newConfirmPassword} onChange={(e) => setNewConfirmPassword(e.target.value)} className="formInput" required /><br /><br />
+
                     </div>
                     <button className="btn btn-primary" type="submit" >Submit</button> &nbsp;
                     <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
@@ -89,9 +88,9 @@ export const ResetPassword = (props: { history: string[]; }) => {
         </div>
     )
 }
-ResetPassword.defaultProps = {
+ChangePassword.defaultProps = {
     title: "Skill Base",
     searchBar: true
 }
-export default ResetPassword;
+export default ChangePassword;
 

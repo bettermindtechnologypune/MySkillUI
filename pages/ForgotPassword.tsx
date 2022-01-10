@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native';
-import Header from "./Header";
-import DepartmentCreate from "./DepartmentCreate";
-import EmployeeCreate from "./EmployeeCreate";
 let email: string;
 export const ForgotPassword = (props: { history: string[]; }) => {
     const [UserName, setUserName] = useState("");
@@ -52,9 +48,8 @@ export const ForgotPassword = (props: { history: string[]; }) => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                {/* <Link to = "./AdminLogin">Home</Link> */}
-                                <a className="nav-link active" aria-current="page" href="./">Logout</a>
-                            </li>
+                                <a className="nav-link active" aria-current="page" href="./">Home</a>
+                            </li> &nbsp; &nbsp;
                             <li className="nav-item">
                                 <a className="nav-link" href="#">About</a>
                             </li>

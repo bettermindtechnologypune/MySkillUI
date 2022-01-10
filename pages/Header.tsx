@@ -12,13 +12,20 @@ export default function Header(props: { title: string; }) {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                {/* <Link to = "./AdminLogin">Home</Link> */}
-                <a className="nav-link active" aria-current="page" href="/">Home</a>
+                <a className="nav-link active" aria-current="page" href="/">Logout</a>
+              </li> &nbsp; &nbsp;
+              <li className="nav-item">
+              <a className="nav-link active" aria-current="page" href="#"> About </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">About</a>
+                <div className="dropdown">
+                  <button className="dropbtn"> Profile Setting <i className="fa fa-caret-down"></i></button>
+                  <div className="dropdown-content">
+                    <a href="/ChangePassword"> Change Password </a>
+                  </div>
+                </div>
               </li>
-
+            
             </ul>
           </div>
         </div>

@@ -103,7 +103,11 @@ export const AdminLogin = (props: { history: string[]; }) => {
 
           <button className="btn btn-primary btn-lg" type="submit">Login</button><br />
           <br />
-          <span className="psw"><a href="./ForgotPassword">Forgot Password</a></span>
+          <div className="text-center">
+          <span className="psw">
+           &nbsp; <a href="./ForgotPassword">Forgot Password</a></span>
+          <br /><br />
+          </div>
         </div>
       </form>
       <View>

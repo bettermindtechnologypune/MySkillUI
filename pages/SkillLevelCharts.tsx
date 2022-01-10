@@ -14,7 +14,7 @@ export const SkillLevelCharts = (props: { history: string[]; title: string; stat
         (async () => {
             var product1 = await getProducts();
             if (product != undefined) {
-				var chart = await getCharts();
+                var chart = await getCharts();
             }
         })()
 
@@ -64,7 +64,7 @@ export const SkillLevelCharts = (props: { history: string[]; title: string; stat
                     setChartData(data)
                     setDataStructure(null);
                     let arr = [];
-                    for(let i = 0; i<data.length;i++){
+                    for (let i = 0; i < data.length; i++) {
                         arr = [data[i].skillLevelZeroCount, data[i].skillLevelOneCount, data[i].skillLevelTwoCount, data[i].skillLevelThreeCount, data[i].skillLevelFourCount, data[i].skillLevelFiveCount]
                         map1.set(data[i].levelTwoName, arr);
                     }
@@ -77,7 +77,7 @@ export const SkillLevelCharts = (props: { history: string[]; title: string; stat
                     const dataStruct = {
                         labels: labelsData,
                         data: entryData,
-                        barColors: ["#3399FF", "#F17A17", "#8D8C8B", "#F4BF0C", "#1837C6", "#27760B", ],
+                        barColors: ["#3399FF", "#F17A17", "#8D8C8B", "#F4BF0C", "#1837C6", "#27760B",],
                         legend: ["Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5"],
                     };
                     setDataStructure(dataStruct);
@@ -90,66 +90,48 @@ export const SkillLevelCharts = (props: { history: string[]; title: string; stat
                 console.error('Error:', error);
             });
     }
-  
+
     const submitBack = (e: { preventDefault: () => void; }) => {
         props.history.push("/HrAdminHomePage");
     }
     const handleChange = (id: string) => {
-		setProduct(id);
+        setProduct(id);
         proName = id;
         map1.clear();
-        if(product != undefined){
+        if (product != undefined) {
             getCharts();
         }
 
-	}
+    }
     return (
         <div>
-             
-                <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
-                    <div className="container-fluid">
-                        <a className="navbar-brand" href="#">{props.title}</a>
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li className="nav-item">
-                                    <a className="nav-link active" aria-current="page" href="./">Logout</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">About</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">{props.state}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                
             <View>
-                
+                <View >
+                    <Header />
+                </View>
+            </View>
+            <View>
+
                 <div className="text-center col-6 mx-auto">
-                <h2> Skill Level Chart View </h2>
-                <br /><br />
-                <form>
-                <div className="col-sm-12">
-                        <div className="row">
-                    {products &&
-                        <div className="text-center col-6 mx-auto form-group">
-                            <label>Product Name <mark className="highlightedText">*</mark></label>
-                            <select name="product" className="form-control" value={product.id} onChange={(event) => handleChange(event.target.value)}>
-                                {products.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
-                                    return <option key={key} value={e.id}>{e.name}</option>;
-                                })}
-                            </select>
+                    <h2> Skill Level Chart View </h2>
+                    <br /><br />
+                    <form>
+                        <div className="col-sm-12">
+                            <div className="row">
+                                {products &&
+                                    <div className="text-center col-6 mx-auto form-group">
+                                        <label>Product Name <mark className="highlightedText">*</mark></label>
+                                        <select name="product" className="form-control" value={product.id} onChange={(event) => handleChange(event.target.value)}>
+                                            {products.map((e: { Id: string | number | readonly string[]; name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null; }, key: React.Key | null) => {
+                                                return <option key={key} value={e.id}>{e.name}</option>;
+                                            })}
+                                        </select>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    }
+                    </form>
                 </div>
-            </div>
-            </form>
-            </div>
                 <View style={styleSheet.MainContainer}>
                     {/* <BarChart
                         data={{
@@ -174,32 +156,32 @@ export const SkillLevelCharts = (props: { history: string[]; title: string; stat
                         }}
                     /> */}
                     <br />
-                    { dataStru &&
+                    {dataStru &&
                         <StackedBarChart
-                        data={dataStru}
-                        width={Dimensions.get('window').width - 250}
-                        height={370}
-                        chartConfig={{
-                            backgroundColor: '#EB2828',
-                            fillShadowGradient: '#FCBD00',
-                            fillShadowGradientOpacity: 1,
-                            backgroundGradientFrom: '#F7FBFB',
-                            backgroundGradientTo: '#F7FBFB',
-                            decimalPlaces: 0,
-                            color: (opacity = 1) => '#0C0C0D',
-                            style: {
-                                borderRadius: 12, padding: 10
-                            },
-                        }}
-                    />
+                            data={dataStru}
+                            width={Dimensions.get('window').width - 250}
+                            height={370}
+                            chartConfig={{
+                                backgroundColor: '#EB2828',
+                                fillShadowGradient: '#FCBD00',
+                                fillShadowGradientOpacity: 1,
+                                backgroundGradientFrom: '#F7FBFB',
+                                backgroundGradientTo: '#F7FBFB',
+                                decimalPlaces: 0,
+                                color: (opacity = 1) => '#0C0C0D',
+                                style: {
+                                    borderRadius: 12, padding: 10
+                                },
+                            }}
+                        />
                     }
-                    
+
                     <br />
                     <button button-type='submit' className="btn btn-primary" onClick={submitBack}>Back</button>
 
                 </View>
-                </View>
-            
+            </View>
+
 
         </div>
     )

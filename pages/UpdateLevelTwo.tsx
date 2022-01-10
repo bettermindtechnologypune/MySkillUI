@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-let li: [];  var array: string | any[] = [];  let cout = 0; let takName = null; let tak: null = null; let tak1: null = null;
+import { View } from 'react-native';
+import Header from './Header';
+let li: []; var array: string | any[] = []; let cout = 0; let takName = null; let tak: null = null; let tak1: null = null;
 export const UpdateLevelTwo = (props: { history: string[]; title: string; state: string; }) => {
     const [deliverable, setDeliverable] = useState<any>();
     const [deliverables, setDeliverableData] = useState<any>();
@@ -75,13 +77,13 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
             });
     }
     function updateValue(e: { target: { value: any; id: any }; }) {
-        var arrray1 = li; let checkBol = true;  tak = e.target.id;
+        var arrray1 = li; let checkBol = true; tak = e.target.id;
         for (let userObject of arrray1) {
             console.log(userObject);
             if (userObject.id == e.target.id) {
                 let index = arrray1.indexOf(userObject);
                 li?.splice(index, 1);
-                userObject.name =e.target.value;
+                userObject.name = e.target.value;
                 li?.push(userObject);
                 checkBol = false;
             }
@@ -101,11 +103,11 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
         takName = e.target.value;
         for (let userObject of e.target) {
             console.log(userObject);
-            if(userObject.value == e.target.value){
+            if (userObject.value == e.target.value) {
                 tak1 = userObject.id;
             }
         }
-       
+
     }
     const submitBack = (e: { preventDefault: () => void; }) => {
         cout = 0;
@@ -165,8 +167,8 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
         lineB1 = document.createElement("br");
         var selectList = document.createElement("select");
         selectList.className = "form-control";
-        sel1 == null ? document.getElementById('searchProducts') : sel1.appendChild(selectList);   
-       
+        sel1 == null ? document.getElementById('searchProducts') : sel1.appendChild(selectList);
+
         for (var i = 0; i < array.length; i++) {
             var option = document.createElement("option");
             option.value = array[i].name;
@@ -179,16 +181,16 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
         opt.className = "form-control";
         lineB1 = document.createElement("br");
         lineB2 = document.createElement("br");
-        cout == 0 ? (sel1 == null ? document.getElementById('searchProducts') : sel1.appendChild(label1)) : setCount(cout+1);
+        cout == 0 ? (sel1 == null ? document.getElementById('searchProducts') : sel1.appendChild(label1)) : setCount(cout + 1);
         sel1 == null ? document.getElementById('searchProducts') : sel1.appendChild(selectList);
         sel1 == null ? document.getElementById('searchProducts') : sel1.appendChild(lineB1);
         sel1 == null ? document.getElementById('searchProducts') : sel1.addEventListener("change", handleChange);
-        cout == 0 ? (sel == null ? document.getElementById('searchDel') : sel.appendChild(label2)) : setCount(cout+1);
+        cout == 0 ? (sel == null ? document.getElementById('searchDel') : sel.appendChild(label2)) : setCount(cout + 1);
         sel == null ? document.getElementById('searchDel') : sel.appendChild(opt);
         sel == null ? document.getElementById('searchDel') : sel.appendChild(lineB);
         sel == null ? document.getElementById('searchDel') : sel.addEventListener("change", updateValue);
         cout++;
-        setCount(cou+1);
+        setCount(cou + 1);
     }
     const clearFields = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -198,7 +200,7 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
             for (let i = 0; i < 2; i++) {
                 sel?.removeChild(sel.lastElementChild);
                 sel1?.removeChild(sel1.lastElementChild);
-                if(cou == 1 && sel.lastElementChild && sel1.lastElementChild){
+                if (cou == 1 && sel.lastElementChild && sel1.lastElementChild) {
                     sel?.removeChild(sel.lastElementChild);
                     sel1?.removeChild(sel1.lastElementChild);
                 }
@@ -244,31 +246,15 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
                 console.error('Error:', error);
             });
     }
-    
-    
+
+
     return (
         <div>
-            <nav className="navbar navbar-expand-lg navbar navbar-dark bg-primary">
-                <div className="container-fluid">
-                    <a className="navbar-brand" href="#">{props.title}</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="./">Logout</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">About</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">{props.state}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <View>
+                <View >
+                    <Header />
+                </View>
+            </View>
             <div className="text-center col-6 mx-auto">
                 <h3>Edit deliverables !!</h3><br /><br />
                 <form onSubmit={submit}>
@@ -280,11 +266,11 @@ export const UpdateLevelTwo = (props: { history: string[]; title: string; state:
                                 </div>
                             }
                             <div className="row">
-                             <div id="searchProducts" className="col-6 form-group">
+                                <div id="searchProducts" className="col-6 form-group">
                                 </div>
                                 <div id="searchDel" className="col-6 form-group">
                                 </div>
-                                </div>
+                            </div>
                             {/* {productNames &&
                                 <div className="text-center col-6 mx-auto form-group">
                                     <label>Product Name:</label>

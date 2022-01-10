@@ -24,6 +24,7 @@ import SkillIndexChart from './pages/SkillIndexChart';
 import OrganizationHomePage from './pages/OrganizationHomePage';
 import SkillMeasurementReport from './pages/SkillMeasurementReport';
 import { ResetPassword } from './pages/ResetPassword';
+import { ChangePassword } from './pages/ChangePassword';
 
 const { height } = Dimensions.get('screen');
 
@@ -54,6 +55,7 @@ const App = () => {
       <Route exact path = "/OrganizationHomePage" component = {OrganizationHomePage}/>
       <Route exact path = "/SkillMeasurementReport" component = {SkillMeasurementReport}/>
       <Route exact path = "/ResetPassword/:id" component = {ResetPassword}/>
+      <Route exact path = "/ChangePassword" component = {ChangePassword}/>
       
       <Redirect to="/404"></Redirect>      
       </Switch>

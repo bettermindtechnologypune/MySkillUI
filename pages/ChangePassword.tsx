@@ -18,15 +18,16 @@ export const ChangePassword = (props: { history: string[]; }) => {
     const getPassword = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         let collection = {}
-        collection.resetCode = localStorage.getItem('userCode'),
+        collection.resetCode = null,
             collection.email = null,
             collection.newPassword = newPassword,
-            collection.userId = null;
+            collection.userId = localStorage.getItem('userId');
+        collection.isFirstTimeChange = true;
         console.log(collection);
-
         fetch('https://localhost:44369/api/Password/change-password', {
             method: 'POST',
             headers: {
+                'Authorization': localStorage.getItem('token'),
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(collection),
@@ -62,7 +63,7 @@ export const ChangePassword = (props: { history: string[]; }) => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="/">Home</a>
+                                <a className="nav-link active" aria-current="page" href="/">Logout</a>
                             </li> &nbsp; &nbsp;
                             <li className="nav-item">
                                 <a className="nav-link active" aria-current="page" href="#"> About </a>

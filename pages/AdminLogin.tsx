@@ -39,20 +39,25 @@ export const AdminLogin = (props: { history: string[]; }) => {
         localStorage.setItem('userType', (data.userType));
         alert("Success !")
         if (data.userType == 0) {
+          localStorage.setItem('userId', (data.userId));
           props.history.push("./OrganizationCreate");
         } else if (data.userType == 1) {
+          localStorage.setItem('userId', (data.userId));
           props.history.push("./OrganizationHomePage");
         } else if (data.userType == 2) {
           localStorage.setItem('buid',(data.buid));
+          localStorage.setItem('userId', (data.userId));
           props.history.push("./HrAdminHomePage");
         } else if (data.userType == 3) {
           localStorage.setItem('buid', (data.buid));
+          localStorage.setItem('userId', (data.userId));
           localStorage.setItem('buName', (data.buName));
           localStorage.setItem('empId', (data.empId));
           localStorage.setItem('empName', (data.empName));
           props.history.push("./ManagerHomePage");
         } else if (data.userType == 4) {
           localStorage.setItem('buid', (data.buid));
+          localStorage.setItem('userId', (data.userId));
           localStorage.setItem('buName', (data.buName));
           localStorage.setItem('empId', (data.empId));
           localStorage.setItem('empName', (data.empName));

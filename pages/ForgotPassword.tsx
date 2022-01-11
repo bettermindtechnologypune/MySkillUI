@@ -10,12 +10,11 @@ export const ForgotPassword = (props: { history: string[]; }) => {
         getDeliverables();
     }
     const getDeliverables = () => {
-        fetch('https://localhost:44369/api/Password/forget-password', {
+        fetch('https://localhost:44369/api/Password/forget-password/?email='+email, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(email),
+            }
         })
             .then(response => {
                 if (response.status == 200)

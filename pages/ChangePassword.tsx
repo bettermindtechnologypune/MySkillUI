@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ChangePasswordModel from '../model/ChangePasswordModel';
 let email: string; let userCode: string; let password: string;
 export const ChangePassword = (props: { history: string[]; }) => {
     const [newPassword, setNewPassword] = useState("");
@@ -17,7 +18,7 @@ export const ChangePassword = (props: { history: string[]; }) => {
     }
     const getPassword = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        let collection = {}
+        let collection: ChangePasswordModel = new ChangePasswordModel();
         collection.resetCode = null,
             collection.email = null,
             collection.newPassword = newPassword,
@@ -27,8 +28,9 @@ export const ChangePassword = (props: { history: string[]; }) => {
         fetch('https://localhost:44369/api/Password/change-password', {
             method: 'POST',
             headers: {
+                'Accept': 'application/json, text/plain, */*',
                 'Authorization': localStorage.getItem('token'),
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8 ',
             },
             body: JSON.stringify(collection),
         })
@@ -79,7 +81,7 @@ export const ChangePassword = (props: { history: string[]; }) => {
                         <label><b>New Password  :</b></label><br />
                         <input type="password" placeholder="Enter New Password Here" name="pwd" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="formInput" required /><br /><br />
                         <label><b>Confirm New Password  :</b></label><br />
-                        <input type="password" placeholder="Enter New Password Here" name="pwd" value={newConfirmPassword} onChange={(e) => setNewConfirmPassword(e.target.value)} className="formInput" required /><br /><br />
+                        <input type="text" placeholder="Enter New Password Here" name="pwd" value={newConfirmPassword} onChange={(e) => setNewConfirmPassword(e.target.value)} className="formInput" required /><br /><br />
 
                     </div>
                     <button className="btn btn-primary" type="submit" >Submit</button> &nbsp;
